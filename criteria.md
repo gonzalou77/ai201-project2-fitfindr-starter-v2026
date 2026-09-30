@@ -43,7 +43,7 @@ Given a query that matches no listings, the agent stops before calling
 ---
 
 ## 3. Something about state
-
+Given a query that provides an item id, it will be alerted that id is the same for the search found is the same item id the next tool received. This should be caught 5 out of 5 times.
 <!-- YOU WRITE THIS ONE.
 
      How would you know that the item your search found is the same item the
@@ -57,12 +57,14 @@ Given a query that matches no listings, the agent stops before calling
 
 
 **Why this target:**
-
+Id provides a unique identifier. It is the simplest approach for accomplishing this criteria, rather than other traits which may be very common across listings such as sizes and brands.
 
 
 ---
 
 ## 4. Something about the fit card
+5 out of 5 times an item without a price will be caught.
+
 
 <!-- YOU WRITE THIS ONE.
 
@@ -78,13 +80,13 @@ Given a query that matches no listings, the agent stops before calling
 
 
 **Why this target:**
-
+Nothing is more aggravating than an item with a price listing. Is it in stock or not?
 
 
 ---
 
 ## 5. Your choice
-
+5 out of 5 times it will be noted when the model cant be reached.
 <!-- YOU WRITE THIS ONE TOO.
 
      Pick something you actually care about getting right. Speed, the empty
@@ -95,7 +97,7 @@ Given a query that matches no listings, the agent stops before calling
 
 
 **Why this target:**
-
+We tend to over rely on models to do the work for us. We should be able to tell when we have to immediately start searching ourselves. Noone likes to waste time.
 
 
 ---

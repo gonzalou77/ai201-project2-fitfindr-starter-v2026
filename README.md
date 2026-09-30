@@ -39,9 +39,7 @@
 
 ## What This Does
 
-<!-- Three or four sentences: what a user asks for, and what they get back. -->
-
-
+FitFindr is a thrift-shopping agent. A user describes what they want in plain language — e.g. `'vintage graphic tee under $30'` — and the agent searches a mock listings dataset, picks the best match, suggests an outfit built around pieces the user already owns (or general styling advice if they haven't saved a wardrobe yet), and writes a short caption for the find in the style of a real social post. If nothing in the data matches the query, the agent stops and says what to change — a higher price ceiling, a different size, or different keywords — instead of continuing with nothing to work with.
 
 ---
 
@@ -162,15 +160,15 @@ Nothing beats the wash on these vintage Levi's 501s—they're the ultimate lazy 
 
 **Moment 1**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* I had Claude spec and build `search_listings` from the docstring already in `tools.py`, which explicitly warns that a naive substring test on size is buggy — `"s" in "us 9"` and `"l" in "xl"` both come back `True`.
+- *What came back:* An implementation using a token-based size matcher (`_size_tokens`/`_sizes_match`) that splits a size string like `"S/M"` into whole components (`{"s", "m"}`) instead of testing substrings, so a query for `"M"` matches `"S/M"` but not `"XL"`.
+- *What I changed:* Nothing in the code — but I didn't take the fix on faith. I ran `_sizes_match('L', 'XL')` and `_sizes_match('S', 'US 9')` directly from a terminal to confirm both of the docstring's named bugs actually come back `False` under the new matcher, alongside a positive case (`_sizes_match('M', 'S/M')` → `True`), before accepting it into the Tool Inventory.
 
 **Moment 2**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* Per the Milestone 4 instructions, I had Claude run `create_fit_card` three times on the same item and read the outputs, to check they weren't word-for-word identical.
+- *What came back:* All three outputs were identical. Claude's first read was to name the two possible causes from `config.py` — `CACHE_ENABLED` or `TEMPERATURE` at `0.0` — then actually check rather than guess: it read `config.py`'s live values (`TEMPERATURE = 0.9`, `CACHE_ENABLED = True`), and called `generate()` directly with `cache=False` on the same prompt, which produced two genuinely different captions.
+- *What I changed:* Nothing — the identical output was the cache correctly reusing an identical prompt while building, exactly as `config.py`'s comments describe, not a bug in the tool. The useful part of this exchange was the verification step (disabling the cache to isolate the real cause) rather than stopping at the first plausible explanation.
 
 <!-- ═══════════════════════ UNIT 4 — THE TEST ═══════════════════════
 

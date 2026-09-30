@@ -25,9 +25,8 @@ Given a query that matches at least one listing, the agent completes all three
 tool calls and returns a fit card — in at least 4 of 5 tries.
 
 **Why this target:**
-<!-- Why 4 of 5 and not 5 of 5? Something about your search, probably —
-     "my search is a plain keyword match and some phrasings will miss" is a
-     real answer. -->
+
+`search_listings` scores by keyword overlap — a set intersection between the words in the query's description and the words in a listing's title/description/category/style_tags. That's a plain keyword match, not a semantic one, so a real match can still score zero and get filtered out if the query's wording doesn't share an exact word with the listing (a synonym, a typo, or a phrasing the listing just doesn't use). 4 of 5 leaves room for that kind of miss without pretending the matcher is smarter than it is.
 
 ---
 
@@ -37,8 +36,8 @@ Given a query that matches no listings, the agent stops before calling
 `suggest_outfit` and returns a message naming what to change — 5 of 5 tries.
 
 **Why this target:**
-<!-- Why is 5 of 5 reasonable here when criterion 1 isn't? What's different
-     about this path? -->
+
+This path doesn't depend on how well the wording matched — it depends on one deterministic fact: whether `session["search_results"]` is an empty list. `agent.py::run_agent` branches on that with a plain `if not session["search_results"]:`, no scoring or judgment call involved, so there's no fuzziness for this one to fail on the way criterion 1 can. 5 of 5 is reasonable exactly because this branch has nothing probabilistic left in it by the time it runs.
 
 ---
 

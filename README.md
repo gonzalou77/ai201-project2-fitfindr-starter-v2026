@@ -97,7 +97,7 @@
 
 **Where it lives:** `agent.py::run_agent`
 
-**How the query is parsed:** <!-- TODO once Milestone 5 is written: say whether you used regex, string splitting, or asked the model, and why. -->
+**How the query is parsed:** Regex, in `agent.py::_parse_query`. One pattern pulls out `"under $X"` as `max_price`; another pulls out `"size X"` as `size`; whatever text is left over (after trimming a dangling connector word like a trailing "in") becomes the description. No model call — the example queries follow a consistent enough shape that two patterns cover them.
 
 **What moves through the session:** `query` → `parsed` (the description/size/max_price pulled out of the query) → `search_results` (everything `search_listings` returned) → `selected_item` (the one chosen, which is what actually reaches `suggest_outfit`) → `outfit_suggestion` → `fit_card`. `error` is set instead of the later fields when the branch above stops the run early.
 
@@ -112,9 +112,21 @@
 
 **One full query**
 
-<!-- TODO: agent.py::run_agent isn't wired yet (Milestone 5). Come back and
-     run `python app.py ask '...'` once the loop is built — right now it
-     would only print the "planning loop isn't built yet" stub message. -->
+```
+$ python app.py ask 'vintage graphic tee under $30'
+
+  Found:    Y2K Baby Tee — Butterfly Print — $18.0 on depop
+
+  Outfit:   **Outfit 1: Casual Y2K Contrast**
+Pair the Y2K butterfly baby tee with your **baggy straight-leg jeans, dark wash** to balance out the tight silhouette of the top. Layer the **black cropped zip hoodie** unzipped over the baby tee, and finish the look with your **chunky white sneakers** and the **black crossbody bag**.
+
+**Outfit 2: Soft Grunge Mix**
+Tuck the butterfly baby tee into your **wide-leg khaki trousers**, cinched at the waist with the **brown leather belt**. Throw the **vintage black denim jacket** over your shoulders and ground the softer tones of the tee and trousers with your **black combat boots**.
+
+  Fit card: Found this butterfly print Y2K baby tee on Depop for just $18 and I'm obsessed with the early 2000s mall-goth energy. Tossed it on with baggy jeans and chunky sneakers for the ultimate casual contrast, but it's definitely gonna be on heavy rotation with my combat boots too. ✨🦋
+
+0 model calls this session, 2 served from cache
+```
 
 **The three tools, tested one at a time**
 

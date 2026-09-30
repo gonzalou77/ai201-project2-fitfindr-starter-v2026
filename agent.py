@@ -13,10 +13,45 @@ Build and test your three tools in `tools.py` first. Then come here.
     python agent.py          runs both example paths below
 """
 
+import re
+
 import config
 import trace
 from tools import search_listings, suggest_outfit, create_fit_card
 from generate import ModelUnavailable
+
+_PRICE_RE = re.compile(r"under\s*\$?\s*(\d+(?:\.\d+)?)", re.I)
+_SIZE_RE = re.compile(r"\bsize[:\s]+([A-Za-z0-9/]+)", re.I)
+_TRAILING_CONNECTOR_RE = re.compile(r"\s*\b(in|for)\s*$", re.I)
+
+
+def _parse_query(query: str) -> dict:
+    """
+    Pull a description, a size, and a price ceiling out of a plain-language
+    query. Regex, not the model — the query shapes in app.py's EXAMPLE_QUERIES
+    are consistent enough ("under $X", "size X") that a couple of patterns
+    cover them without spending a model call just to parse text.
+
+    Whatever isn't claimed by the price or size pattern is the description.
+    """
+    remainder = query
+    max_price = None
+    size = None
+
+    match = _PRICE_RE.search(remainder)
+    if match:
+        max_price = float(match.group(1))
+        remainder = remainder[: match.start()] + remainder[match.end():]
+
+    match = _SIZE_RE.search(remainder)
+    if match:
+        size = match.group(1)
+        remainder = remainder[: match.start()] + remainder[match.end():]
+
+    remainder = _TRAILING_CONNECTOR_RE.sub("", remainder)
+    description = re.sub(r"\s+", " ", remainder).strip()
+
+    return {"description": description, "size": size, "max_price": max_price}
 
 
 # ── session state ─────────────────────────────────────────────────────────────
@@ -106,9 +141,42 @@ def run_agent(query: str, wardrobe: dict) -> dict:
         than a stack trace. The import is already at the top of this file.
     """
     session = new_session(query, wardrobe)
+    count = 0
 
-    # TODO: delete these two lines and build the loop.
-    session["error"] = "The planning loop isn't built yet — see the TODO in agent.py."
+    count += 1
+    trace.check_iterations(count)
+    session["parsed"] = _parse_query(query)
+
+    count += 1
+    trace.check_iterations(count)
+    session["search_results"] = search_listings(
+        session["parsed"]["description"],
+        size=session["parsed"]["size"],
+        max_price=session["parsed"]["max_price"],
+    )
+
+    # THE BRANCH. Nothing to work with — stop before suggest_outfit runs.
+    if not session["search_results"]:
+        session["error"] = (
+            "No listings matched. Try raising the price ceiling, dropping "
+            "the size filter, or using different keywords in the description."
+        )
+        return session
+
+    session["selected_item"] = session["search_results"][0]
+
+    count += 1
+    trace.check_iterations(count)
+    session["outfit_suggestion"] = suggest_outfit(
+        session["selected_item"], session["wardrobe"]
+    )
+
+    count += 1
+    trace.check_iterations(count)
+    session["fit_card"] = create_fit_card(
+        session["outfit_suggestion"], session["selected_item"]
+    )
+
     return session
 
 

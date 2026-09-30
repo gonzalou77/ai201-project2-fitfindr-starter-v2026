@@ -28,6 +28,10 @@ tool calls and returns a fit card — in at least 4 of 5 tries.
 
 `search_listings` scores by keyword overlap — a set intersection between the words in the query's description and the words in a listing's title/description/category/style_tags. That's a plain keyword match, not a semantic one, so a real match can still score zero and get filtered out if the query's wording doesn't share an exact word with the listing (a synonym, a typo, or a phrasing the listing just doesn't use). 4 of 5 leaves room for that kind of miss without pretending the matcher is smarter than it is.
 
+> **Tweaked:** My search is a literal keyword-overlap match, not a semantic one — if my query phrasing doesn't share an exact word with a listing's title, description, category, or style tags, that listing scores zero and gets dropped even if a person would call it a match. 4 of 5 accounts for that gap without claiming my matcher understands synonyms or paraphrasing it was never built to catch.
+>
+> **Why tweaked:** The original said the same thing but talked about the code in third person ("search_listings scores...") instead of owning the limitation as my own design choice. Shortened it too — the original repeated "match" language in a way that padded the paragraph without adding a new reason.
+
 ---
 
 ## 2. An impossible query stops before the second tool
@@ -38,6 +42,10 @@ Given a query that matches no listings, the agent stops before calling
 **Why this target:**
 
 This path doesn't depend on how well the wording matched — it depends on one deterministic fact: whether `session["search_results"]` is an empty list. `agent.py::run_agent` branches on that with a plain `if not session["search_results"]:`, no scoring or judgment call involved, so there's no fuzziness for this one to fail on the way criterion 1 can. 5 of 5 is reasonable exactly because this branch has nothing probabilistic left in it by the time it runs.
+
+> **Tweaked:** This branch doesn't involve any matching judgment — it just checks whether `search_results` came back empty, a plain boolean with no ambiguity in it. Since there's no fuzzy scoring left in this path, I expect it to hold every time.
+>
+> **Why tweaked:** The original quoted the literal `if not session["search_results"]:` line from `agent.py`, which repeats what "Where it lives" already points to two sections up in the README — restating the code here didn't add to the reasoning, so I cut it down to just the claim: this path is boolean, criterion 1's isn't.
 
 ---
 

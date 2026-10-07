@@ -65,6 +65,34 @@ SCENARIOS = [
         "bad_api_key": True,
         "criterion": 5,
     },
+    # ── Harsher runs for criterion 1 ─────────────────────────────────────────
+    # The first three criterion-1 style queries all share exact words with the
+    # listings, so they can't show where the keyword matcher stops. These
+    # describe things the data does hold — sneakers, tees — in words it doesn't
+    # use. A person would call each a match; set intersection won't.
+    {
+        # "trainers" is the UK word for the sneakers in lst_019 and lst_035.
+        "name": "synonym query completes",
+        "query": "trainers size 8",
+        "wardrobe": "example",
+        "criterion": 1,
+    },
+    {
+        # "tshirt" is one word; the listings say "tee" and "shirt".
+        "name": "spelling variant completes",
+        "query": "tshirt under $30",
+        "wardrobe": "example",
+        "criterion": 1,
+    },
+    {
+        # Completes, but on the wrong item: "jackets" != "jacket", so only
+        # "denim" matches and the top result is jeans. Diagnostic — criterion 1
+        # only asks that the run complete, so it can't see this one.
+        "name": "plural picks the wrong item",
+        "query": "denim jackets under $50",
+        "wardrobe": "example",
+        "criterion": None,
+    },
 ]
 
 WARDROBES = ("example", "empty")

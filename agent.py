@@ -17,11 +17,14 @@ import re
 
 import config
 import trace
-from tools import search_listings, suggest_outfit, create_fit_card
+from tools import suggest_outfit
 from generate import ModelUnavailable
+from mcp_client import call_tool, MCPError
+
 
 _PRICE_RE = re.compile(r"under\s*\$?\s*(\d+(?:\.\d+)?)", re.I)
-_SIZE_RE = re.compile(r"\bsize[:\s]+([A-Za-z0-9/]+)", re.I)
+# An optional leading "US " keeps "size US 8" from being read as size "US".
+_SIZE_RE = re.compile(r"\bsize[:\s]+((?:us\s+)?[A-Za-z0-9/.]+)", re.I)
 _TRAILING_CONNECTOR_RE = re.compile(r"\s*\b(in|for)\s*$", re.I)
 
 
@@ -79,12 +82,35 @@ def new_session(query: str, wardrobe: dict) -> dict:
         "outfit_suggestion": None,   # what suggest_outfit returned
         "fit_card": None,            # what create_fit_card returned
         "error": None,               # set when the run ended early
+        "warnings": [],              # things worth knowing that didn't stop the run
+        "item_ids": {},              # the listing id seen at each hand-off (criterion 3)
     }
+
+
+def _hand_off(session: dict, stage: str, item: dict) -> bool:
+    """
+    Record the listing id a stage received, and check it's the one search found.
+
+    The ids are read off the object each stage was actually given, not copied
+    from the session afterwards — so if something re-sorts, re-selects, or
+    overwrites the item between steps, the mismatch shows up here instead of
+    as a fit card about the wrong jacket.
+    """
+    session["item_ids"][stage] = item.get("id")
+    found = session["item_ids"]["searched"]
+    if item.get("id") == found:
+        return True
+    session["error"] = (
+        f"State mismatch: search found listing {found}, but {stage} "
+        f"received {item.get('id')}. Stopped before using the wrong item."
+    )
+    trace.step("state check", inputs=str(session["item_ids"]), note=session["error"])
+    return False
 
 
 # ── planning loop ─────────────────────────────────────────────────────────────
 
-def run_agent(query: str, wardrobe: dict) -> dict:
+def run_agent(query: str, wardrobe: dict, item_overrides: dict | None = None) -> dict:
     """
     Run the loop once and return the finished session.
 
@@ -93,6 +119,8 @@ def run_agent(query: str, wardrobe: dict) -> dict:
                   (e.g. "vintage graphic tee under $30, size M").
         wardrobe: a wardrobe dict — get_example_wardrobe() or
                   get_empty_wardrobe() from utils/data_loader.py.
+        item_overrides: test only — fields to overwrite on the selected
+                  listing (e.g. {"price": None}). Normal callers leave it out.
 
     Returns:
         The session dict. **Check session["error"] first** — if it isn't None,
@@ -146,14 +174,27 @@ def run_agent(query: str, wardrobe: dict) -> dict:
     count += 1
     trace.check_iterations(count)
     session["parsed"] = _parse_query(query)
+    trace.step("parse query (regex)", inputs=query, returned=str(session["parsed"]))
 
     count += 1
     trace.check_iterations(count)
-    session["search_results"] = search_listings(
-        session["parsed"]["description"],
-        size=session["parsed"]["size"],
-        max_price=session["parsed"]["max_price"],
-    )
+    search_args = {
+        "description": session["parsed"]["description"],
+        "size": session["parsed"]["size"],
+        "max_price": session["parsed"]["max_price"],
+    }
+    try:
+        session["search_results"] = call_tool("search_listings", search_args)
+    except MCPError as exc:
+        session["error"] = (
+            "The listings search couldn't be reached, so nothing was searched. "
+            f"({str(exc).splitlines()[0]})"
+        )
+        trace.step("search_listings (via MCP)", inputs=str(search_args),
+                   note="MCP call failed, stopping")
+        return session
+    trace.step("search_listings (via MCP)", inputs=str(search_args),
+               returned=session["search_results"])
 
     # THE BRANCH. Nothing to work with — stop before suggest_outfit runs.
     if not session["search_results"]:
@@ -161,21 +202,67 @@ def run_agent(query: str, wardrobe: dict) -> dict:
             "No listings matched. Try raising the price ceiling, dropping "
             "the size filter, or using different keywords in the description."
         )
+        trace.step("branch", note="search came back empty, stopping before suggest_outfit")
         return session
 
-    session["selected_item"] = session["search_results"][0]
+    session["item_ids"]["searched"] = session["search_results"][0].get("id")
+    item = session["search_results"][0]
+    if item_overrides:
+        # Test seam for run_eval.py (criterion 4): lets a scenario hand the
+        # loop a listing with a field missing, which the real data never has.
+        item = {**item, **item_overrides}
+    session["selected_item"] = item
+    if not _hand_off(session, "selected", session["selected_item"]):
+        return session
+    trace.step("select first result", returned=session["selected_item"])
 
-    count += 1
-    trace.check_iterations(count)
-    session["outfit_suggestion"] = suggest_outfit(
-        session["selected_item"], session["wardrobe"]
-    )
+    if session["selected_item"].get("price") is None:
+        warning = (
+            f"Listing {session['selected_item'].get('id')} has no listed price; "
+            "the fit card will say so rather than guess one."
+        )
+        session["warnings"].append(warning)
+        trace.step("warning", note=warning)
 
-    count += 1
-    trace.check_iterations(count)
-    session["fit_card"] = create_fit_card(
-        session["outfit_suggestion"], session["selected_item"]
-    )
+    try:
+        count += 1
+        trace.check_iterations(count)
+        if not _hand_off(session, "suggest_outfit", session["selected_item"]):
+            return session
+        session["outfit_suggestion"] = suggest_outfit(
+            session["selected_item"], session["wardrobe"]
+        )
+        trace.step("suggest_outfit", inputs=session["selected_item"],
+                   returned=session["outfit_suggestion"],
+                   note="" if session["wardrobe"].get("items") else "empty wardrobe: general advice")
+
+        count += 1
+        trace.check_iterations(count)
+        if not _hand_off(session, "create_fit_card", session["selected_item"]):
+            return session
+        session["fit_card"] = call_tool("create_fit_card", {
+            "outfit": session["outfit_suggestion"],
+            "new_item": session["selected_item"],
+        })
+        trace.step("create_fit_card (via MCP)", inputs=session["selected_item"],
+                   returned=session["fit_card"])
+        trace.step("state check", returned=str(session["item_ids"]),
+                   note="same listing id at every hand-off")
+    except (ModelUnavailable, MCPError) as exc:
+        # suggest_outfit runs in this process and raises ModelUnavailable.
+        # create_fit_card runs on the MCP server, where the same failure
+        # arrives here as an MCPError carrying the server's message.
+        # Still tell the user what search found, so they can carry on by hand.
+        found = session["selected_item"]
+        lost = "fit card" if session["outfit_suggestion"] else "outfit or fit card"
+        session["error"] = (
+            f"The model couldn't be reached, so there's no {lost}. "
+            f"Search did find '{found.get('title')}' "
+            f"({'$' + str(found.get('price')) if found.get('price') is not None else 'no price listed'}"
+            f" on {found.get('platform')}), so you can look at it yourself. "
+            f"Reason: {exc}"
+        )
+        trace.step("model unavailable", note=f"stopping: {exc}")
 
     return session
 

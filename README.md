@@ -425,6 +425,8 @@ behaved differently afterwards. If the rewire didn't work, say exactly where it
 broke — the error text and the last thing that worked. That earns the point in
 full. -->
 
+**Stretch feature (extra credit): a second tool moved onto MCP.** `create_fit_card` runs on the MCP server alongside `search_listings`. I'm declaring it here after the fact — I built it in the same commit as the milestone's tool (`154373d`) rather than announcing it first — so it's yours to weigh. I did not attempt the other two stretch features (retry with looser constraints, a second measured improvement).
+
 **What changed:** `mcp_server.py` registers `search_listings` and `create_fit_card` (the milestone asks for one; I moved a second to see what a tool that calls the model does across the boundary). `agent.py::run_agent` now calls both through `mcp_client.call_tool`; `suggest_outfit` is still a direct call. The trace names them `search_listings (via MCP)` and `create_fit_card (via MCP)`.
 
 **`search_listings` behaved identically.** I ran four queries directly and over MCP (`graphic tee` with a price ceiling, `90s track jacket` size M, `platform sneakers` size US 8, and the impossible `designer ballgown` size XXS under $5). They returned 6, 4, 1 and 0 results, and each MCP list was equal to the direct list. The empty case came back as `[]`, not `None`, so the loop's branch still fires. The one thing the move did show: the first description I wrote said sizes were "(s)small, (m)medium", which isn't how matching works, because the tool had never had to explain itself to anyone. I rewrote it to say whole-part matching, the units on `max_price`, and the empty case.

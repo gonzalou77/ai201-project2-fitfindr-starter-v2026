@@ -425,7 +425,9 @@ behaved differently afterwards. If the rewire didn't work, say exactly where it
 broke — the error text and the last thing that worked. That earns the point in
 full. -->
 
-**Stretch feature (extra credit): a second tool moved onto MCP.** `create_fit_card` runs on the MCP server alongside `search_listings`. I'm declaring it here after the fact — I built it in the same commit as the milestone's tool (`154373d`) rather than announcing it first — so it's yours to weigh. I did not attempt the other two stretch features (retry with looser constraints, a second measured improvement).
+**Stretch feature (extra credit): a second tool moved onto MCP.** `create_fit_card` runs on the MCP server alongside `search_listings`. I'm declaring it here after the fact — I built it in the same commit as the milestone's tool (`154373d`) rather than announcing it first — so it's yours to weigh. I did not attempt retry with looser constraints.
+
+**Stretch feature (extra credit): a second improvement from my diagnosis, measured the same way — declared here before I make it.** The hardened run (`results/run_2026-10-07_1953_hardened.md`) found that a listing with no `price` field crashes every price-ceiling search, which the loop misreports as the search being unreachable. I will change `tools.py::search_listings` to read the price with `.get` and exclude a listing that has none when a ceiling is set (already the documented behaviour for `null`), and nothing else. The "before" is that run's diagnostic scenario (0/5); the "after" is the same hardened scenarios run again on the changed code. The write-up goes under "The Improvement", next to the first one.
 
 **What changed:** `mcp_server.py` registers `search_listings` and `create_fit_card` (the milestone asks for one; I moved a second to see what a tool that calls the model does across the boundary). `agent.py::run_agent` now calls both through `mcp_client.call_tool`; `suggest_outfit` is still a direct call. The trace names them `search_listings (via MCP)` and `create_fit_card (via MCP)`.
 

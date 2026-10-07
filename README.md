@@ -232,6 +232,62 @@ Fit card:
 Found the ultimate Y2K butterfly baby tee and I’m literally never taking it off. It’s giving major 2000s mall-rat energy and I'm obsessed with how fitted it is. Grabbed it on Depop for just $18.0, so obviously it had to come home with me!
 ```
 
+The block above is **criterion 1**. Real output for the other criteria, each from try 1 of its scenario in `results/run_2026-10-07_1918_before-harsh.md`. Every model-involved scenario produced five different fit cards and five different outfits across its five tries, so these were real reruns with the cache off, not one cached answer repeated.
+
+**Criterion 2** — `designer ballgown size XXS under $5`. Produced by `agent.py::run_agent` (the branch), with the search done by `tools.py::search_listings` over MCP. 0 search results; no outfit or fit card:
+
+```
+stopped early: No listings matched. Try raising the price ceiling, dropping the size filter, or using different keywords in the description.
+
+[1] parse query (regex)
+      in:  designer ballgown size XXS under $5
+      out: {'description': 'designer ballgown', 'size': 'XXS', 'max_price': 5.0}
+[2] search_listings (via MCP)
+      in:  {'description': 'designer ballgown', 'size': 'XXS', 'max_price': 5.0}
+      out: [] (empty)
+[3] branch
+      →    search came back empty, stopping before suggest_outfit
+```
+
+**Criterion 3** — `90s track jacket in size M`. The ids are recorded by `agent.py::_hand_off` inside `agent.py::run_agent`, and the trace line comes from `trace.py::step`. One id at all four points:
+
+```
+selected_item: 90s Track Jacket — Navy/White Stripe ($45.0, poshmark)
+
+[6] state check
+      out: {'searched': 'lst_004', 'selected': 'lst_004', 'suggest_outfit': 'lst_004', 'create_fit_card': 'lst_004'}
+      →    same listing id at every hand-off
+```
+
+**Criterion 4** — `vintage graphic tee under $30` with the selected listing's price forced to `None` (`run_agent`'s `item_overrides`, set by the scenario). The warning is added by `agent.py::run_agent`; the caption is written by `tools.py::create_fit_card`, run on the MCP server. The `$None` in the trace is just how `trace.py::_short` prints a missing price; the caption has neither "None" nor a dollar figure:
+
+```
+[3] select first result
+      out: Y2K Baby Tee — Butterfly Print ($None, depop)
+[4] warning
+      →    Listing lst_002 has no listed price; the fit card will say so rather than guess one.
+[5] suggest_outfit
+      in:  Y2K Baby Tee — Butterfly Print ($None, depop)
+      out: **Outfit 1: The Y2K Contrast** Pair the Y2K butterfly baby tee with your **baggy straight-leg jeans (dark wash…
+[6] create_fit_card (via MCP)
+      in:  Y2K Baby Tee — Butterfly Print ($None, depop)
+      out: manifesting this exact butterfly baby tee on my depop feed since the seller didn't even drop a price tag. hone…
+
+Fit card:
+manifesting this exact butterfly baby tee on my depop feed since the seller didn't even drop a price tag. honestly just picturing it with baggy dark wash denim and chunky sneakers for the ultimate unbothered 2000s mall rat aesthetic. need it in my wardrobe yesterday.
+```
+
+**Criterion 5** — `vintage graphic tee under $30` with an invalid API key for that scenario only (`run_eval.py::run_once`). Produced by `agent.py::run_agent`'s `except (ModelUnavailable, MCPError)` handler, with the failure raised in `generate.py::generate`. This is the wording at the time of the run; I made it plainer afterwards (see "The three failure modes" under Loop Trace):
+
+```
+The model couldn't be reached, so there's no outfit or fit card. Search did find 'Y2K Baby Tee — Butterfly Print' ($18.0 on depop), so you can look at it yourself. Reason: The model rejected your API key. Check GEMINI_API_KEY in your .env file, or create a fresh key at aistudio.google.com.
+
+[3] select first result
+      out: Y2K Baby Tee — Butterfly Print ($18.0, depop)
+[4] model unavailable
+      →    stopping: The model rejected your API key. Check GEMINI_API_KEY in your .env file, or create a fresh key at aistudio.google.com.
+```
+
 ---
 
 ## Verdicts and Diagnoses

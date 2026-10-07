@@ -60,6 +60,7 @@ works with a direct call, and **a documented failure earns the point in full.**
 from mcp.server.fastmcp import FastMCP
 
 from tools import search_listings as _search_listings_impl  # noqa: F401 — you'll use this below
+from tools import create_fit_card as _create_fit_card_impl
 
 # log_level="WARNING" keeps the server from printing an INFO line for every
 # request. Without it your terminal fills with "Processing request of type
@@ -68,22 +69,50 @@ mcp = FastMCP("fitfindr", log_level="WARNING")
 
 
 # ── TODO: uncomment and fill this in ──────────────────────────────────────────
-#
-# @mcp.tool()
-# def search_listings(
-#     description: str,
-#     size: str | None = None,
-#     max_price: float | None = None,
-# ) -> list[dict]:
-#     """
-#     <-- YOUR DESCRIPTION GOES HERE.
-#
-#         One or two sentences. What does this tool do, what does it need, and
-#         what does it give back when it finds nothing? Written for a reader
-#         who cannot see the code.
-#     """
-#     return _search_listings_impl(description, size, max_price)
-#
+
+@mcp.tool()
+def search_listings(
+    description: str,
+    size: str | None = None,
+    max_price: float | None = None,
+) -> list[dict]:
+    """
+    Searches a catalogue of 40 secondhand clothing listings by keyword and
+    returns the best matches. `description` is free text such as "vintage
+    graphic tee"; a listing matches if it shares at least one word with it in
+    its title, description, category, or style tags, and more shared words rank
+    higher. `size` is optional: a label such as "M", "S/M", "W30", or "US 8",
+    compared case-insensitively against whole parts of the listing's size, so
+    "M" matches "S/M" but not "XL", and "8" matches "US 8" but not "US 8.5".
+    `max_price` is optional: the highest price in US dollars, inclusive;
+    listings with no price are excluded when it is set.
+
+    Returns a list of up to 10 listing objects, best match first. Each has id,
+    title, description, category (tops, bottoms, outerwear, shoes, or
+    accessories), style_tags (list of strings), size, condition, price (number,
+    US dollars), colors (list of strings), brand (string, or null when
+    unbranded), and platform. Returns an empty list when nothing matches —
+    never an error.
+    """
+    return _search_listings_impl(description, size, max_price)
+
+
+@mcp.tool()
+def create_fit_card(outfit: str, new_item: dict) -> str:
+    """
+    Writes a short, postable social-media caption (two to four sentences) for a
+    secondhand clothing find, using a language model, so the wording differs
+    between calls. `outfit` is the outfit suggestion text the caption should
+    draw on. `new_item` is one listing object as returned by search_listings
+    (it needs title, price in US dollars, and platform; a null or missing price
+    is handled — the caption says the price wasn't listed).
+
+    Returns the caption as a string. If `outfit` is empty or only whitespace it
+    returns a short message saying there is no fit card yet, not an error. If
+    the model can't be reached the call fails with an error.
+    """
+    return _create_fit_card_impl(outfit, new_item)
+
 # ──────────────────────────────────────────────────────────────────────────────
 #
 # Two notes on the block above.

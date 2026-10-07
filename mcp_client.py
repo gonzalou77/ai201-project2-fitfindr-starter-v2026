@@ -28,6 +28,7 @@ right trade for one unit.
 
 import asyncio
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -60,12 +61,48 @@ def call_tool(name: str, arguments: dict):
     except MCPError:
         raise
     except Exception as exc:  # noqa: BLE001 — re-raised readably below
+        # An MCPError raised inside the client's task groups arrives wrapped in
+        # ExceptionGroups. Hand back the real one, so the server's own message
+        # (e.g. "the model rejected your API key") isn't replaced by a generic
+        # "check that the server runs".
+        inner = _find_mcp_error(exc)
+        if inner is not None:
+            raise inner from exc
         raise MCPError(
             f"Couldn't call '{name}' over MCP: {exc}\n"
             f"Check that mcp_server.py runs on its own first:\n"
             f"    python mcp_server.py\n"
             f"If it exits immediately with an error, fix that before coming back here."
         ) from exc
+
+
+def _find_mcp_error(exc: BaseException) -> "MCPError | None":
+    """The first MCPError inside `exc`, looking through nested ExceptionGroups."""
+    if isinstance(exc, MCPError):
+        return exc
+    for sub in getattr(exc, "exceptions", ()):
+        found = _find_mcp_error(sub)
+        if found is not None:
+            return found
+    return None
+
+
+def _forwarded_env() -> dict:
+    """
+    The settings the server process needs from this one.
+
+    The MCP SDK starts the server with only a short whitelist of environment
+    variables (PATH, TEMP, ...). Anything else — the cache switch, the model
+    name, the API key — silently isn't there. That matters once a tool that
+    calls the model lives on the server: run_eval.py turns the cache off by
+    setting AI201_CACHE, and without forwarding it every "real" try would be
+    answered from the server's cache.
+    """
+    return {
+        key: value
+        for key, value in os.environ.items()
+        if key.startswith(("AI201_", "GEMINI_"))
+    }
 
 
 async def _call(name: str, arguments: dict):
@@ -75,6 +112,7 @@ async def _call(name: str, arguments: dict):
     params = StdioServerParameters(
         command=sys.executable,
         args=[str(SERVER)],
+        env=_forwarded_env(),
     )
 
     async with stdio_client(params) as (read, write):

@@ -10,14 +10,8 @@ can't tell which layer is lying to you.
     suggest_outfit(new_item, wardrobe)             → str
     create_fit_card(outfit, new_item)              → str
 
-All three are stubs right now. They run and they do nothing — that's the
-starting position and it's deliberate.
-
-⚠️ Before you write any of them, fill in the **Tool Inventory** section of your
-README (Milestone 2). Four lines per tool: what it does, each input with its
-type, exactly what it returns, and what it returns when it has nothing to give.
-That last line is what your loop branches on. "Returns a list" earns nothing —
-the description has to say what is *in* the list.
+All three are implemented. Their inputs, return values, and empty cases are
+specified in the README's **Tool Inventory** section.
 """
 
 import re
@@ -36,12 +30,16 @@ def _size_tokens(size_str: str) -> set[str]:
     """
     Break a size string into whole components, ignoring parenthetical notes.
 
-    "S/M" -> {"s", "m"}, "US 8.5" -> {"us", "8.5"}, "XL (oversized)" -> {"xl"}.
+    "S/M" -> {"s", "m"}, "US 8.5" -> {"8.5"}, "XL (oversized)" -> {"xl"}.
     Splitting on whitespace/slash rather than every character is what stops
-    "M" from matching inside "XL" the way a plain substring test would.
+    "M" from matching inside "XL" the way a plain substring test would. A bare
+    "US" is a prefix, not a size, so it's dropped — otherwise "US 8" would also
+    match "US 8.5" and "US 9" through the shared "us" token.
     """
     cleaned = _PAREN_RE.sub("", size_str).strip().lower()
-    return {token for token in _SIZE_SPLIT_RE.split(cleaned) if token}
+    return {
+        token for token in _SIZE_SPLIT_RE.split(cleaned) if token and token != "us"
+    }
 
 
 def _sizes_match(query_size: str, listing_size: str) -> bool:
@@ -109,7 +107,10 @@ def search_listings(
     """
     candidates = []
     for listing in load_listings():
-        if max_price is not None and listing["price"] > max_price:
+        if max_price is not None and (
+            listing["price"] is None or listing["price"] > max_price
+        ):
+            # A listing with no price can't be shown to fit under a ceiling.
             continue
         if size is not None and not _sizes_match(size, listing["size"]):
             continue
@@ -216,15 +217,28 @@ def create_fit_card(outfit: str, new_item: dict) -> str:
     if not outfit or not outfit.strip():
         return "No fit card yet — couldn't come up with an outfit for this item."
 
+    price = new_item.get("price")
+    if price is None:
+        # Thrift listings can lack a price. Without this branch the prompt
+        # says "Price: $None" and the caption repeats it or makes one up.
+        price_text = "not listed"
+        mention = (
+            "Mention the item and its platform once each, say the price "
+            "wasn't listed (don't write a number or invent one),"
+        )
+    else:
+        price_text = f"${price}"
+        mention = "Mention the item, its price, and its platform once each,"
+
     prompt = (
         f"Item: {new_item.get('title')}\n"
-        f"Price: ${new_item.get('price')}\n"
+        f"Price: {price_text}\n"
         f"Platform: {new_item.get('platform')}\n"
         f"Outfit idea: {outfit}\n\n"
         "Write a short caption (two to four sentences) that someone would "
         "actually post about this thrifted find — it should read like a real "
-        "social post, not a product description. Mention the item, its "
-        "price, and its platform once each, and be specific about the vibe."
+        "social post, not a product description. " + mention + " and be "
+        "specific about the vibe."
     )
     system = "You write casual, specific social captions for thrifted fashion finds."
     return generate(prompt, system=system)

@@ -192,17 +192,44 @@ Nothing beats the wash on these vintage Levi's 501s—they're the ultimate lazy 
 
 | Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |
 |---|---|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |  |  |
+| 1. Matching query completes all three tools — `vintage graphic tee under $30` | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 1. (harsher) synonym — `trainers size 8` | 4 of 5 | FAIL | FAIL | FAIL | FAIL | FAIL | MISSED (0/5) |
+| 1. (harsher) spelling variant — `tshirt under $30` | 4 of 5 | FAIL | FAIL | FAIL | FAIL | FAIL | MISSED (0/5) |
+| 2. Impossible query stops before `suggest_outfit` — `designer ballgown size XXS under $5` | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 3. Same item id from search to both later tools — `90s track jacket in size M` | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 4. Item with no price is caught — `vintage graphic tee under $30`, price forced to `None` | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 5. Unreachable model is noted — invalid API key | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
 
-**Real output from one try**, pasted as text, naming the file and function
-that produced it:
+Source: `results/run_2026-10-07_1918_before-harsh.md` (nine scenarios, five tries each, cache off). PASS/FAIL is against the revised wording of each criterion in `criteria.md`, which are the pass conditions written into `scenarios.py`. The same run also covered two diagnostic scenarios that aren't one of the five: an **empty wardrobe** (`denim jacket under $50`, completed 5/5 with general styling advice, no crash) and a **plural** query (`denim jackets under $50`, completed 5/5 — on the wrong item, see Diagnoses).
+
+An earlier run, `results/run_2026-10-07_1911_before.md`, had the first six scenarios and the same results on criteria 1 (matching query), 2, 3, 4 and 5. I added the two harsher criterion-1 queries and the plural diagnostic afterwards (commit `634c340`, before the second run) because every try in the first run passed, which showed nothing about where the keyword matcher stops.
+
+**Real output from one try** — `vintage graphic tee under $30`, try 1 of the matching-query scenario. The outfit came from `tools.py::suggest_outfit`, the caption from `tools.py::create_fit_card` (called through `agent.py::run_agent`), and the session fields from `agent.py::run_agent`:
 
 ```
+selected_item:  Y2K Baby Tee — Butterfly Print ($18.0, depop)   [lst_002]
+item_ids:       {'searched': 'lst_002', 'selected': 'lst_002', 'suggest_outfit': 'lst_002', 'create_fit_card': 'lst_002'}
 
+Outfit suggestion:
+**Outfit 1: Casual Y2K Contrast**
+*   **Top:** Y2K Baby Tee — Butterfly Print
+*   **Bottoms:** Baggy straight-leg jeans (dark wash)
+*   **Outerwear:** Black cropped zip hoodie (worn open)
+*   **Shoes:** Chunky white sneakers
+*   **Accessories:** Black crossbody bag
+
+*Why it works:* The fitted silhouette of the baby tee balances the volume of the baggy dark-wash jeans, while the black cropped zip hoodie frames the pink and purple butterfly graphic without hiding it. Tie it together with the chunky white sneakers and the black crossbody bag for an effortless, throwback daily look.
+
+**Outfit 2: Edgy Streetwear Mix**
+*   **Top:** Y2K Baby Tee — Butterfly Print
+*   **Bottoms:** Wide-leg khaki trousers
+*   **Accessories:** Brown leather belt + Black crossbody bag
+*   **Shoes:** Black combat boots
+
+*Why it works:* Tucking the butterfly baby tee into the wide-leg khaki trousers and cinching them with the brown leather belt creates a defined waist against the relaxed pants. The black combat boots add a tough, grounded edge that contrasts nicely with the sweet pastel tones of the butterfly print.
+
+Fit card:
+Found the ultimate Y2K butterfly baby tee and I’m literally never taking it off. It’s giving major 2000s mall-rat energy and I'm obsessed with how fitted it is. Grabbed it on Depop for just $18.0, so obviously it had to come home with me!
 ```
 
 ---
@@ -227,13 +254,17 @@ that produced it:
 
 | # | Criterion | Target | Verdict | How I decided |
 |---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
+| 1 | A matching query completes all three tools | 4 of 5 | **MISSED** | Met on the plain query (5/5), missed on the two harsher ones (0/5 each). I counted the harsher queries because the criterion's own reason names synonyms and phrasing the listings don't use as the expected way to miss, and `trainers` and `tshirt` are exactly that for items the data holds (sneakers in `lst_019`, tees in `lst_002`). A reader who counts only queries that already share a word with a listing would call this MET; I think that reading makes the criterion unable to fail. |
+| 2 | An impossible query stops before the second tool | 5 of 5 | MET | 5 of 5 tries stopped at the `branch` step with the "raise the price ceiling, drop the size filter…" message. I checked each trace for a `suggest_outfit` or `create_fit_card` step and each result for an outfit or fit card; there were none. |
+| 3 | Same item id from search to both later tools | 5 of 5 | MET | 5 of 5 tries (all selecting `90s Track Jacket — Navy/White Stripe`) show one id across `searched`, `selected`, `suggest_outfit` and `create_fit_card`, and no error. This criterion tests a guard I added (`agent.py::_hand_off`), which only fails if an id changes, so 5/5 shows it holds on the normal path. The eval never forces a mismatch; I forced one offline (overwriting the id with `lst_999`) and the run stopped with a state-mismatch error. |
+| 4 | An item with no price is caught | 5 of 5 | MET | The scenario forces `price` to `None`. 5 of 5 tries added a warning to `session["warnings"]`, and no fit card contained "None" or a dollar sign — each said the price wasn't listed. |
+| 5 | An unreachable model is noted | 5 of 5 | MET | With an invalid key, 5 of 5 tries returned without raising, set `session["error"]` saying the model couldn't be reached, named the listing search found (`Y2K Baby Tee — Butterfly Print`, $18.0, depop), and left `fit_card` as `None`. |
 
 **Diagnoses**
+
+**Criterion 1 — one miss, two symptoms, one cause. The place is a tool: `tools.py::search_listings`.** The `trainers size 8` and `tshirt under $30` queries both returned an empty list in every try, so the loop correctly stopped and told the user what to change — the branch did its job, and the model was never involved. The mechanism is in `_keywords` and `_keyword_overlap`: a listing matches only if a whole word in the query is also a whole word in the listing's title, description, category or style tags. "trainers" never appears in the data (the listings say "sneakers"), and "tshirt" never appears (they say "tee" and "shirt"), so both score zero everywhere and are filtered out. The plural query shows the same cause without a failed run: in `denim jackets under $50`, "jackets" appears nowhere in the data (only "jacket" does), so only "denim" matched, all five denim listings scored exactly 1, and a stable sort left the first of them in file order on top — Levi's 501 Jeans, which was selected in 5 of 5 tries, then styled and captioned as if it were the jacket the user asked for. That run counts as a pass on "completes all three tools", which is a gap in what criterion 1 measures, not a point in the agent's favour.
+
+Two further notes, neither a miss. First, my reason for criterion 1 said 4 of 5 "leaves room" for synonym misses. That didn't hold up: search is deterministic, so a given query matches all five tries or none, and a vocabulary miss shows up as 0 of 5, not 4. Second, the model-call count printed on exit and in the run log is lower than the real number, because calls made inside the MCP server aren't counted (see "On the MCP move").
 
 
 
@@ -251,17 +282,44 @@ that produced it:
      the same length, your branch isn't working — and this is the fastest way
      anyone will ever find that out. -->
 
-**Happy path**
+Both traces are from `results/run_2026-10-07_1918_before-harsh.md` (try 1 of each scenario), printed by `trace.py::step` from calls in `agent.py::run_agent`. The two MCP calls are steps 2 and 5 of the happy path.
+
+**Happy path** — `vintage graphic tee under $30` (six steps)
 
 ```
-
+[1] parse query (regex)
+      in:  vintage graphic tee under $30
+      out: {'description': 'vintage graphic tee', 'size': None, 'max_price': 30.0}
+[2] search_listings (via MCP)
+      in:  {'description': 'vintage graphic tee', 'size': None, 'max_price': 30.0}
+      out: 10 items: Y2K Baby Tee — Butterfly Print, Graphic Tee — 2003 Tour Bootleg Style, Vintage Band Tee — Faded Grey … +7 more
+[3] select first result
+      out: Y2K Baby Tee — Butterfly Print ($18.0, depop)
+[4] suggest_outfit
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: **Outfit 1: Casual Y2K Contrast** *   **Top:** Y2K Baby Tee — Butterfly Print *   **Bottoms:** Baggy straight-…
+[5] create_fit_card (via MCP)
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Found the ultimate Y2K butterfly baby tee and I’m literally never taking it off. It’s giving major 2000s mall-…
+[6] state check
+      out: {'searched': 'lst_002', 'selected': 'lst_002', 'suggest_outfit': 'lst_002', 'create_fit_card': 'lst_002'}
+      →    same listing id at every hand-off
 ```
 
-**Empty search**
+**Empty search** — `designer ballgown size XXS under $5` (three steps)
 
 ```
-
+[1] parse query (regex)
+      in:  designer ballgown size XXS under $5
+      out: {'description': 'designer ballgown', 'size': 'XXS', 'max_price': 5.0}
+[2] search_listings (via MCP)
+      in:  {'description': 'designer ballgown', 'size': 'XXS', 'max_price': 5.0}
+      out: [] (empty)
+[3] branch
+      →    search came back empty, stopping before suggest_outfit
 ```
+
+The empty trace is half the length: it stops at step 3 and never reaches `suggest_outfit` or `create_fit_card`, so the branch is doing something. The empty-search path is one of the three failure modes; the other two are in the same run log — the **empty wardrobe** (completed 5/5 with general styling advice) and the **unreachable model** (criterion 5, stopped 5/5 with the message naming the listing search found).
 
 **On the MCP move:** <!-- what changed in your code, and whether anything
 behaved differently afterwards. If the rewire didn't work, say exactly where it

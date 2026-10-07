@@ -172,6 +172,19 @@ Nothing beats the wash on these vintage Levi's 501s—they're the ultimate lazy 
 - *What came back:* All three outputs were identical. Claude's first read was to name the two possible causes from `config.py` — `CACHE_ENABLED` or `TEMPERATURE` at `0.0` — then actually check rather than guess: it read `config.py`'s live values (`TEMPERATURE = 0.9`, `CACHE_ENABLED = True`), and called `generate()` directly with `cache=False` on the same prompt, which produced two genuinely different captions.
 - *What I changed:* Nothing — the identical output was the cache correctly reusing an identical prompt while building, exactly as `config.py`'s comments describe, not a bug in the tool. The useful part of this exchange was the verification step (disabling the cache to isolate the real cause) rather than stopping at the first plausible explanation.
 
+**Moment 3** (unit 4)
+
+- *What I asked for:* To move a second tool onto MCP — `create_fit_card`, which calls the model — beyond the one the milestone requires, to see what a model-calling tool does when it runs on the server.
+- *What came back:* Claude registered it, then before trusting it checked what crosses into the server process. It found the MCP SDK starts the server with only a short list of environment variables, so the `AI201_CACHE=0` that `run_eval.py` sets never reached it — five "uncached" eval tries would have returned one cached caption five times. It then triggered a bad key on the server and found the error arrived as "unhandled errors in a TaskGroup" with advice to check that the server runs, instead of the real reason.
+- *What I changed:* I kept Claude's three fixes — forward `AI201_*` and `GEMINI_*` variables in `mcp_client.py`, unwrap the real `MCPError` in `call_tool`, and catch both `ModelUnavailable` and `MCPError` in `run_agent`. That meant editing `mcp_client.py`, which the starter calls given code, so it is worth knowing it was changed. The exit-time model-call count is still too low for calls made on the server; I left that and wrote it down in What's Still Broken.
+
+**Moment 4** (unit 4)
+
+- *What I asked for:* After the first `run_eval.py --label before` came back 5 of 5 on every criterion, I asked for a harsher scenario, because a table with no misses couldn't show where the agent breaks.
+- *What came back:* Claude probed `search_listings` offline with a dozen or so queries before writing anything and found two kinds of failure: `trainers` and `tshirt` returned nothing even though the data holds sneakers and tees, and `denim jackets` returned five results with the jeans on top. It proposed three scenarios — two for criterion 1 and the plural one as a diagnostic, since criterion 1 only asks that the run complete.
+- *What I changed:* I kept the split. The two criterion-1 queries then missed 0 of 5, which became the diagnosis and the one improvement. Claude also pointed out, and I wrote into the README, that these scenarios were chosen after seeing the first run, so passing them after the fix is weaker evidence than the plural queries nobody designed around.
+
+
 <!-- ═══════════════════════ UNIT 4 — THE TEST ═══════════════════════
 
      Don't fill these in during unit 3.

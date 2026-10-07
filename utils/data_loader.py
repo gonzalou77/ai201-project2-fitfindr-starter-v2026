@@ -30,7 +30,10 @@ def load_listings() -> list[dict]:
         - brand (str or None)
         - platform (str): depop, thredUp, or poshmark
     """
-    path = os.path.join(_DATA_DIR, "listings.json")
+    # AI201_LISTINGS points at a different listings file. It exists for tests
+    # (run_eval.py uses it to feed the real search path a listing with no
+    # price); normal runs leave it unset and read data/listings.json.
+    path = os.getenv("AI201_LISTINGS") or os.path.join(_DATA_DIR, "listings.json")
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 

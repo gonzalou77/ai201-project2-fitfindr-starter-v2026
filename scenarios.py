@@ -93,6 +93,112 @@ SCENARIOS = [
         "wardrobe": "example",
         "criterion": None,
     },
+    # ── Hardened runs for criteria 3, 4 and 5 ────────────────────────────────
+    # Written after the first two runs showed criteria 3-5 passing 5/5 — and
+    # after asking why. Each of those criteria, as I first ran it, checked a
+    # guard I had built myself (an id check, a price warning, an error handler)
+    # against a fault I injected myself, so it could hardly fail. These take the
+    # fault from somewhere I don't control, and are run with
+    #     python run_eval.py --group hardened --label hardened
+    # Pass conditions are written here BEFORE the run.
+
+    # Criterion 3 — state. "spy" records the id that actually reaches each tool,
+    # at the call, instead of reading it back from the session. Four different
+    # queries, run one after another in the same process, so state leaking from
+    # one run into the next would show up too.
+    # Pass (per try): search_first == suggest_outfit == create_fit_card ==
+    # session["selected_item"]["id"], no error.
+    {
+        "name": "state: denim jacket",
+        "query": "denim jacket under $50",
+        "wardrobe": "example",
+        "spy": True,
+        "group": "hardened",
+        "criterion": 3,
+    },
+    {
+        "name": "state: platform sneakers",
+        "query": "platform sneakers size 8",
+        "wardrobe": "example",
+        "spy": True,
+        "group": "hardened",
+        "criterion": 3,
+    },
+    {
+        "name": "state: slip dress",
+        "query": "silk slip dress in midi length under $40",
+        "wardrobe": "example",
+        "spy": True,
+        "group": "hardened",
+        "criterion": 3,
+    },
+    {
+        "name": "state: track jacket",
+        "query": "90s track jacket in size M",
+        "wardrobe": "example",
+        "spy": True,
+        "group": "hardened",
+        "criterion": 3,
+    },
+
+    # Criterion 4 — no price, this time from the data. data/fixtures/
+    # unpriced_listings.json holds one listing whose price is null and one with
+    # no price field at all, read through the real search path on the MCP server.
+    # Pass (per try): session["warnings"] is non-empty, and the fit card has
+    # neither "None" nor a "$".
+    {
+        "name": "unpriced listing: price is null",
+        "query": "corduroy bucket bag",
+        "wardrobe": "example",
+        "listings_file": "data/fixtures/unpriced_listings.json",
+        "group": "hardened",
+        "criterion": 4,
+    },
+    {
+        "name": "unpriced listing: no price field",
+        "query": "embroidered satin kimono",
+        "wardrobe": "example",
+        "listings_file": "data/fixtures/unpriced_listings.json",
+        "group": "hardened",
+        "criterion": 4,
+    },
+    {
+        # Diagnostic, not one of the five: criterion 4 speaks of "the selected
+        # listing", and this fails before anything is selected. Same data, but
+        # with a price ceiling — search_listings documents that unpriced
+        # listings are excluded when one is set. Pass: the run ends in a normal
+        # "No listings matched" message. Fail: any error about the search being
+        # unreachable, or a crash.
+        "name": "unpriced listing with a price ceiling",
+        "query": "corduroy bucket bag under $40",
+        "wardrobe": "example",
+        "listings_file": "data/fixtures/unpriced_listings.json",
+        "group": "hardened",
+        "criterion": None,
+    },
+
+    # Criterion 5 — two ways of being unreachable other than a bad key.
+    # Pass (per try): no crash, session["error"] says the model couldn't be
+    # reached and names the listing search found, fit_card is None.
+    {
+        "name": "model name doesn't exist",
+        "query": "vintage graphic tee under $30",
+        "wardrobe": "example",
+        "env": {"AI201_MODEL": "gemini-no-such-model-xyz"},
+        "group": "hardened",
+        "criterion": 5,
+    },
+    {
+        "name": "network unreachable",
+        "query": "vintage graphic tee under $30",
+        "wardrobe": "example",
+        "env": {
+            "HTTPS_PROXY": "http://127.0.0.1:9", "HTTP_PROXY": "http://127.0.0.1:9",
+            "https_proxy": "http://127.0.0.1:9", "http_proxy": "http://127.0.0.1:9",
+        },
+        "group": "hardened",
+        "criterion": 5,
+    },
 ]
 
 WARDROBES = ("example", "empty")

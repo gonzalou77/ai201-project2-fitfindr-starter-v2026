@@ -51,15 +51,58 @@ def run_once(scenario, use_trace=True):
     if use_trace:
         trace_module.start_trace()
 
-    record = {"error": None, "session": None, "trace": "", "crashed": None}
+    record = {"error": None, "session": None, "trace": "", "crashed": None, "received": None}
 
-    # "bad_api_key": swap in an invalid key for this one run, the way unit 4
-    # Milestone 2 does by hand, then put the real one back.
-    real_key = os.environ.get("GEMINI_API_KEY")
+    # Environment overrides for this one run, put back afterwards. They reach
+    # the MCP server too (mcp_client forwards AI201_* and GEMINI_*):
+    #   "bad_api_key"   an invalid key, the way unit 4 Milestone 2 does by hand
+    #   "listings_file" read listings from another file instead of data/
+    #   "env"           any other variables, e.g. a model name that doesn't exist
+    import generate
+    import agent as agent_module
+
+    overrides = dict(scenario.get("env") or {})
     if scenario.get("bad_api_key"):
-        import generate
-        os.environ["GEMINI_API_KEY"] = "invalid-key-for-eval"
+        overrides["GEMINI_API_KEY"] = "invalid-key-for-eval"
+    if scenario.get("listings_file"):
+        overrides["AI201_LISTINGS"] = str(config.ROOT / scenario["listings_file"])
+    saved_env = {key: os.environ.get(key) for key in overrides}
+    saved_model = config.MODEL
+
+    def _restore():
+        for key, value in saved_env.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
+        config.MODEL = saved_model
         generate._client = None
+
+    os.environ.update(overrides)
+    if "AI201_MODEL" in overrides:
+        config.MODEL = overrides["AI201_MODEL"]
+    generate._client = None
+
+    # "spy": record the listing id that actually arrives at each tool, measured
+    # at the call itself rather than read back from the session afterwards —
+    # that comparison is what criterion 3 is about.
+    original_suggest, original_call = agent_module.suggest_outfit, agent_module.call_tool
+    if scenario.get("spy"):
+        received = record["received"] = {}
+
+        def _spy_suggest(item, wardrobe_):
+            received["suggest_outfit"] = (item or {}).get("id")
+            return original_suggest(item, wardrobe_)
+
+        def _spy_call(name, arguments):
+            result = original_call(name, arguments)
+            if name == "search_listings" and result:
+                received["search_first"] = result[0].get("id")
+            if name == "create_fit_card":
+                received["create_fit_card"] = (arguments.get("new_item") or {}).get("id")
+            return result
+
+        agent_module.suggest_outfit, agent_module.call_tool = _spy_suggest, _spy_call
 
     try:
         record["session"] = run_agent(
@@ -69,12 +112,8 @@ def run_once(scenario, use_trace=True):
         record["crashed"] = f"{type(exc).__name__}: {exc}"
         record["traceback"] = traceback.format_exc()
     finally:
-        if scenario.get("bad_api_key"):
-            if real_key is None:
-                os.environ.pop("GEMINI_API_KEY", None)
-            else:
-                os.environ["GEMINI_API_KEY"] = real_key
-            generate._client = None
+        agent_module.suggest_outfit, agent_module.call_tool = original_suggest, original_call
+        _restore()
 
     if use_trace:
         record["trace"] = trace_module.get_trace()
@@ -87,6 +126,8 @@ def main():
     parser.add_argument("--tries", "--trials", type=int, default=5, dest="tries",
                         help="tries per scenario (default 5, matching your criteria)")
     parser.add_argument("--label", default="", help="a name for this run, e.g. 'before'")
+    parser.add_argument("--group", default="",
+                        help="only run scenarios whose \"group\" is this (default: all)")
     args = parser.parse_args()
 
     problems = scenario_module.validate()
@@ -109,8 +150,16 @@ def main():
     os.environ["AI201_CACHE"] = "0"
     print("Cache is OFF for this run — that's deliberate.\n")
 
+    chosen = [
+        s for s in scenario_module.SCENARIOS
+        if not args.group or s.get("group") == args.group
+    ]
+    if not chosen:
+        print(f"No scenarios in group {args.group!r}.", file=sys.stderr)
+        sys.exit(1)
+
     rows = []
-    for scenario in scenario_module.SCENARIOS:
+    for scenario in chosen:
         print(f"{scenario['name']}  ({scenario['wardrobe']} wardrobe)")
         print(f"  query: {scenario['query']}")
 
@@ -212,8 +261,12 @@ def write_report(rows, args):
                 f"- selected_item: {item.get('title', '(none)')}"
                 + (f" (${item.get('price')}, {item.get('platform')})" if item else ""),
                 f"- search_results: {len(session.get('search_results') or [])}",
-                "",
             ]
+            if record.get("received") is not None:
+                lines.append(f"- ids measured at each call: {record['received']}")
+            if session.get("warnings"):
+                lines.append(f"- warnings: {session['warnings']}")
+            lines.append("")
             if session.get("outfit_suggestion"):
                 lines += ["Outfit suggestion:", "", "```",
                           str(session["outfit_suggestion"]), "```", ""]

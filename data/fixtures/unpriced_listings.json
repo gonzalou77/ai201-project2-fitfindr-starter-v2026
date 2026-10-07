@@ -1,0 +1,27 @@
+[
+  {
+    "id": "fx_001",
+    "title": "Corduroy Bucket Bag — Rust",
+    "description": "Soft ribbed corduroy bucket bag with a drawstring top and an adjustable strap. Lined, no stains. Seller never filled in a price.",
+    "category": "accessories",
+    "style_tags": ["vintage", "cottagecore", "70s"],
+    "size": "One Size",
+    "condition": "good",
+    "price": null,
+    "colors": ["rust", "brown"],
+    "brand": null,
+    "platform": "depop"
+  },
+  {
+    "id": "fx_002",
+    "title": "Embroidered Satin Kimono — Midnight Blue",
+    "description": "Lightweight satin kimono jacket with gold floral embroidery on the back. Open front, wide sleeves. Listing has no price field at all.",
+    "category": "outerwear",
+    "style_tags": ["vintage", "boho", "statement"],
+    "size": "One Size",
+    "condition": "excellent",
+    "colors": ["navy", "gold"],
+    "brand": null,
+    "platform": "poshmark"
+  }
+]

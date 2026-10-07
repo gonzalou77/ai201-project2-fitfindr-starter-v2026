@@ -13,8 +13,8 @@
 > python app.py ask 'vintage graphic tee under $30'
 > ```
 >
-> All three tools are stubs, so that last command will do nothing useful yet.
-> That's the starting position.
+> All three tools and the planning loop are built — that last command runs the
+> whole agent (add `--trace` to see it step by step).
 >
 > **The rest of this file is your submission.** Fill it in as you go.
 
@@ -58,7 +58,7 @@ FitFindr is a thrift-shopping agent. A user describes what they want in plain la
 ### `search_listings`
 
 - **What it does:** Filters the listings data by an optional size and price ceiling, then ranks what's left by keyword overlap with a free-text description.
-- **Inputs:** `description` (str) — keywords describing what the user wants, e.g. `"vintage graphic tee"`. `size` (str or None) — matched case-insensitively against a listing's `size` field; `None` skips size filtering. `max_price` (float or None) — maximum price, inclusive; `None` skips price filtering.
+- **Inputs:** `description` (str) — keywords describing what the user wants, e.g. `"vintage graphic tee"`. `size` (str or None) — matched case-insensitively against whole parts of a listing's `size` field, so `"M"` matches `"S/M"` but not `"XL"`, and a leading `"US"` is ignored (`"US 8"` matches `"US 8"` but not `"US 8.5"`); `None` skips size filtering. `max_price` (float or None) — maximum price, inclusive; `None` skips price filtering. A listing with no price never passes a price ceiling.
 - **Returns:** A list of listing dicts, best match first, capped at `config.SEARCH_RESULT_LIMIT`. Each dict has `id`, `title`, `description`, `category`, `style_tags` (list), `size`, `condition`, `price` (float), `colors` (list), `brand` (str or None), `platform`.
 - **When it has nothing:** An empty list — never `None`, never an exception.
 
@@ -74,7 +74,7 @@ FitFindr is a thrift-shopping agent. A user describes what they want in plain la
 - **What it does:** Calls the model to write a short, postable caption for the find — mentions the item, its price, and its platform once each, and names the vibe.
 - **Inputs:** `outfit` (str) — the suggestion string returned by `suggest_outfit()`. `new_item` (dict) — the listing dict for the item.
 - **Returns:** A two-to-four sentence caption string. Wording varies between calls (governed by `TEMPERATURE` / `CACHE_ENABLED` in `config.py`), so identical input can produce different output — that's expected, not a bug.
-- **When it has nothing:** If `outfit` is empty or whitespace-only, returns a descriptive message rather than raising.
+- **When it has nothing:** If `outfit` is empty or whitespace-only, returns a descriptive message rather than raising. If the item's `price` is `None`, the caption says the price wasn't listed rather than printing `None` or inventing a figure.
 
 ---
 
@@ -96,6 +96,8 @@ FitFindr is a thrift-shopping agent. A user describes what they want in plain la
 **Where it lives:** `agent.py::run_agent`
 
 **How the query is parsed:** Regex, in `agent.py::_parse_query`. One pattern pulls out `"under $X"` as `max_price`; another pulls out `"size X"` as `size`; whatever text is left over (after trimming a dangling connector word like a trailing "in") becomes the description. No model call — the example queries follow a consistent enough shape that two patterns cover them.
+
+**Other stops and checks in `run_agent`:** `search_listings` and `create_fit_card` are called over MCP (`mcp_server.py`, via `mcp_client.call_tool`); `suggest_outfit` is still a direct call. If the search call fails, `session["error"]` says so and the run stops. If the model can't be reached — `ModelUnavailable` from `suggest_outfit`, or the same failure arriving as an `MCPError` from `create_fit_card` — `session["error"]` names the listing search found so the user can look themselves. Before each tool that takes the item, `agent.py::_hand_off` records the listing id it received in `session["item_ids"]` and stops with an error if it differs from the id search returned. A selected item with no price adds a note to `session["warnings"]` and the run continues.
 
 **What moves through the session:** `query` → `parsed` (the description/size/max_price pulled out of the query) → `search_results` (everything `search_listings` returned) → `selected_item` (the one chosen, which is what actually reaches `suggest_outfit`) → `outfit_suggestion` → `fit_card`. `error` is set instead of the later fields when the branch above stops the run early.
 
@@ -265,6 +267,18 @@ that produced it:
 behaved differently afterwards. If the rewire didn't work, say exactly where it
 broke — the error text and the last thing that worked. That earns the point in
 full. -->
+
+**What changed:** `mcp_server.py` registers `search_listings` and `create_fit_card` (the milestone asks for one; I moved a second to see what a tool that calls the model does across the boundary). `agent.py::run_agent` now calls both through `mcp_client.call_tool`; `suggest_outfit` is still a direct call. The trace names them `search_listings (via MCP)` and `create_fit_card (via MCP)`.
+
+**`search_listings` behaved identically.** I ran four queries directly and over MCP (`graphic tee` with a price ceiling, `90s track jacket` size M, `platform sneakers` size US 8, and the impossible `designer ballgown` size XXS under $5). They returned 6, 4, 1 and 0 results, and each MCP list was equal to the direct list. The empty case came back as `[]`, not `None`, so the loop's branch still fires. The one thing the move did show: the first description I wrote said sizes were "(s)small, (m)medium", which isn't how matching works, because the tool had never had to explain itself to anyone. I rewrote it to say whole-part matching, the units on `max_price`, and the empty case.
+
+**`create_fit_card` behaved differently in three ways**, all because the server is a separate process:
+
+- *The cache switch didn't cross.* The MCP SDK starts the server with only a short list of environment variables, so `run_eval.py`'s `AI201_CACHE=0` never reached it, and five "uncached" tries would have returned one cached caption five times. `mcp_client.py` now forwards `AI201_*` and `GEMINI_*` variables. Checked: two uncached calls through the server give two different captions.
+- *The error was buried.* A bad API key on the server raised inside the client's async task groups and surfaced as "unhandled errors in a TaskGroup" plus advice to check that the server runs. `call_tool` now digs out the real `MCPError`, so the message reads "The model rejected your API key…".
+- *The error type changed.* The same failure that is a `ModelUnavailable` when `suggest_outfit` runs in-process arrives as an `MCPError` from the server, so `run_agent` catches both.
+
+**Still not fixed:** the "N model calls this session" line printed on exit only counts calls made in the main process, so it now leaves out the fit-card call. Rate-limit pacing is also per-process, so the server can exceed 15 requests a minute; `generate.py`'s retry on a 429 covers that.
 
 
 

@@ -66,6 +66,10 @@ Given a query that provides an item id, it will be alerted that id is the same f
 **Why this target:**
 Id provides a unique identifier. It is the simplest approach for accomplishing this criteria, rather than other traits which may be very common across listings such as sizes and brands.
 
+> **Revised in unit 4:** For a matching query, in 5 of 5 tries the listing id that `search_listings` returned first is the same id held in `session["selected_item"]` and the same id received by `suggest_outfit` and by `create_fit_card`. `run_agent` records the id at each hand-off in `session["item_ids"]`; if any differs it sets `session["error"]` and stops.
+>
+> **Why revised:** The original said "a query that provides an item id", but queries never carry an id — the agent only learns one after search runs — so there was no way to run it as written. The check itself (compare ids) is unchanged; this just says where each id comes from and what counts as a mismatch.
+
 
 ---
 
@@ -89,6 +93,10 @@ Id provides a unique identifier. It is the simplest approach for accomplishing t
 **Why this target:**
 Nothing is more aggravating than an item with a price listing. Is it in stock or not?
 
+> **Revised in unit 4:** When the selected listing's `price` is `None`, in 5 of 5 tries `run_agent` adds a message to `session["warnings"]`, and the fit card contains neither the text "None" nor a dollar figure.
+>
+> **Why revised:** "Caught" didn't say what anyone could observe, and every one of the 40 listings has a price, so no normal query ever produced an unpriced item to catch. This names the observable (a warning in the session, a clean fit card) and the scenario supplies the unpriced listing through `item_overrides`.
+
 
 ---
 
@@ -105,6 +113,10 @@ Nothing is more aggravating than an item with a price listing. Is it in stock or
 
 **Why this target:**
 We tend to over rely on models to do the work for us. We should be able to tell when we have to immediately start searching ourselves. Noone likes to waste time.
+
+> **Revised in unit 4:** When the model can't be reached (an invalid API key), in 5 of 5 tries `run_agent` returns without raising, `session["error"]` says the model couldn't be reached and names the listing search found (title, price, platform), and `session["fit_card"]` is `None`.
+>
+> **Why revised:** "It will be noted" didn't say where or what. The point of my reason — knowing right away that I have to go look myself — is that the message hands over what search found, so that is what is now checked.
 
 
 ---

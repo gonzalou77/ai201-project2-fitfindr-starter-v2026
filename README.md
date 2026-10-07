@@ -319,7 +319,29 @@ Both traces are from `results/run_2026-10-07_1918_before-harsh.md` (try 1 of eac
       →    search came back empty, stopping before suggest_outfit
 ```
 
-The empty trace is half the length: it stops at step 3 and never reaches `suggest_outfit` or `create_fit_card`, so the branch is doing something. The empty-search path is one of the three failure modes; the other two are in the same run log — the **empty wardrobe** (completed 5/5 with general styling advice) and the **unreachable model** (criterion 5, stopped 5/5 with the message naming the listing search found).
+The empty trace is half the length: it stops at step 3 and never reaches `suggest_outfit` or `create_fit_card`, so the branch is doing something.
+
+**The three failure modes, triggered one at a time from the command line** (queries I hadn't run before, so none came from the build cache). Each was already handled by code written earlier in this unit, so none of them crashed, hung, or went silent, and no new handler was needed.
+
+1. **Empty search** — `python app.py ask 'wedding tuxedo size 52 under $10' --trace`. The trace stopped at `[3] branch` (the same three steps as above) and the agent said:
+
+   ```
+   No listings matched. Try raising the price ceiling, dropping the size filter, or using different keywords in the description.
+   ```
+
+   The last line was `0 model calls this session` — it never reached a model tool.
+
+2. **Empty wardrobe** — `python app.py ask 'cargo pants under $30' --empty-wardrobe`. It found `Low-Rise Cargo Pants — Khaki — $27.0 on poshmark` and `suggest_outfit` returned general advice rather than an error or an empty string: two outfit directions built from pieces *to look for* ("a fitted black or neon pink ribbed baby tee", "a thin metallic silver belt, a nylon shoulder bag", "beat-up canvas skate shoes (like Vans Old Skools)") with nothing claimed as owned. The fit card followed normally.
+
+3. **Model unavailable** — I changed the last character of `GEMINI_API_KEY` for that one command (set in the shell, not saved to `.env`, so `.env` never changed and there was nothing to put back), then ran `python app.py ask 'silk button down under $40' --trace`. The search step ran, then the trace stopped at `[4] model unavailable` and the agent said:
+
+   ```
+   The model couldn't be reached, so there's no outfit or fit card. Search did find 'Silk Button-Down — Sage Green' ($28.0 on depop), so you can look at it yourself. Reason: The model rejected your API key. Check GEMINI_API_KEY in your .env file, or create a fresh key at aistudio.google.com.
+   ```
+
+   No stack trace and no hang. It named what broke (the key), what the user can do (check `.env` or make a new key), and what search had already found. The last line reported 1 model call and did not say "served from cache", so the failure was real.
+
+One thing the second run showed that isn't a failure: its closing line said `1 model calls this session` when two model calls actually ran, because the fit-card call happens inside the MCP server and isn't counted (see "On the MCP move").
 
 **On the MCP move:** <!-- what changed in your code, and whether anything
 behaved differently afterwards. If the rewire didn't work, say exactly where it

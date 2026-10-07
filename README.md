@@ -97,7 +97,7 @@ FitFindr is a thrift-shopping agent. A user describes what they want in plain la
 
 **How the query is parsed:** Regex, in `agent.py::_parse_query`. One pattern pulls out `"under $X"` as `max_price`; another pulls out `"size X"` as `size`; whatever text is left over (after trimming a dangling connector word like a trailing "in") becomes the description. No model call — the example queries follow a consistent enough shape that two patterns cover them.
 
-**Other stops and checks in `run_agent`:** `search_listings` and `create_fit_card` are called over MCP (`mcp_server.py`, via `mcp_client.call_tool`); `suggest_outfit` is still a direct call. If the search call fails, `session["error"]` says so and the run stops. If the model can't be reached — `ModelUnavailable` from `suggest_outfit`, or the same failure arriving as an `MCPError` from `create_fit_card` — `session["error"]` names the listing search found so the user can look themselves. Before each tool that takes the item, `agent.py::_hand_off` records the listing id it received in `session["item_ids"]` and stops with an error if it differs from the id search returned. A selected item with no price adds a note to `session["warnings"]` and the run continues.
+**Other stops and checks in `run_agent`:** `search_listings` and `create_fit_card` are called over MCP (`mcp_server.py`, via `mcp_client.call_tool`); `suggest_outfit` is still a direct call. If the search call fails, `session["error"]` says so and the run stops. If the model can't be reached — `ModelUnavailable` from `suggest_outfit`, or the same failure arriving as an `MCPError` from `create_fit_card` — `session["error"]` gives a plain message that names the listing search found so the user can look themselves, and the technical reason goes in `session["error_detail"]` and the trace. Before each tool that takes the item, `agent.py::_hand_off` records the listing id it received in `session["item_ids"]` and stops with an error if it differs from the id search returned. A selected item with no price adds a note to `session["warnings"]` and the run continues.
 
 **What moves through the session:** `query` → `parsed` (the description/size/max_price pulled out of the query) → `search_results` (everything `search_listings` returned) → `selected_item` (the one chosen, which is what actually reaches `suggest_outfit`) → `outfit_suggestion` → `fit_card`. `error` is set instead of the later fields when the branch above stops the run early.
 
@@ -340,6 +340,14 @@ The empty trace is half the length: it stops at step 3 and never reaches `sugges
    ```
 
    No stack trace and no hang. It named what broke (the key), what the user can do (check `.env` or make a new key), and what search had already found. The last line reported 1 model call and did not say "served from cache", so the failure was real.
+
+   **Then I changed the wording.** That message was written for me, not for a user: it talks about an API key and a `.env` file, which an end user has no access to, and it said the reason twice. `agent.py::run_agent` now puts a plain message in `session["error"]` and keeps the provider's text in a new `session["error_detail"]` and in the trace step. Same failure, re-run with a fresh query (`'denim vest under $40' --trace`):
+
+   ```
+   The model couldn't be reached right now, so there's no outfit or fit card. Search did find 'Denim Vest — Medium Wash, Studded' ($27.0 on depop), so you can look at it yourself. Please try again in a moment.
+   ```
+
+   The trace still shows the key rejection at step 4, for whoever is debugging. I checked the other route too — a failure only in the fit-card step, which arrives from the MCP server — and it says "no fit card" instead of "no outfit or fit card", with no mention of keys. The criterion 5 scenario still passes 5 of 5 against the pass condition in `criteria.md` (it says the model couldn't be reached and names the listing). The saved run logs in `results/` were produced before this change, so they still show the old wording.
 
 One thing the second run showed that isn't a failure: its closing line said `1 model calls this session` when two model calls actually ran, because the fit-card call happens inside the MCP server and isn't counted (see "On the MCP move").
 

@@ -81,7 +81,8 @@ def new_session(query: str, wardrobe: dict) -> dict:
         "wardrobe": wardrobe,        # the user's wardrobe
         "outfit_suggestion": None,   # what suggest_outfit returned
         "fit_card": None,            # what create_fit_card returned
-        "error": None,               # set when the run ended early
+        "error": None,               # set when the run ended early — written for the user
+        "error_detail": None,        # the technical reason behind it, for debugging
         "warnings": [],              # things worth knowing that didn't stop the run
         "item_ids": {},              # the listing id seen at each hand-off (criterion 3)
     }
@@ -255,13 +256,17 @@ def run_agent(query: str, wardrobe: dict, item_overrides: dict | None = None) ->
         # Still tell the user what search found, so they can carry on by hand.
         found = session["selected_item"]
         lost = "fit card" if session["outfit_suggestion"] else "outfit or fit card"
+        # The user gets a plain message; the provider's wording (which talks
+        # about API keys and .env files) goes in the session and the trace for
+        # whoever is debugging.
         session["error"] = (
-            f"The model couldn't be reached, so there's no {lost}. "
+            f"The model couldn't be reached right now, so there's no {lost}. "
             f"Search did find '{found.get('title')}' "
             f"({'$' + str(found.get('price')) if found.get('price') is not None else 'no price listed'}"
             f" on {found.get('platform')}), so you can look at it yourself. "
-            f"Reason: {exc}"
+            "Please try again in a moment."
         )
+        session["error_detail"] = str(exc)
         trace.step("model unavailable", note=f"stopping: {exc}")
 
     return session

@@ -35,18 +35,36 @@ SCENARIOS = [
         "wardrobe": "empty",
         "criterion": None,
     },
-    # TODO: add what your criteria 3, 4 and 5 need.
-    #
-    # Set "criterion" to the number in criteria.md that the scenario tests.
-    # "criterion": None means a diagnostic run — useful to have, but it isn't
-    # one of your five, and run_eval.py marks it as such in the table.
-    #
-    # For a state criterion, any normal query works — what you're checking is
-    # what ends up in the session, not what the user typed.
-    #
-    # For a fit-card criterion, you probably want the SAME query listed more
-    # than once, or several different items, depending on what your criterion
-    # actually says.
+    {
+        # Criterion 3 — state. Pass: the closing "state check" step in the
+        # trace shows one id for searched / selected / suggest_outfit /
+        # create_fit_card, and session["error"] is None.
+        "name": "item id survives the loop",
+        "query": "90s track jacket in size M",
+        "wardrobe": "example",
+        "criterion": 3,
+    },
+    {
+        # Criterion 4 — fit card. The real data has no unpriced listing, so
+        # run_agent's item_overrides hands the loop one. Pass: the trace shows
+        # a "warning" step, session["warnings"] is non-empty, and the fit card
+        # contains neither "None" nor a dollar figure.
+        "name": "listing with no price",
+        "query": "vintage graphic tee under $30",
+        "wardrobe": "example",
+        "item_overrides": {"price": None},
+        "criterion": 4,
+    },
+    {
+        # Criterion 5 — model unreachable. run_eval swaps in an invalid key for
+        # this scenario only. Pass: session["error"] says the model couldn't be
+        # reached and names the listing search found, no crash, fit_card None.
+        "name": "model unreachable",
+        "query": "vintage graphic tee under $30",
+        "wardrobe": "example",
+        "bad_api_key": True,
+        "criterion": 5,
+    },
 ]
 
 WARDROBES = ("example", "empty")

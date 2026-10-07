@@ -30,6 +30,7 @@ mode — caching is what usually explains it.
 
 import argparse
 import datetime as dt
+import os
 import sys
 import traceback
 
@@ -51,11 +52,29 @@ def run_once(scenario, use_trace=True):
         trace_module.start_trace()
 
     record = {"error": None, "session": None, "trace": "", "crashed": None}
+
+    # "bad_api_key": swap in an invalid key for this one run, the way unit 4
+    # Milestone 2 does by hand, then put the real one back.
+    real_key = os.environ.get("GEMINI_API_KEY")
+    if scenario.get("bad_api_key"):
+        import generate
+        os.environ["GEMINI_API_KEY"] = "invalid-key-for-eval"
+        generate._client = None
+
     try:
-        record["session"] = run_agent(scenario["query"], wardrobe)
+        record["session"] = run_agent(
+            scenario["query"], wardrobe, item_overrides=scenario.get("item_overrides")
+        )
     except Exception as exc:  # noqa: BLE001 — a crash is a result worth logging
         record["crashed"] = f"{type(exc).__name__}: {exc}"
         record["traceback"] = traceback.format_exc()
+    finally:
+        if scenario.get("bad_api_key"):
+            if real_key is None:
+                os.environ.pop("GEMINI_API_KEY", None)
+            else:
+                os.environ["GEMINI_API_KEY"] = real_key
+            generate._client = None
 
     if use_trace:
         record["trace"] = trace_module.get_trace()
@@ -86,6 +105,8 @@ def main():
 
     # Caching off. Five tries have to be five real answers.
     config.CACHE_ENABLED = False
+    # The MCP server is a separate process; it reads this, not config.CACHE_ENABLED.
+    os.environ["AI201_CACHE"] = "0"
     print("Cache is OFF for this run — that's deliberate.\n")
 
     rows = []

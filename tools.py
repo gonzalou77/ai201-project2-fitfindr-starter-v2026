@@ -46,8 +46,30 @@ def _sizes_match(query_size: str, listing_size: str) -> bool:
     return bool(_size_tokens(query_size) & _size_tokens(listing_size))
 
 
+# Words the data doesn't use for things it does hold. Deliberately tiny: these
+# are the two the before-run exposed ("trainers" for sneakers, "tshirt" for
+# tee). A search that really understood synonyms would need more than a table.
+_ALIASES = {"trainer": "sneaker", "tshirt": "tee"}
+
+
+def _normalize(word: str) -> str:
+    """
+    Reduce a word to the form both the query and the listings are compared in:
+    "jackets" -> "jacket", "dresses" -> "dress", "trainers" -> "sneaker".
+
+    Applied to both sides, so a plural in the data ("Jeans") still matches a
+    plural in the query. Words ending in "ss", "us" or "is" (dress, bus, this)
+    and words of three letters or fewer ("90s", "tee") are left alone.
+    """
+    if len(word) > 3 and word.endswith("s") and not word.endswith(("ss", "us", "is")):
+        word = word[:-2] if word.endswith("sses") else word[:-1]
+    return _ALIASES.get(word, word)
+
+
 def _keywords(text: str) -> set[str]:
-    return {w for w in _WORD_RE.findall(text.lower()) if w not in _STOPWORDS}
+    return {
+        _normalize(w) for w in _WORD_RE.findall(text.lower()) if w not in _STOPWORDS
+    }
 
 
 def _keyword_overlap(listing: dict, keywords: set[str]) -> int:

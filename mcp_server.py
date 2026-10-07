@@ -81,7 +81,9 @@ def search_listings(
     returns the best matches. `description` is free text such as "vintage
     graphic tee"; a listing matches if it shares at least one word with it in
     its title, description, category, or style tags, and more shared words rank
-    higher. `size` is optional: a label such as "M", "S/M", "W30", or "US 8",
+    higher. Words are compared after simple plural stripping ("jackets" matches
+    "jacket"), and "trainers" is treated as sneakers and "tshirt" as tee; other
+    synonyms ("sweater" for "sweatshirt") are not recognised. `size` is optional: a label such as "M", "S/M", "W30", or "US 8",
     compared case-insensitively against whole parts of the listing's size, so
     "M" matches "S/M" but not "XL", and "8" matches "US 8" but not "US 8.5".
     `max_price` is optional: the highest price in US dollars, inclusive;

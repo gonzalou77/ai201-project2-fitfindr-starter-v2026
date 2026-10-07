@@ -435,21 +435,56 @@ full. -->
 
      `python run_eval.py --label after` -->
 
-**What I changed:**
+**What I changed:** one change, in one function. `tools.py::_keywords` now passes every word through a new `_normalize` before comparing, on both the query and the listings: simple plurals are stripped (`jackets` → `jacket`, `dresses` → `dress`; words ending `ss`/`us`/`is` and words of three letters or fewer are left alone), and two aliases are treated as one word (`trainers` → `sneaker`, `tshirt` → `tee`). The tool description in `mcp_server.py` was updated to say so, including that other synonyms aren't recognised. Commit `cf8aec8`. Nothing else in the matching or the loop changed.
 
-**Which failure it was meant to fix:**
+**Which failure it was meant to fix:** the criterion 1 miss, diagnosed above as a tool problem in `search_listings`: matching on exact whole words, so `trainers size 8` and `tshirt under $30` found nothing, and `denim jackets under $50` matched only "denim" and picked the jeans.
+
+**Checked before the real run** (offline, no model calls, old `tools.py` from git against the new one): the three failing queries now find results, the other six scenario and example queries keep the same top result, and each of the 40 listings still finds itself first when its own title is the query (40/40 before and after). Plural queries I hadn't designed anything around went from nothing to a sensible top result — `blazers`, `cardigans`, `dresses under $40`, `shirts under $25`, `tees`, `hats`.
 
 ### Run Log — After
 
+Source: `results/run_2026-10-07_1938_after.md` — the same nine scenarios, five tries each, cache off, as `before-harsh`. Fit cards were distinct 5/5 on every scenario that uses the model.
+
 | Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |
 |---|---|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |  |  |
+| 1. Matching query completes all three tools — `vintage graphic tee under $30` | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 1. (harsher) synonym — `trainers size 8` | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 1. (harsher) spelling variant — `tshirt under $30` | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 2. Impossible query stops before `suggest_outfit` — `designer ballgown size XXS under $5` | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 3. Same item id from search to both later tools — `90s track jacket in size M` | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 4. Item with no price is caught — price forced to `None` | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 5. Unreachable model is noted — invalid API key | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
 
-**Did it help, and how do I know:**
+**Before and after, side by side:**
+
+| Row | Before | After |
+|---|---|---|
+| 1. plain query | 5/5 MET | 5/5 MET |
+| 1. synonym `trainers size 8` | 0/5 MISSED — stopped, no results | 5/5 MET — selects `Platform Sneakers — White Chunky Sole` |
+| 1. spelling `tshirt under $30` | 0/5 MISSED — stopped, no results | 5/5 MET — selects `Y2K Baby Tee — Butterfly Print` |
+| 2. impossible query | 5/5 MET | 5/5 MET |
+| 3. item id | 5/5 MET | 5/5 MET |
+| 4. no price | 5/5 MET | 5/5 MET |
+| 5. model unreachable | 5/5 MET | 5/5 MET |
+| diagnostic: plural `denim jackets under $50` | completed 5/5 on the **wrong item** (`Levi's 501 Jeans`) | completed 5/5 on `Denim Jacket — Light Wash, Cropped` |
+| diagnostic: empty wardrobe | completed 5/5 | completed 5/5 |
+
+Real output, the synonym query that used to stop (`tools.py::search_listings` over MCP, from try 1 of the after log):
+
+```
+[1] parse query (regex)
+      in:  trainers size 8
+      out: {'description': 'trainers', 'size': '8', 'max_price': None}
+[2] search_listings (via MCP)
+      in:  {'description': 'trainers', 'size': '8', 'max_price': None}
+      out: 1 items: Platform Sneakers — White Chunky Sole
+[3] select first result
+      out: Platform Sneakers — White Chunky Sole ($48.0, poshmark)
+```
+
+**Did it help, and how do I know:** Yes — criterion 1 went from MISSED (0/5 on two of its three queries) to MET (5/5 on all three), and the plural query stopped picking the wrong item, with nothing else moving: criteria 2–5 stayed 5/5 and the three queries that already worked kept their top result. I know it was the change and not luck because the search is deterministic (the selected item is the same in all five tries of each scenario), and because the offline before/after comparison ran the same queries through both versions of the function.
+
+Two cautions on that. First, I wrote the three harsher scenarios after seeing the first run, so they were always going to pass once I fixed exactly what they exposed; the better evidence that it generalises is the plural queries I hadn't designed around, and the 40/40 title check showing nothing got worse. Second, **two things changed between the `before-harsh` and `after` runs**, not one: this improvement (`cf8aec8`) and, earlier, the plainer wording of the model-unavailable message (`8587f53`). The second only changes the text criterion 5 prints — its pass condition (says the model couldn't be reached, names the listing, no fit card) is unchanged and was met 5/5 in both — so it can't account for the criterion 1 difference, but it is why the criterion 5 output in the two logs reads differently. Rate-limit pauses in the after run (16s, 22s, 17s, 26s) all retried and finished.
 
 <!-- If it made things worse, say that. Honestly reported, that earns full
      credit and is more interesting than one that worked. -->
@@ -463,6 +498,14 @@ full. -->
 <!-- For each criterion still missed: what you'd do, and why you stopped where
      you did. "I ran out of time" is fine if it's true. Pretending nothing is
      left is not. -->
+
+No criterion is missed in the after run, but that isn't the same as nothing being left.
+
+- **Criterion 1 passes on the vocabulary I fixed, not on search in general.** Words outside the alias table still find nothing: `sweater`, `jumper`, `sundress`, `gown` and `runners` each return 0 results (checked after the change), even though the data holds a knit cardigan, crewneck sweatshirts, a slip dress and sneakers. Plural stripping generalises; the two-word alias table doesn't, and a table can't scale to a person's vocabulary. What I'd do is replace exact-word matching with something that compares meaning — embeddings, or a model call that rewrites the query into the listings' words — and re-run the same scenarios. I stopped where I did because that is a different design, not a second small change, and the assignment asks for one thing measured properly.
+- **Ranking is still unweighted.** A listing needs only one shared word to match, so `tank top` returns 10 results topped by a crochet halter top, and `vintage graphic tee` returns 10 including cargo pants. The first result is what the agent uses, so a weak first result becomes the outfit and the caption. I'd weight title matches above description matches and prefer listings that match more of the query's words. I haven't measured it, so I haven't claimed a number.
+- **Criteria 3, 4 and 5 test guards I wrote.** They can only fail if an id changes, a price goes missing, or the model is down. A 5/5 shows the guards hold on those paths; the eval never forces an id mismatch (I forced one offline and the run stopped). Nothing in my five criteria measures whether the selected item is a *good* one, which is exactly the gap the plural query exposed.
+- **The exit-time model-call count is too low**, because calls inside the MCP server (the fit cards) aren't counted. Rate-limit pacing is also per process, so the server can go past 15 requests a minute and rely on `generate.py`'s retry. Neither changed a result; both would matter before this ran for real users.
+- **Cosmetic:** the trace prints a missing price as `$None` (`trace.py::_short`). The fit card is unaffected.
 
 
 

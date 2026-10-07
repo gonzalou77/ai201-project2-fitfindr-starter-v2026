@@ -129,10 +129,10 @@ def search_listings(
     """
     candidates = []
     for listing in load_listings():
-        if max_price is not None and (
-            listing["price"] is None or listing["price"] > max_price
-        ):
-            # A listing with no price can't be shown to fit under a ceiling.
+        price = listing.get("price")
+        if max_price is not None and (price is None or price > max_price):
+            # A listing with no price — null, or no price field at all — can't
+            # be shown to fit under a ceiling.
             continue
         if size is not None and not _sizes_match(size, listing["size"]):
             continue

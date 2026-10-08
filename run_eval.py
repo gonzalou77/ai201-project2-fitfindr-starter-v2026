@@ -128,6 +128,8 @@ def main():
     parser.add_argument("--label", default="", help="a name for this run, e.g. 'before'")
     parser.add_argument("--group", default="",
                         help="only run scenarios whose \"group\" is this (default: all)")
+    parser.add_argument("--name", default="",
+                        help="only run the scenario with exactly this name (for a rerun)")
     args = parser.parse_args()
 
     problems = scenario_module.validate()
@@ -152,10 +154,11 @@ def main():
 
     chosen = [
         s for s in scenario_module.SCENARIOS
-        if not args.group or s.get("group") == args.group
+        if (not args.group or s.get("group") == args.group)
+        and (not args.name or s["name"] == args.name)
     ]
     if not chosen:
-        print(f"No scenarios in group {args.group!r}.", file=sys.stderr)
+        print(f"No scenarios match group {args.group!r} / name {args.name!r}.", file=sys.stderr)
         sys.exit(1)
 
     rows = []

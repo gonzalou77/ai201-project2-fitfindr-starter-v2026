@@ -246,3 +246,86 @@ history is what shows your criteria existed before your results did.
 units.
 
 `results/` is deliberately **not** in `.gitignore`.
+
+---
+
+## Capstone run path: local, with logs
+
+This is the path for the capstone extension. It runs from the command line on
+your own machine, and every run writes a record to `results/runlog.jsonl`.
+(The hosted version is `serve.py` on Render, see `render.yaml`, and it writes
+the same records to stdout.)
+
+**What you need**
+
+- Python **3.11, 3.12, or 3.13.** Not 3.14. Several packages in `requirements.txt`
+  don't support it yet.
+- A Gemini API key, from https://aistudio.google.com. Put it in a file named
+  `.env` in the repo root, as `GEMINI_API_KEY=...`. `.env` is git-ignored, so the
+  key never reaches GitHub.
+
+**Setup, from a fresh clone**
+
+```bash
+git clone https://github.com/gonzalou77/ai201-project2-fitfindr-starter-v2026.git
+cd ai201-project2-fitfindr-starter-v2026
+python3.11 -m venv .venv
+source .venv/bin/activate            # Windows PowerShell: .venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+cp .env.example .env                 # Windows: copy .env.example .env, then edit it
+# open .env and set GEMINI_API_KEY to your key
+```
+
+**Run one query**
+
+```bash
+python app.py ask 'vintage graphic tee under $30'
+```
+
+Use single quotes. In PowerShell, `"under $30"` in double quotes silently loses
+the price. Add `--trace` to see each step of the loop, and `--empty-wardrobe` to
+run with no saved wardrobe.
+
+The answer prints to the terminal, and one record is appended to
+`results/runlog.jsonl`. Each line is one JSON object. Read the last one with:
+
+```bash
+tail -n 1 results/runlog.jsonl
+```
+
+**Turn the cache off**
+
+By default the model's answers are cached on disk, so a repeated query costs
+nothing and says nothing about the model. To get a real answer every time:
+
+```bash
+AI201_CACHE=0 python app.py ask 'vintage graphic tee under $30'      # macOS / Linux
+$env:AI201_CACHE="0"; python app.py ask 'vintage graphic tee under $30'   # PowerShell
+```
+
+**Measure what a run costs**
+
+```bash
+python cost.py                  # ten runs, cache off, prints tokens and seconds per run
+```
+
+The method is written at the top of `cost.py`.
+
+**Run the failure path on purpose**
+
+```bash
+GEMINI_API_KEY=not-a-real-key python app.py ask 'vintage graphic tee under $30'
+```
+
+It prints that the model couldn't be reached, and it still writes a record with
+`outcome` set to `stopped` and the reason in `error`.
+
+**If something breaks**
+
+| You see | Likely cause |
+|---|---|
+| `ModuleNotFoundError` | the venv isn't active. Run the activate line again, then `pip install -r requirements.txt` |
+| "The model couldn't be reached" with `GEMINI_API_KEY` in the message | the key in `.env` is missing or wrong. Check for spaces or quotes around it |
+| Python 3.14 errors during `pip install` | you're on 3.14. Install 3.11 and make a new venv |
+| A query finds nothing that obviously should match | check the query against `python app.py examples`, and the listings with `python app.py listings --full` |
+| `results/` missing | created on first run. If it still isn't there, the folder is not writable |

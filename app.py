@@ -19,6 +19,7 @@ telling you why. Single quotes are literal in PowerShell, bash and zsh alike.
 
 import argparse
 import sys
+import time
 
 import config
 
@@ -106,12 +107,50 @@ def cmd_examples(args):
 
 def _ask_one(query, wardrobe, use_trace):
     from agent import run_agent
+    import generate
+    import runlog
     import trace as trace_module
 
     if use_trace:
         trace_module.start_trace()
 
-    session = run_agent(query, wardrobe)
+    # Every run writes one record, including the ones that crash. The CLI has
+    # no HTTP status, so http_status stays null on these lines.
+    started = time.perf_counter()
+    ts = runlog.now_iso()
+    request_id = runlog.new_request_id()
+    calls_before = generate.call_count()
+    tokens_before = generate.token_counts()
+    # The CLI only ever has the example wardrobe or the empty one.
+    wardrobe_kind = "example" if wardrobe.get("items") else "empty"
+    session = None
+    failure = None
+    try:
+        session = run_agent(query, wardrobe)
+    except Exception as exc:  # noqa: BLE001 — log it, then let it propagate
+        failure = f"{type(exc).__name__}: {exc}"
+        raise
+    finally:
+        tokens_after = generate.token_counts()
+        selected = (session or {}).get("selected_item") or {}
+        runlog.write({
+            "ts": ts,
+            "request_id": request_id,
+            "query": query,
+            "wardrobe": wardrobe_kind,
+            "http_status": None,
+            "outcome": runlog.outcome_of(session, failure),
+            "error": failure if failure is not None else (session or {}).get("error"),
+            "selected_id": selected.get("id"),
+            "selected_title": selected.get("title"),
+            "searches": len((session or {}).get("attempts") or []),
+            "warnings": len((session or {}).get("warnings") or []),
+            "model_calls": generate.call_count() - calls_before,
+            "prompt_tokens": tokens_after["prompt"] - tokens_before["prompt"],
+            "output_tokens": tokens_after["output"] - tokens_before["output"],
+            "wait_ms": 0,
+            "duration_ms": runlog.ms_since(started),
+        })
 
     print()
     if session["error"]:

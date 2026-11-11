@@ -266,15 +266,32 @@ the same records to stdout.)
 
 **Setup, from a fresh clone**
 
+**macOS / Linux**
+
 ```bash
 git clone https://github.com/gonzalou77/ai201-project2-fitfindr-starter-v2026.git
 cd ai201-project2-fitfindr-starter-v2026
 python3.11 -m venv .venv
-source .venv/bin/activate            # Windows PowerShell: .venv\Scripts\Activate.ps1
+source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env                 # Windows: copy .env.example .env, then edit it
+cp .env.example .env
 # open .env and set GEMINI_API_KEY to your key
 ```
+
+**Windows (PowerShell)**
+
+```powershell
+git clone https://github.com/gonzalou77/ai201-project2-fitfindr-starter-v2026.git
+cd ai201-project2-fitfindr-starter-v2026
+py -3.11 -m venv .venv               # the py launcher picks 3.11; plain "python" may be another version
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+copy .env.example .env
+# open .env and set GEMINI_API_KEY to your key
+```
+
+If `py -3.11` says no such version, install Python 3.11 from python.org first.
+The `pip` notice about a newer pip version is harmless.
 
 **Run one query**
 

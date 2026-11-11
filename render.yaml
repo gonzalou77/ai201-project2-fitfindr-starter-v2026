@@ -1,0 +1,25 @@
+# Render Blueprint for FitFindr.
+#
+# One free web service running serve.py — the same run_agent() the CLI calls,
+# behind POST /ask and GET /health.
+#
+# Everything gunicorn needs is in gunicorn.conf.py, which gunicorn loads on
+# its own, so the start command here stays the exact one serve.py documents.
+#
+# To use: Render dashboard → New → Blueprint → pick this repo. Render reads
+# this file and prompts for GEMINI_API_KEY.
+
+services:
+  - type: web
+    name: fitfindr
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn serve:app
+    healthCheckPath: /health
+    envVars:
+      # Prompted for once, when the Blueprint is created, and stored by
+      # Render. `sync: false` is what keeps the key out of this file and
+      # out of git — same rule as .env.
+      - key: GEMINI_API_KEY
+        sync: false

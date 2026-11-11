@@ -27,15 +27,16 @@ web server has to be. The reason is worth reading before you deploy: see the
 note above `_one_at_a_time` below — it also decides which gunicorn worker you
 can use.
 
-⚠️ There is deliberately NO logging, NO timing and NO request counting in this
-file. That is unit 9's follow-along: you instrument this yourself, first, and
-then deploy it. A structured log you were handed teaches you nothing about
-what belongs in one — and the timing field is the one everybody skips.
+Logging: every /ask request writes one structured record, through runlog.py.
+The fields and why each one is there are in runlog.py's docstring. Warm and
+cold timing are not separated here — a cold wake happens before this process
+exists, so the duration this file records is always warm time.
 """
 
 import os
 import sys
 import threading
+import time
 
 # config first, and before anything that talks to the model: it loads your .env
 # and fixes the Windows console encoding for every module that imports it.
@@ -43,6 +44,8 @@ import config  # noqa: F401
 
 from flask import Flask, jsonify, request
 
+import generate
+import runlog
 from agent import run_agent
 from utils.data_loader import get_example_wardrobe
 
@@ -107,16 +110,29 @@ def ask():
                                                 example wardrobe the CLI uses.
     Out:  the session dict from run_agent(), as JSON.
     """
+    started = time.perf_counter()
+    request_id = runlog.new_request_id()
+    ts = runlog.now_iso()
+
     payload = request.get_json(silent=True) or {}
     query = (payload.get("query") or "").strip()
     if not query:
         # 400 rather than a stack trace: the caller can act on this one.
-        return jsonify({"error": "Send JSON with a 'query' field, e.g. "
-                                 '{"query": "vintage graphic tee under $30"}'}), 400
+        message = ("Send JSON with a 'query' field, e.g. "
+                   '{"query": "vintage graphic tee under $30"}')
+        runlog.write({
+            "ts": ts, "request_id": request_id, "query": None, "wardrobe": None,
+            "http_status": 400, "outcome": "bad_request", "error": message,
+            "duration_ms": runlog.ms_since(started),
+        })
+        return jsonify({"error": message}), 400
 
     wardrobe = payload.get("wardrobe")
-    if not isinstance(wardrobe, dict):
+    if isinstance(wardrobe, dict):
+        wardrobe_kind = "custom" if wardrobe.get("items") else "empty"
+    else:
         wardrobe = get_example_wardrobe()
+        wardrobe_kind = "example"
 
     # A queued request should look like a queued request. Without this the
     # second caller just sits there, and "slow" and "waiting its turn" are
@@ -138,14 +154,39 @@ def ask():
 
     failure = None
     session = None
+    waited_from = time.perf_counter()
+    calls_before = generate.call_count()
+    tokens_before = generate.token_counts()
     with _one_at_a_time:
+        wait_ms = runlog.ms_since(waited_from)
         try:
             session = run_agent(query, wardrobe)
         except Exception as exc:  # noqa: BLE001 — a 500 with a sentence beats a hang
             failure = f"{type(exc).__name__}: {exc}"
+    tokens_after = generate.token_counts()
 
     # Outside the lock: building a response is not work the next caller should
     # be waiting on.
+    selected = (session or {}).get("selected_item") or {}
+    runlog.write({
+        "ts": ts,
+        "request_id": request_id,
+        "query": query,
+        "wardrobe": wardrobe_kind,
+        "http_status": 500 if failure is not None else 200,
+        "outcome": runlog.outcome_of(session, failure),
+        "error": failure if failure is not None else (session or {}).get("error"),
+        "selected_id": selected.get("id"),
+        "selected_title": selected.get("title"),
+        "searches": len((session or {}).get("attempts") or []),
+        "warnings": len((session or {}).get("warnings") or []),
+        "model_calls": generate.call_count() - calls_before,
+        "prompt_tokens": tokens_after["prompt"] - tokens_before["prompt"],
+        "output_tokens": tokens_after["output"] - tokens_before["output"],
+        "wait_ms": wait_ms,
+        "duration_ms": runlog.ms_since(started),
+    })
+
     if failure is not None:
         return jsonify({"error": failure}), 500
 

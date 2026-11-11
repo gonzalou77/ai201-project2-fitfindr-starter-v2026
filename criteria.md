@@ -152,3 +152,77 @@ We tend to over rely on models to do the work for us. We should be able to tell 
      A number you missed stays where it is, gets diagnosed, and gets a fix
      attempted. That's where the points are.
      ───────────────────────────────────────────────────────────────────────── -->
+
+---
+
+## Capstone
+
+Written before any capstone run. Each target is for **three trials** per
+criterion. Criteria 1, 2, 3 and 5 are about the extension (re-plan and
+deployment). Criterion 4 is about the logging layer built with it.
+
+**1. A size-only miss is rescued, and says what it gave up.**
+
+`90s track jacket in size XS` returns no listings at size XS. The agent drops
+the size filter, searches again, and completes all three tools, with a warning
+naming the dropped size. **Target: 3 of 3 trials.**
+
+**Why this target:** Size is the one filter the data routinely misses, and the
+first search has zero results for a real item the user would want (the
+track jacket exists in size M). Three of three is the right bar because the
+search is deterministic: a given query either re-plans to the same result every
+time or it does not, so a miss on any trial is a real defect, not noise.
+
+**2. A ceiling miss is rescued at the stated factor, and names the new ceiling.**
+
+`vintage graphic tee under $10` returns nothing. The agent raises the ceiling
+to $15 (config.RELAX_PRICE_FACTOR = 1.5), searches again, and completes, with a
+warning naming $15. **Target: 3 of 3 trials.**
+
+**Why this target:** The factor is the one number the re-plan invents, so the
+warning has to report it exactly or the user cannot tell a $15 result from a
+$10 one. Three of three because the second search is deterministic on the same
+data.
+
+**3. An impossible query stops after exactly three searches, before any model call.**
+
+`designer ballgown size XXS under $5` makes exactly three searches (original,
+size dropped, ceiling raised to $7.50), all empty, then stops with an error
+naming what to change. `suggest_outfit` and `create_fit_card` are never called.
+**Target: 3 of 3 trials, and `len(session["attempts"]) == 3` in each.**
+
+**Why this target:** It proves the loop is bounded and the stop still fires
+after the new branch. The count of three is a property of the code, so it
+should hold every trial; anything else means the re-plan loop changed.
+
+**4. Every /ask request writes a complete log record.**
+
+Across three trials of a 10-request script (a mix of completing, rescued and
+stopped queries, plus one malformed request), **every** request writes one log
+record, and every record has all the fields the README extract lists: timestamp,
+query, outcome, error, selected id, search attempts, model calls, tokens, and
+duration in milliseconds. **Target: 3 of 3 trials, 30 of 30 records complete.**
+
+**Why this target:** A log is only useful if it is never silently missing a
+field, and the Render disk is wiped, so the record copied into the README has to
+be complete by itself. Thirty of thirty, not 29 of 30, because one dropped
+record means the cost and latency numbers quietly exclude a request.
+
+**5. The rescue works on the deployed service, and the timing is reported warm and cold separately.**
+
+On the Render URL, `90s track jacket in size XS` returns HTTP 200 with a non-empty
+`warnings` list and a fit card, in three trials. The first request after an idle
+period is recorded as cold. **Target: 3 of 3 warm trials return 200 with the rescue,
+and each warm request completes within 20 seconds.**
+
+**Why this target:** Warm and cold are different things. The cold wake happens at
+Render's edge, before the app runs, so the in-app timer can only ever see warm
+time. Keeping them separate means a slow cold start is not hidden in the warm
+number, and a 20-second warm bound leaves room for one rate-limit pause from
+`generate.py` (up to about 60 seconds on a true limit, but the free tier's
+15-per-minute pacing is designed to stay under that in a single request).
+
+> The 20-second bound is a guess until the first run. If the first warm run
+> lands well under it, the bound is loose and I will say so in the verdict. If
+> it lands over it, the diagnosis is what decides the next move, not a raised
+> target.

@@ -85,7 +85,33 @@ def new_session(query: str, wardrobe: dict) -> dict:
         "error_detail": None,        # the technical reason behind it, for debugging
         "warnings": [],              # things worth knowing that didn't stop the run
         "item_ids": {},              # the listing id seen at each hand-off (criterion 3)
+        "attempts": [],              # every search made, first try and any re-plan: {args, found}
     }
+
+
+def _relaxations(args: dict) -> list[tuple[dict, str]]:
+    """
+    The re-plan steps for a search that came back empty, in the order to try
+    them, each with the warning it leaves behind. Cumulative: the price step
+    keeps the size already dropped by the step before it.
+
+      1. Drop the size filter, if there was one.
+      2. Raise the price ceiling by config.RELAX_PRICE_FACTOR, if there was one.
+
+    Keywords are never changed here. Re-planning gives up a filter, not the
+    thing the user asked for.
+    """
+    steps = []
+    if args.get("size") is not None:
+        size = args["size"]
+        args = {**args, "size": None}
+        steps.append((args, f"No listings in size {size}, so the size filter was dropped."))
+    if args.get("max_price") is not None:
+        old = args["max_price"]
+        new = round(old * config.RELAX_PRICE_FACTOR, 2)
+        args = {**args, "max_price": new}
+        steps.append((args, f"No listings under ${old:g}, so the price ceiling was raised to ${new:g}."))
+    return steps
 
 
 def _hand_off(session: dict, stage: str, item: dict) -> bool:
@@ -185,7 +211,8 @@ def run_agent(query: str, wardrobe: dict, item_overrides: dict | None = None) ->
         "max_price": session["parsed"]["max_price"],
     }
     try:
-        session["search_results"] = call_tool("search_listings", search_args)
+        results = call_tool("search_listings", search_args)
+        session["attempts"].append({"args": search_args, "found": len(results)})
     except MCPError as exc:
         session["error"] = (
             "The listings search couldn't be reached, so nothing was searched. "
@@ -194,8 +221,34 @@ def run_agent(query: str, wardrobe: dict, item_overrides: dict | None = None) ->
         trace.step("search_listings (via MCP)", inputs=str(search_args),
                    note="MCP call failed, stopping")
         return session
-    trace.step("search_listings (via MCP)", inputs=str(search_args),
-               returned=session["search_results"])
+    trace.step("search_listings (via MCP)", inputs=str(search_args), returned=results)
+
+    # RE-PLAN. If the search came back empty, relax one constraint at a time and
+    # search again. Each relaxation is one more loop pass, so it counts toward
+    # MAX_ITERATIONS, and it leaves a warning saying what was given up.
+    if not results:
+        for relaxed_args, note in _relaxations(search_args):
+            count += 1
+            trace.check_iterations(count)
+            try:
+                results = call_tool("search_listings", relaxed_args)
+            except MCPError as exc:
+                session["error"] = (
+                    "The listings search couldn't be reached, so nothing was searched. "
+                    f"({str(exc).splitlines()[0]})"
+                )
+                trace.step("re-plan: search_listings (via MCP)", inputs=str(relaxed_args),
+                           note="MCP call failed, stopping")
+                return session
+            session["attempts"].append({"args": relaxed_args, "found": len(results)})
+            trace.step("re-plan: search_listings (via MCP)", inputs=str(relaxed_args),
+                       returned=results, note=note)
+            if results:
+                session["warnings"].append(note)
+                search_args = relaxed_args
+                break
+
+    session["search_results"] = results
 
     # THE BRANCH. Nothing to work with — stop before suggest_outfit runs.
     if not session["search_results"]:

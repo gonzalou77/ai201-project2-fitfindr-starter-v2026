@@ -61,6 +61,10 @@ MAX_ITERATIONS = 10
 # How many search results to consider. The agent uses the first one.
 SEARCH_RESULT_LIMIT = 10
 
+# When a search comes back empty and there is a price ceiling, re-plan raises
+# the ceiling by this factor (30 -> 45 at 1.5). See agent._relaxations.
+RELAX_PRICE_FACTOR = 1.5
+
 
 # ─── Model ───────────────────────────────────────────────────────────────────
 

@@ -617,3 +617,131 @@ No criterion is missed in the after run, but that isn't the same as nothing bein
 ---
 
 📖 **How to run this project: [RUNNING.md](RUNNING.md)**
+
+
+---
+
+## Capstone
+
+**Which system and which shape.** The system is FitFindr, the one above. This
+is shape **C**: one new capability, with the deploy and logging around it. The
+capability is an **empty-search re-plan**. When `search_listings` comes back
+empty, `agent.py::run_agent` drops the size filter and searches again, then
+raises the price ceiling by 1.5 and searches again, and only then stops. Each
+rescue leaves a warning saying what it gave up. The loop is still bounded by
+`MAX_ITERATIONS`. The logging layer (`runlog.py`) and the cost script
+(`cost.py`) are the instrumentation around it.
+
+**Out of scope.** I considered a second retriever, a change to keyword matching
+or ranking, and a model call to rewrite the query. I left all three out. The
+re-plan never changes the keywords, so the thing the user asked for stays fixed,
+and only the filters loosen. I also did not touch `suggest_outfit` or
+`create_fit_card`, and I did not add a UI.
+
+**Run path.** Local, with logs: `python app.py ask '...'`. The full steps are in
+[RUNNING.md](RUNNING.md), under "Capstone run path." The hosted Render config
+(`render.yaml`, `gunicorn.conf.py`, `.python-version`) is in the repo, but no
+Render service has been deployed yet.
+
+**Clean-clone test.** I cloned the repo into a new folder, created a venv, and
+followed RUNNING.md, using only the Windows commands. It failed at one step:
+`python3.11`, which doesn't exist on this machine, and that line was the only
+Python 3.11 instruction the Windows reader had. I added the `py -3.11` version
+and the PowerShell activation line (commit `a48a5ac`). After that, the fresh
+clone installed all dependencies, ran `app.py ask`, and wrote a record to its
+own `results/runlog.jsonl`.
+
+**Instrumentation**
+
+Every run writes one JSON record to `results/runlog.jsonl` with sixteen named
+fields: `ts`, `request_id`, `query`, `wardrobe`, `http_status`, `outcome`,
+`error`, `selected_id`, `selected_title`, `searches`, `warnings`,
+`model_calls`, `prompt_tokens`, `output_tokens`, `wait_ms`, and `duration_ms`.
+The `outcome` is one of `completed`, `rescued`, `stopped`, `bad_request`, or
+`crashed`. The log now holds 22 records, none missing a field. Below are the
+first ten runs, then the failed run.
+
+Ten varied runs, cache off, through `python app.py ask`. Runs 6, 7 and 8 are the
+new branches: a stop after three searches, and two rescues.
+
+```json
+{"ts": "2026-11-11T23:42:20.561+00:00", "request_id": "4d073dbf", "query": "vintage graphic tee under $30", "wardrobe": "example", "http_status": null, "outcome": "completed", "error": null, "selected_id": "lst_002", "selected_title": "Y2K Baby Tee — Butterfly Print", "searches": 1, "warnings": 0, "model_calls": 1, "prompt_tokens": 245, "output_tokens": 291, "wait_ms": 0, "duration_ms": 7433}
+{"ts": "2026-11-11T23:42:28.453+00:00", "request_id": "3c91452d", "query": "90s track jacket in size M", "wardrobe": "example", "http_status": null, "outcome": "completed", "error": null, "selected_id": "lst_004", "selected_title": "90s Track Jacket — Navy/White Stripe", "searches": 1, "warnings": 0, "model_calls": 1, "prompt_tokens": 244, "output_tokens": 224, "wait_ms": 0, "duration_ms": 6652}
+{"ts": "2026-11-11T23:42:35.561+00:00", "request_id": "80301f9d", "query": "silk slip dress in midi length under $40", "wardrobe": "example", "http_status": null, "outcome": "completed", "error": null, "selected_id": "lst_013", "selected_title": "90s Silk Slip Dress — Floral, Midi Length", "searches": 1, "warnings": 0, "model_calls": 1, "prompt_tokens": 251, "output_tokens": 142, "wait_ms": 0, "duration_ms": 6377}
+{"ts": "2026-11-11T23:42:42.465+00:00", "request_id": "8af7a9c6", "query": "platform sneakers size 8", "wardrobe": "example", "http_status": null, "outcome": "completed", "error": null, "selected_id": "lst_019", "selected_title": "Platform Sneakers — White Chunky Sole", "searches": 1, "warnings": 0, "model_calls": 1, "prompt_tokens": 241, "output_tokens": 137, "wait_ms": 0, "duration_ms": 6279}
+{"ts": "2026-11-11T23:42:49.189+00:00", "request_id": "50f54764", "query": "denim jacket under $50", "wardrobe": "example", "http_status": null, "outcome": "completed", "error": null, "selected_id": "lst_007", "selected_title": "Denim Jacket — Light Wash, Cropped", "searches": 1, "warnings": 0, "model_calls": 1, "prompt_tokens": 239, "output_tokens": 247, "wait_ms": 0, "duration_ms": 7273}
+{"ts": "2026-11-11T23:42:56.916+00:00", "request_id": "1f70763e", "query": "designer ballgown size XXS under $5", "wardrobe": "example", "http_status": null, "outcome": "stopped", "error": "No listings matched. Try raising the price ceiling, dropping the size filter, or using different keywords in the description.", "selected_id": null, "selected_title": null, "searches": 3, "warnings": 0, "model_calls": 0, "prompt_tokens": 0, "output_tokens": 0, "wait_ms": 0, "duration_ms": 3852}
+{"ts": "2026-11-11T23:43:01.083+00:00", "request_id": "3f5a4924", "query": "90s track jacket in size XS", "wardrobe": "example", "http_status": null, "outcome": "rescued", "error": null, "selected_id": "lst_004", "selected_title": "90s Track Jacket — Navy/White Stripe", "searches": 2, "warnings": 1, "model_calls": 1, "prompt_tokens": 244, "output_tokens": 287, "wait_ms": 0, "duration_ms": 7653}
+{"ts": "2026-11-11T23:43:09.230+00:00", "request_id": "84004ff2", "query": "vintage graphic tee under $10", "wardrobe": "example", "http_status": null, "outcome": "rescued", "error": null, "selected_id": "lst_017", "selected_title": "Mesh Long-Sleeve Top — Black", "searches": 2, "warnings": 1, "model_calls": 1, "prompt_tokens": 239, "output_tokens": 202, "wait_ms": 0, "duration_ms": 8117}
+{"ts": "2026-11-11T23:43:17.838+00:00", "request_id": "7918a71b", "query": "cargo pants under $30", "wardrobe": "empty", "http_status": null, "outcome": "completed", "error": null, "selected_id": "lst_011", "selected_title": "Low-Rise Cargo Pants — Khaki", "searches": 1, "warnings": 0, "model_calls": 1, "prompt_tokens": 118, "output_tokens": 198, "wait_ms": 0, "duration_ms": 6940}
+{"ts": "2026-11-11T23:43:25.239+00:00", "request_id": "0dfae10c", "query": "trainers size 8", "wardrobe": "example", "http_status": null, "outcome": "completed", "error": null, "selected_id": "lst_019", "selected_title": "Platform Sneakers — White Chunky Sole", "searches": 1, "warnings": 0, "model_calls": 1, "prompt_tokens": 241, "output_tokens": 217, "wait_ms": 0, "duration_ms": 6555}
+```
+
+**Failed run.** Deliberately run with an invalid key
+(`GEMINI_API_KEY=not-a-real-key python app.py ask 'vintage graphic tee under $30'`).
+The search succeeded, the model call was rejected, and the run was recorded as
+`stopped`, with the reason in `error`. It did not crash and it did not go
+missing from the log:
+
+```json
+{"ts": "2026-11-11T23:43:55.507+00:00", "request_id": "d835add9", "query": "vintage graphic tee under $30", "wardrobe": "example", "http_status": null, "outcome": "stopped", "error": "The model couldn't be reached right now, so there's no outfit or fit card. Search did find 'Y2K Baby Tee — Butterfly Print' ($18.0 on depop), so you can look at it yourself. Please try again in a moment.", "selected_id": "lst_002", "selected_title": "Y2K Baby Tee — Butterfly Print", "searches": 1, "warnings": 0, "model_calls": 1, "prompt_tokens": 0, "output_tokens": 0, "wait_ms": 0, "duration_ms": 2959}
+```
+
+**What It Costs**
+
+**Result: 801 tokens and 5.32 seconds per run, on average.** That is 438 tokens
+for `suggest_outfit` plus 363 for `create_fit_card`, averaged over the 10
+completed runs in the cost measurement. Those 10 runs are not the 10 in the
+Instrumentation section above. They are ten repeats of one query,
+`vintage graphic tee under $30`, which is the one a reader would most likely try.
+
+**Method.** `python cost.py` runs `run_agent()` ten times with the cache off.
+It counts `suggest_outfit` tokens in-process, around the call, using
+`generate.token_counts()`. The fit card runs inside the MCP server, a separate
+process, so its tokens never reach this one. To count them, `cost.py` calls the
+same `create_fit_card` function in-process with the outfit and listing that run
+actually produced. That second call is an extra model call made only to count
+tokens, so the fit-card figure is a measured count of the same function on the
+same inputs, not the server's own record. Seconds are the wall-clock time of
+the full `run_agent()` call, which includes the MCP fit card call.
+
+Per-run numbers from that measurement:
+
+```
+run  1: completed suggest  417 + card  336 =  753 tokens, 7.22s
+run  2: completed suggest  376 + card  311 =  687 tokens, 4.46s
+run  3: completed suggest  533 + card  468 = 1001 tokens, 5.55s
+run  4: completed suggest  385 + card  302 =  687 tokens, 4.75s
+run  5: completed suggest  431 + card  353 =  784 tokens, 4.74s
+run  6: completed suggest  510 + card  434 =  944 tokens, 5.21s
+run  7: completed suggest  443 + card  369 =  812 tokens, 5.77s
+run  8: completed suggest  497 + card  413 =  910 tokens, 5.28s
+run  9: completed suggest  407 + card  331 =  738 tokens, 5.21s
+run 10: completed suggest  385 + card  309 =  694 tokens, 4.96s
+average over 10 completed runs: suggest 438 + card 363 = 801 tokens, 5.32s
+```
+
+**Two caveats on those numbers.**
+
+- The run-6 rate-limit message printed "Waiting 27s" during that run's
+  measurement. Its recorded time is 5.21 seconds, so that pause is not in the
+  total. I can't tell from the output where the pause landed, so the seconds
+  figure may undercount pauses. Treat it as the time of a run that didn't hit
+  a pause, not as the worst case.
+- The `model_calls` and token fields in the cost-run records of
+  `results/runlog.jsonl` are not consistent with these numbers. The
+  measurement call for the fit card is counted in `model_calls` but its tokens
+  are not in the token fields. I did not edit the log to fix this, since the log
+  is evidence. The numbers above are the ones to use.
+
+The cost measured here is a lower bound on the work a run does, not a bill.
+The log's own `prompt_tokens` and `output_tokens` for the first ten runs also
+leave out the fit card, so they are smaller than the 801 above. That is what
+the gap in the MCP boundary does, and fixing it means the server reports its
+own usage, which changes the `create_fit_card` return value. I have not made
+that change.
+
+**Still open.** The three trials per criterion, the verdicts, and the
+improvement have not run yet, and the criteria in `criteria.md` under
+`## Capstone` are committed and waiting for them. The Render service has not
+been deployed. The cost number is a lower bound, as described above.

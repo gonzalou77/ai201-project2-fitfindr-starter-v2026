@@ -658,7 +658,11 @@ fields: `ts`, `request_id`, `query`, `wardrobe`, `http_status`, `outcome`,
 `error`, `selected_id`, `selected_title`, `searches`, `warnings`,
 `model_calls`, `prompt_tokens`, `output_tokens`, `wait_ms`, and `duration_ms`.
 The `outcome` is one of `completed`, `rescued`, `stopped`, `bad_request`, or
-`crashed`. The log now holds 22 records, none missing a field. Below are the
+`crashed`. The committed log holds 21 records, none missing a field. (An
+earlier draft of this section said 22. That count came from the fresh clone's
+own `results/runlog.jsonl` during the clean-clone test, which had the 21
+committed records plus the one run I made inside it. The clone's copy is not
+in this repo, so 21 is the number here.) Below are the
 first ten runs, then the failed run.
 
 Ten varied runs, cache off, through `python app.py ask`. Runs 6, 7 and 8 are the

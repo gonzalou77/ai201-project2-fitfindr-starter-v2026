@@ -94,6 +94,22 @@ app = Flask(__name__)
 _one_at_a_time = threading.Lock()
 
 
+@app.get("/")
+def index():
+    """
+    The bare address. Without this route a browser visit to the deployed URL
+    returns 404, which looks like a broken deploy when the service is fine.
+    Says what the service is and how to use it.
+    """
+    return jsonify({
+        "service": "FitFindr",
+        "routes": {
+            "GET /health": "is the service awake",
+            "POST /ask": 'send {"query": "vintage graphic tee under $30"} to run the agent',
+        },
+    })
+
+
 @app.get("/health")
 def health():
     """Is the server awake? A host pings something like this to find out."""

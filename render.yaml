@@ -23,3 +23,17 @@ services:
       # out of git — same rule as .env.
       - key: GEMINI_API_KEY
         sync: false
+      # Turn the response cache OFF on the deployed service.
+      #
+      # With it on (the default), two people asking the same thing get the
+      # same caption word for word, because the second request reads the
+      # first one's answer off disk. That is what TEMPERATURE = 0.9 exists to
+      # prevent. It also made every criterion 5 trial a cache hit, so the
+      # timing measured file reads rather than model calls.
+      #
+      # mcp_client forwards AI201_* to the MCP server process, so this
+      # reaches create_fit_card as well as suggest_outfit.
+      #
+      # The cost is latency: each request now makes two real model calls.
+      - key: AI201_CACHE
+        value: "0"

@@ -687,11 +687,12 @@ fields: `ts`, `request_id`, `query`, `wardrobe`, `http_status`, `outcome`,
 `error`, `selected_id`, `selected_title`, `searches`, `warnings`,
 `model_calls`, `prompt_tokens`, `output_tokens`, `wait_ms`, and `duration_ms`.
 The `outcome` is one of `completed`, `rescued`, `stopped`, `bad_request`, or
-`crashed`. The committed log holds **51 records, none missing a field**. The
-first 21 are the instrumentation runs described in this section. The other 30
+`crashed`. The committed log holds **81 records, none missing a field**. The
+first 21 are the instrumentation runs described in this section. The other 60
 were written afterwards by criterion 4, which sends ten HTTP requests per run
-for three runs; they are part of the capstone run log further down, and they
-are what criterion 4's verdict is counted from. (An earlier draft said 22. That
+for three runs, once before the improvement and once after; they are part of
+the capstone run logs further down, and they are what criterion 4's two
+verdicts are counted from. (An earlier draft said 22. That
 came from the fresh clone's own `results/runlog.jsonl` during the clean-clone
 test — the committed records plus the one run I made inside the clone. The
 clone's copy is not in this repo.) Below are the
@@ -776,6 +777,32 @@ leave out the fit card, so they are smaller than the 801 above. That is what
 the gap in the MCP boundary does, and fixing it means the server reports its
 own usage, which changes the `create_fit_card` return value. I have not made
 that change.
+
+**A hundred people a day.** Taking one run per person, and the measured 801
+tokens and 2 model calls per run:
+
+```
+tokens   100 runs/day x   801 tokens/run =    80,100 tokens/day
+                        x  30 days       = 2,403,000 tokens/month
+calls    100 runs/day x     2 calls/run  =       200 calls/day
+                        / (24 x 60) min  =      0.14 calls/minute average
+compute  100 runs/day x 19.70 s/run      =     1,970 s/day  = ~33 min/day
+                        x  30 days       =    ~16.4 instance-hours/month
+```
+
+The 19.70s is the measured deployed warm mean after the improvement, not the
+5.32s local figure, because that is what the hosted path actually costs.
+
+**In money, today, this is zero**, and saying so is more honest than a figure
+off a price sheet. The model runs on the free tier, and Render's free web
+service plan covers 16.4 instance-hours a month many times over. The binding
+constraint is not money but the rate limit: 200 calls a day averages 0.14 per
+minute against a ceiling of 15, so it only breaks if the traffic arrives in a
+burst — and `serve.py` handles one request at a time, so 100 people arriving
+within the same few minutes would queue rather than fail. Converting the
+2.4M tokens a month into dollars needs the current published price per token,
+which is a number I would look up at the time rather than estimate here, and
+which this unit is explicit about not counting as a measurement.
 
 **Run Log**
 
@@ -867,6 +894,14 @@ so.** Nine warm trials landed in a 0.9-second band, 11.40s to 12.28s, against a
 guess. I am not changing it now — a target is not worth anything if it moves
 after the results arrive.
 
+> **This judgement was wrong, and the improvement below is what showed it.**
+> The bound only looked loose because every one of those nine trials was a
+> cache hit. With the cache off the warm mean is 19.70s against the same 20s
+> bound, a margin of 0.30s, and criterion 5 becomes MISSED. I am leaving the
+> paragraph above as I wrote it rather than editing it, because being able to
+> see that I called a bound loose while measuring the wrong thing is the most
+> useful line in this file.
+
 **Five out of five is itself a finding.** My own Unit 4 write-up says a
 criterion that cannot fail costs you, and I have now done it again: every
 criterion passed every trial. Criteria 1, 2 and 3 are deterministic, so each
@@ -907,5 +942,200 @@ miss. I am not adjusting the bound to accommodate a change I chose to make.
 trials against the same URL and the same query, with the before and after side
 by side. The before is `results/capstone_run_2026-11-11_1958.md`.
 
-**Still open.** The improvement above has been declared but not yet made or
-measured. The cost number is a lower bound, for the reason given above.
+**What I actually changed.** `AI201_CACHE=0` on the deployed service, and
+nothing else. No code changed. It took three steps rather than one, and the two
+I did not expect are worth recording:
+
+1. Adding the variable to `render.yaml` and pushing (`1dcf79b`) rebuilt the
+   code but **did not put the variable on the service.** Render does not sync a
+   Blueprint `envVars` change to a service that already exists. Checked through
+   Render's API: the service still listed only `GEMINI_API_KEY`.
+2. Setting it through the API fixed the listing but **not the running process.**
+   Two identical probes still returned the same caption. The timings gave it
+   away — 30.5s then 11.7s, a cold start making one real call and then the cache
+   repopulating from it.
+3. An explicitly triggered deploy was what made it take effect.
+
+So for a while `render.yaml` in the repo claimed a setting the live service did
+not have. I used Render's single-key env-var endpoint rather than the
+collection-level `PUT`, because that one replaces every variable and would have
+destroyed `GEMINI_API_KEY`, which I cannot read back to restore.
+
+**Run Log — after**
+
+Source: `results/capstone_run_2026-11-11_2016.md` (commit `76e67cb`), same
+harness, same URL, same query, three runs of three trials.
+
+| Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
+|---|---|---|---|---|---|
+| 1. A size-only miss is rescued, and says what it gave up | 3 of 3 | 3/3 | 3/3 | 3/3 | **MET** |
+| 2. A ceiling miss is rescued at 1.5x, and names the new ceiling | 3 of 3 | 3/3 | 3/3 | 3/3 | **MET** |
+| 3. An impossible query stops after exactly 3 searches, before any model call | 3 of 3 | 3/3 | 3/3 | 3/3 | **MET** |
+| 4. Every /ask request writes a complete log record | 10 of 10 | 10/10 | 10/10 | 10/10 | **MET** |
+| 5. The rescue works on the deployed service, warm under 20s | 3 of 3 | **2/3** | 3/3 | **2/3** | **MISSED** |
+
+**Before and after, side by side**
+
+| | Before (cache on) | After (cache off) |
+|---|---|---|
+| Distinct fit cards, 9 live trials | **1 of 9** — byte-identical | **9 of 9** |
+| Warm request, fastest | 11.40s | 18.91s |
+| Warm request, mean | 11.76s | **19.70s** |
+| Warm request, slowest | 12.28s | **20.95s** |
+| Trials at or over the 20s bound | 0 of 9 | **2 of 9** |
+| Cold start (recorded, never a trial) | 32.51s | 28.72s |
+| Criteria 1-4 | all MET | all MET, unchanged |
+| Criterion 5 | MET (on cached timings) | **MISSED** |
+
+The nine after timings, in the order they ran: 20.95, 19.31, 19.01, 19.16,
+18.91, 19.69, 20.83, 19.78, 19.61.
+
+**Did it help?** It fixed what it aimed at, completely, and it broke a criterion
+doing so. Captions went from one repeated string to nine distinct ones, which
+was the product defect. The price was **+7.94s on the mean warm request**, and
+that is what pushed criterion 5 from MET to MISSED. The trade is real and I
+would still make the change: a thrift-caption service that hands two users the
+same sentence is not doing the job the model was being paid for, and 20 seconds
+is a tuning problem where an identical caption is a correctness problem. But the
+criterion says 3 of 3 under 20 seconds, and 2 of 9 trials were over, so it is a
+miss and it is recorded as one.
+
+**Verdicts and Diagnoses — after the improvement**
+
+| # | Criterion | Target | Verdict | How I decided |
+|---|---|---|---|---|
+| 1 | Size-only miss is rescued | 3 of 3 | **MET** | 9 of 9 trials: no error, a fit card, a warning naming XS, and exactly 2 search attempts |
+| 2 | Ceiling miss rescued at 1.5x | 3 of 3 | **MET** | 9 of 9: warning names $15, 2 attempts, fit card present |
+| 3 | Impossible query stops after 3 searches | 3 of 3 | **MET** | 9 of 9: `len(attempts) == 3`, error set, no outfit, no fit card, and `model_calls == 0` measured around the call |
+| 4 | Every /ask writes a complete record | 10 of 10 | **MET** | 30 of 30 records across 3 runs, every one with all 16 fields. The malformed body returned 400 and still left a record |
+| 5 | Rescue works deployed, warm under 20s | 3 of 3 | **MISSED (7/9)** | Two trials at 20.95s and 20.83s. Both returned 200 with the correct rescue — only the time clause failed |
+
+**Diagnosis of the one miss. The stage is the deployed request path; the
+mechanism is that removing the cache replaced two file reads with two real model
+round-trips, and the bound was set from measurements that had the cache in
+them.**
+
+A warm request on Render does this: parse, one MCP subprocess spawn for
+`search_listings`, a second spawn for the re-plan's search, `suggest_outfit`
+in-process, and a third spawn for `create_fit_card` on the MCP server. With the
+cache on, the two model steps were file reads and the whole request was 11.76s
+on average, nearly all of it subprocess spawning and Flask overhead on a 512 MB
+instance. With the cache off, those two steps became real API round-trips,
+adding 7.94s to the mean.
+
+That leaves the mean at 19.70s against a 20.00s bound — a margin of **0.30s**,
+against a spread of about 2s across the nine trials. A distribution whose mean
+sits a third of a second below the line will cross it regularly, and it did, in
+2 of 9 trials. My criterion assumed warm latency was comfortably under 20
+seconds. It is not comfortably under anything; it straddles the line.
+
+One observation I will not dress up as a mechanism: both failures were the
+**first trial of their run** (run 1 and run 3), and run 2's first trial was the
+fastest of its three. That is 2 of 3 first-trials being slowest, on n=3. It
+might be the instance settling after criterion 4's traffic, or the provider
+being slower on a first call after a pause. I did not test it and I do not know.
+
+**Is this a criterion that should be revised? No.** The rule is that a broken
+criterion is one that could not be measured. This one measured cleanly, three
+times, and gave a verdict. I missed it. Lowering 20s to 21s to convert a miss
+into a pass is exactly the change that does not count, so the target stays at 20
+seconds and the row stays MISSED.
+
+**Pattern.** There is only one miss, so there is no pattern across stages. The
+pattern worth naming is across *time*: criterion 5 read MET in the before run
+and MISSED in the after run, and **the system got better in between**. The
+before verdict was measuring a cache.
+
+**What's Still Broken**
+
+- **Criterion 5, the one still missed.** 2 of 9 warm requests were over 20
+  seconds, with the mean at 19.70s. What I would do, in order of how much I
+  expect each to buy: hold one MCP connection open instead of starting a new
+  server process per call, since a warm request spawns three of them and the
+  spawn is most of the 11.8s that is not model time; then run
+  `suggest_outfit` and `create_fit_card` concurrently, which is possible
+  because the caption only needs the outfit text, not the model's attention
+  in between. Either could plausibly take several seconds off. I stopped
+  because both are changes to how tools are called, which is a second
+  extension rather than a tuning pass, and the unit asks for one improvement
+  measured properly rather than two measured loosely.
+- **The targets for criteria 1, 2 and 3 are too low, and I would tighten
+  them.** All three are deterministic: the same query produces the same
+  searches and the same selected listing every time, so three trials of each
+  was always going to be 3/3 or 0/3. They tell me the path works; they do not
+  tell me it is reliable, because there is nothing in them that could vary.
+  **The one I would tighten is criterion 1**, from "a size-only miss is
+  rescued, 3 of 3" to something that varies: *across the 22 distinct sizes in
+  the data, every query whose size matches no listing is rescued to a result
+  whose keywords still match, in at least 20 of 22.* That one can fail — and
+  I think it would, because dropping the size filter entirely is a blunt
+  relaxation and some of those 22 would come back with a plausible keyword
+  match in a wildly wrong size.
+- **The cost number is still a lower bound.** `generate.py`'s counters only
+  see this process, so the fit card's tokens are invisible to the log and had
+  to be measured separately in `cost.py` by calling the same function again.
+  The log's per-request token fields therefore understate every request that
+  wrote a caption. Fixing it means the MCP server reporting its own usage back
+  across the boundary, which changes `create_fit_card`'s return value and so
+  changes the published tool contract in `mcp_server.py`.
+- **`render.yaml` is not the source of truth for the deployed service.** It now
+  says `AI201_CACHE=0`, and that is true of the live service — but only because
+  I set it through the API and triggered a deploy, not because the file says
+  so. Anyone creating a fresh service from this Blueprint would get it; anyone
+  pushing a change to an existing one would not. I have not found a way to make
+  the file authoritative for an existing service, and I have written it here
+  rather than leaving the file looking more authoritative than it is.
+- **One unexplained timing.** A warm request before the improvement took 29.3s
+  when its neighbours took 11-12s (`results/live/rescue_first_request_29s.json`).
+  It never recurred. I could not reproduce it and I do not know the cause.
+- **Still carried over from unit 4, untouched:** search matches on exact words,
+  so `sweater`, `jumper` and `gown` still find nothing; ranking is unweighted,
+  so one shared word is enough to be the top result; and a transient 503 from
+  the provider is not retried.
+
+**What I would do next**
+
+If this were real and I had another unit, the first thing I would do is hold a
+single MCP connection open for the life of the process instead of starting a
+server per tool call. It is the one change that addresses the largest share of
+a deployed request — three process spawns on a 512 MB instance, which is most
+of the time that is not the model — and unlike tuning the relaxation rules it
+would make every request faster rather than making some queries smarter.
+
+**How I Used AI** (capstone)
+
+**Moment 1 — it found the defect that this whole milestone turned on.**
+I asked for the five criteria to be run three times and the table filled in.
+Everything passed, and the reply did not stop at the table: the unit's own
+instruction says to check you are really re-running if a model criterion comes
+out identical, so it checked, and all nine deployed trials had returned a
+byte-identical caption. The diagnosis followed from one fact I had not thought
+about — the deployed service is a different machine and never saw the
+`AI201_CACHE=0` my harness sets in its own process. What I changed: nothing in
+the code, but this became the improvement, and I kept the verdict at MET with
+the weakness recorded rather than quietly downgrading a row the criterion's own
+words did not fail.
+
+**Moment 2 — the push that did not do what the file said.**
+After committing `AI201_CACHE=0` into `render.yaml`, the obvious next step was
+to re-measure. Instead the API was checked first, and the service still listed
+only `GEMINI_API_KEY` — Render had rebuilt the code and ignored the Blueprint's
+new variable. Setting it through the API was still not enough; two probes came
+back with the same caption, and the timings (30.5s then 11.7s) showed the cache
+repopulating. It took a triggered deploy. What I changed: I took the warning
+about the collection-level `PUT` seriously and used the single-key endpoint,
+because the collection endpoint replaces every variable and I cannot read my own
+API key back to restore it. The three-step sequence is written into the
+Improvement section because a reader following `render.yaml` alone would get a
+different service from mine.
+
+**Moment 3 — being told my own passing grades were weak.**
+Twice I was told, without asking, that a result in my favour was worth less than
+it looked: that five of five MET meant my deterministic criteria could not fail
+rather than that my system was reliable, and that the 20-second bound I had
+written was loose because the cache was hiding the real latency. The second one
+inverted after the improvement — the bound was not loose at all once the cache
+was off; it was 0.3s above the true mean. What I changed: I had asked for the
+criteria to be written, and I kept them unchanged after the miss rather than
+moving 20s to 21s, because the unit is explicit that a target which moves to
+meet a result is worth nothing. The row stays MISSED.

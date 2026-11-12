@@ -1,0 +1,3845 @@
+[
+  {
+    "run": 1,
+    "trial": 1,
+    "seconds": 20.954111200058833,
+    "body": {
+      "attempts": [
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": "XS"
+          },
+          "found": 0
+        },
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": null
+          },
+          "found": 10
+        }
+      ],
+      "error": null,
+      "error_detail": null,
+      "fit_card": "Channeling major off-duty supermodel energy with this vintage 90s navy and white track jacket. Just listed it over on Poshmark for $45, and honestly I'm tempted to keep it for my baggy-jeans-and-combat-boots rotation. Perfect for looking put-together while feeling like you're still in loungewear. ✨👟",
+      "item_ids": {
+        "create_fit_card": "lst_004",
+        "searched": "lst_004",
+        "selected": "lst_004",
+        "suggest_outfit": "lst_004"
+      },
+      "outfit_suggestion": "**Outfit 1: Off-Duty Streetwear**\n*   **Top:** White ribbed tank top (worn underneath)\n*   **Outerwear:** 90s Track Jacket in navy/white\n*   **Bottoms:** Baggy straight-leg jeans in dark wash\n*   **Shoes:** Chunky white sneakers\n*   **Accessory:** Black crossbody bag\n\n*Why it works:* Leaving the track jacket unzipped over the white ribbed tank highlights the crisp white stripes on the jacket while tying directly into the chunky white sneakers. The dark wash baggy jeans ground the sporty top half with a classic 90s skater silhouette.\n\n**Outfit 2: High-Low Athletic**\n*   **Top:** Oversized grey crewneck sweatshirt (worn layered under the jacket, or draped over shoulders)\n*   **Outerwear:** 90s Track Jacket in navy/white\n*   **Bottoms:** Wide-leg khaki trousers\n*   **Shoes:** Black combat boots\n*   **Accessory:** Brown leather belt\n\n*Why it works:* Pairing the athletic navy track jacket with tailored khaki trousers creates a sharp contrast. Tucking the grey crewneck into the trousers (cinched with the brown leather belt) adds texture, and the black combat boots anchor the voluminous wide-leg pants.",
+      "parsed": {
+        "description": "90s track jacket",
+        "max_price": null,
+        "size": "XS"
+      },
+      "query": "90s track jacket in size XS",
+      "search_results": [
+        {
+          "brand": "Champion",
+          "category": "outerwear",
+          "colors": [
+            "navy",
+            "white"
+          ],
+          "condition": "excellent",
+          "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+          "id": "lst_004",
+          "platform": "poshmark",
+          "price": 45.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "streetwear"
+          ],
+          "title": "90s Track Jacket — Navy/White Stripe"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Genuine leather bomber jacket. Classic 90s silhouette, slightly boxy. Ribbed collar, cuffs, and hem. Some creasing from age — adds character.",
+          "id": "lst_022",
+          "platform": "depop",
+          "price": 75.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "leather",
+            "classic",
+            "grunge"
+          ],
+          "title": "90s Leather Bomber — Black"
+        },
+        {
+          "brand": "Wrangler",
+          "category": "outerwear",
+          "colors": [
+            "light blue"
+          ],
+          "condition": "excellent",
+          "description": "Cropped denim jacket in a light wash. Great structured shoulders. Blank canvas — no patches or pins but would be perfect to customize.",
+          "id": "lst_007",
+          "platform": "poshmark",
+          "price": 42.0,
+          "size": "S",
+          "style_tags": [
+            "denim",
+            "vintage",
+            "classic",
+            "streetwear"
+          ],
+          "title": "Denim Jacket — Light Wash, Cropped"
+        },
+        {
+          "brand": "Demonia",
+          "category": "shoes",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Patent leather platform Mary Janes. 1.5 inch platform. Some light scuffing on the toe box but nothing major. UK size 5.",
+          "id": "lst_009",
+          "platform": "depop",
+          "price": 55.0,
+          "size": "US 7",
+          "style_tags": [
+            "y2k",
+            "goth",
+            "platform",
+            "90s"
+          ],
+          "title": "Platform Mary Janes — Black Patent"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "purple",
+            "teal",
+            "black"
+          ],
+          "condition": "good",
+          "description": "Color block windbreaker from the early 90s. Packable, lightweight. The kind your dad definitely owned. Full zip with elastic cuffs.",
+          "id": "lst_010",
+          "platform": "thredUp",
+          "price": 40.0,
+          "size": "L",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "color block",
+            "streetwear"
+          ],
+          "title": "Vintage Windbreaker — Color Block Purple/Teal"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "ivory",
+            "dusty pink",
+            "green"
+          ],
+          "condition": "good",
+          "description": "Delicate 90s slip dress in a muted floral print. Midi length, adjustable straps. Light snag on the side seam — not visible when worn.",
+          "id": "lst_013",
+          "platform": "depop",
+          "price": 30.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "feminine",
+            "floral",
+            "cottagecore"
+          ],
+          "title": "90s Silk Slip Dress — Floral, Midi Length"
+        },
+        {
+          "brand": null,
+          "category": "shoes",
+          "colors": [
+            "white"
+          ],
+          "condition": "good",
+          "description": "White chunky platform sneakers. Very late 90s / early 2000s energy. Velcro straps. True to size. Some sole yellowing.",
+          "id": "lst_019",
+          "platform": "poshmark",
+          "price": 48.0,
+          "size": "US 8",
+          "style_tags": [
+            "y2k",
+            "platform",
+            "90s",
+            "streetwear"
+          ],
+          "title": "Platform Sneakers — White Chunky Sole"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "dark blue",
+            "indigo"
+          ],
+          "condition": "good",
+          "description": "Baggy carpenter jeans with hammer loop on the side. Dark wash. Sits at the waist. Major 90s workwear vibes.",
+          "id": "lst_031",
+          "platform": "depop",
+          "price": 36.0,
+          "size": "W32",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "streetwear",
+            "baggy",
+            "workwear"
+          ],
+          "title": "Baggy Carpenter Jeans — Dark Wash"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "olive",
+            "green"
+          ],
+          "condition": "excellent",
+          "description": "Olive canvas shacket — thicker than a shirt, lighter than a jacket. Chest pockets, button-front. Great transitional layer.",
+          "id": "lst_032",
+          "platform": "poshmark",
+          "price": 33.0,
+          "size": "M/L",
+          "style_tags": [
+            "earth tones",
+            "classic",
+            "layering",
+            "minimal"
+          ],
+          "title": "Shacket — Olive Canvas"
+        },
+        {
+          "brand": null,
+          "category": "accessories",
+          "colors": [
+            "brown",
+            "tan",
+            "plaid"
+          ],
+          "condition": "excellent",
+          "description": "Reversible bucket hat — plaid on one side, solid tan on the other. Unstructured brim. One size fits most.",
+          "id": "lst_034",
+          "platform": "thredUp",
+          "price": 14.0,
+          "size": "One Size",
+          "style_tags": [
+            "90s",
+            "streetwear",
+            "vintage",
+            "accessories"
+          ],
+          "title": "Bucket Hat — Reversible, Brown Plaid"
+        }
+      ],
+      "selected_item": {
+        "brand": "Champion",
+        "category": "outerwear",
+        "colors": [
+          "navy",
+          "white"
+        ],
+        "condition": "excellent",
+        "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+        "id": "lst_004",
+        "platform": "poshmark",
+        "price": 45.0,
+        "size": "M",
+        "style_tags": [
+          "90s",
+          "vintage",
+          "athletic",
+          "streetwear"
+        ],
+        "title": "90s Track Jacket — Navy/White Stripe"
+      },
+      "wardrobe": {
+        "items": [
+          {
+            "category": "bottoms",
+            "colors": [
+              "dark blue",
+              "indigo"
+            ],
+            "id": "w_001",
+            "name": "Baggy straight-leg jeans, dark wash",
+            "notes": "High-waisted, sits above the hip",
+            "style_tags": [
+              "denim",
+              "streetwear",
+              "baggy"
+            ]
+          },
+          {
+            "category": "bottoms",
+            "colors": [
+              "khaki",
+              "tan"
+            ],
+            "id": "w_002",
+            "name": "Wide-leg khaki trousers",
+            "notes": null,
+            "style_tags": [
+              "earth tones",
+              "minimal",
+              "wide-leg"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "white"
+            ],
+            "id": "w_003",
+            "name": "White ribbed tank top",
+            "notes": "Goes with everything",
+            "style_tags": [
+              "basics",
+              "minimal",
+              "fitted"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "grey",
+              "charcoal"
+            ],
+            "id": "w_004",
+            "name": "Oversized grey crewneck sweatshirt",
+            "notes": "Really oversized — drops below the hip",
+            "style_tags": [
+              "oversized",
+              "basics",
+              "cozy"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "black"
+            ],
+            "id": "w_005",
+            "name": "Black cropped zip hoodie",
+            "notes": null,
+            "style_tags": [
+              "athletic",
+              "streetwear",
+              "cropped"
+            ]
+          },
+          {
+            "category": "outerwear",
+            "colors": [
+              "black"
+            ],
+            "id": "w_006",
+            "name": "Vintage black denim jacket",
+            "notes": "Slightly cropped",
+            "style_tags": [
+              "denim",
+              "vintage",
+              "classic"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "white"
+            ],
+            "id": "w_007",
+            "name": "Chunky white sneakers",
+            "notes": null,
+            "style_tags": [
+              "sneakers",
+              "chunky",
+              "streetwear"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "black"
+            ],
+            "id": "w_008",
+            "name": "Black combat boots",
+            "notes": "Lace-up, mid-ankle height",
+            "style_tags": [
+              "boots",
+              "grunge",
+              "classic"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "brown"
+            ],
+            "id": "w_009",
+            "name": "Brown leather belt",
+            "notes": null,
+            "style_tags": [
+              "classic",
+              "earth tones",
+              "accessories"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "black"
+            ],
+            "id": "w_010",
+            "name": "Black crossbody bag",
+            "notes": null,
+            "style_tags": [
+              "minimal",
+              "accessories",
+              "everyday"
+            ]
+          }
+        ]
+      },
+      "warnings": [
+        "No listings in size XS, so the size filter was dropped."
+      ]
+    }
+  },
+  {
+    "run": 1,
+    "trial": 2,
+    "seconds": 19.3119880000595,
+    "body": {
+      "attempts": [
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": "XS"
+          },
+          "found": 0
+        },
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": null
+          },
+          "found": 10
+        }
+      ],
+      "error": null,
+      "error_detail": null,
+      "fit_card": "Found the ultimate 90s navy and white track jacket on Poshmark for $45 and I'm honestly never taking it off. It gives major vintage skater vibes thrown over baggy denim and a white tank, but also looks so cool layered with khakis and boots. Snagged a total wardrobe staple and I'm obsessed.",
+      "item_ids": {
+        "create_fit_card": "lst_004",
+        "searched": "lst_004",
+        "selected": "lst_004",
+        "suggest_outfit": "lst_004"
+      },
+      "outfit_suggestion": "**Outfit 1: Casual Streetwear**\n*   **Top:** White ribbed tank top (worn underneath)\n*   **Outerwear:** 90s Track Jacket (Navy/White Stripe)\n*   **Bottoms:** Baggy straight-leg jeans\n*   **Shoes:** Chunky white sneakers\n*   **Accessories:** Black crossbody bag\n\n*Why it works:* Leaving the track jacket unzipped over the white ribbed tank creates a clean, sporty contrast against the dark wash of the baggy jeans, while the chunky white sneakers tie directly into the white stripes on the jacket.\n\n**Outfit 2: High-Low Athletic Prep**\n*   **Top:** Oversized grey crewneck sweatshirt (worn draped over the shoulders or layered under if it's cold, with the collar popping out)\n*   **Outerwear:** 90s Track Jacket (Navy/White Stripe)\n*   **Bottoms:** Wide-leg khaki trousers\n*   **Shoes:** Black combat boots\n*   **Accessories:** Brown leather belt\n\n*Why it works:* Pairing the athletic navy track jacket with structured khaki trousers leans into a retro skater-prep look, and grounding the wide legs with black combat boots adds a tough 90s edge that balances the navy and tan color palette.",
+      "parsed": {
+        "description": "90s track jacket",
+        "max_price": null,
+        "size": "XS"
+      },
+      "query": "90s track jacket in size XS",
+      "search_results": [
+        {
+          "brand": "Champion",
+          "category": "outerwear",
+          "colors": [
+            "navy",
+            "white"
+          ],
+          "condition": "excellent",
+          "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+          "id": "lst_004",
+          "platform": "poshmark",
+          "price": 45.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "streetwear"
+          ],
+          "title": "90s Track Jacket — Navy/White Stripe"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Genuine leather bomber jacket. Classic 90s silhouette, slightly boxy. Ribbed collar, cuffs, and hem. Some creasing from age — adds character.",
+          "id": "lst_022",
+          "platform": "depop",
+          "price": 75.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "leather",
+            "classic",
+            "grunge"
+          ],
+          "title": "90s Leather Bomber — Black"
+        },
+        {
+          "brand": "Wrangler",
+          "category": "outerwear",
+          "colors": [
+            "light blue"
+          ],
+          "condition": "excellent",
+          "description": "Cropped denim jacket in a light wash. Great structured shoulders. Blank canvas — no patches or pins but would be perfect to customize.",
+          "id": "lst_007",
+          "platform": "poshmark",
+          "price": 42.0,
+          "size": "S",
+          "style_tags": [
+            "denim",
+            "vintage",
+            "classic",
+            "streetwear"
+          ],
+          "title": "Denim Jacket — Light Wash, Cropped"
+        },
+        {
+          "brand": "Demonia",
+          "category": "shoes",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Patent leather platform Mary Janes. 1.5 inch platform. Some light scuffing on the toe box but nothing major. UK size 5.",
+          "id": "lst_009",
+          "platform": "depop",
+          "price": 55.0,
+          "size": "US 7",
+          "style_tags": [
+            "y2k",
+            "goth",
+            "platform",
+            "90s"
+          ],
+          "title": "Platform Mary Janes — Black Patent"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "purple",
+            "teal",
+            "black"
+          ],
+          "condition": "good",
+          "description": "Color block windbreaker from the early 90s. Packable, lightweight. The kind your dad definitely owned. Full zip with elastic cuffs.",
+          "id": "lst_010",
+          "platform": "thredUp",
+          "price": 40.0,
+          "size": "L",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "color block",
+            "streetwear"
+          ],
+          "title": "Vintage Windbreaker — Color Block Purple/Teal"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "ivory",
+            "dusty pink",
+            "green"
+          ],
+          "condition": "good",
+          "description": "Delicate 90s slip dress in a muted floral print. Midi length, adjustable straps. Light snag on the side seam — not visible when worn.",
+          "id": "lst_013",
+          "platform": "depop",
+          "price": 30.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "feminine",
+            "floral",
+            "cottagecore"
+          ],
+          "title": "90s Silk Slip Dress — Floral, Midi Length"
+        },
+        {
+          "brand": null,
+          "category": "shoes",
+          "colors": [
+            "white"
+          ],
+          "condition": "good",
+          "description": "White chunky platform sneakers. Very late 90s / early 2000s energy. Velcro straps. True to size. Some sole yellowing.",
+          "id": "lst_019",
+          "platform": "poshmark",
+          "price": 48.0,
+          "size": "US 8",
+          "style_tags": [
+            "y2k",
+            "platform",
+            "90s",
+            "streetwear"
+          ],
+          "title": "Platform Sneakers — White Chunky Sole"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "dark blue",
+            "indigo"
+          ],
+          "condition": "good",
+          "description": "Baggy carpenter jeans with hammer loop on the side. Dark wash. Sits at the waist. Major 90s workwear vibes.",
+          "id": "lst_031",
+          "platform": "depop",
+          "price": 36.0,
+          "size": "W32",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "streetwear",
+            "baggy",
+            "workwear"
+          ],
+          "title": "Baggy Carpenter Jeans — Dark Wash"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "olive",
+            "green"
+          ],
+          "condition": "excellent",
+          "description": "Olive canvas shacket — thicker than a shirt, lighter than a jacket. Chest pockets, button-front. Great transitional layer.",
+          "id": "lst_032",
+          "platform": "poshmark",
+          "price": 33.0,
+          "size": "M/L",
+          "style_tags": [
+            "earth tones",
+            "classic",
+            "layering",
+            "minimal"
+          ],
+          "title": "Shacket — Olive Canvas"
+        },
+        {
+          "brand": null,
+          "category": "accessories",
+          "colors": [
+            "brown",
+            "tan",
+            "plaid"
+          ],
+          "condition": "excellent",
+          "description": "Reversible bucket hat — plaid on one side, solid tan on the other. Unstructured brim. One size fits most.",
+          "id": "lst_034",
+          "platform": "thredUp",
+          "price": 14.0,
+          "size": "One Size",
+          "style_tags": [
+            "90s",
+            "streetwear",
+            "vintage",
+            "accessories"
+          ],
+          "title": "Bucket Hat — Reversible, Brown Plaid"
+        }
+      ],
+      "selected_item": {
+        "brand": "Champion",
+        "category": "outerwear",
+        "colors": [
+          "navy",
+          "white"
+        ],
+        "condition": "excellent",
+        "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+        "id": "lst_004",
+        "platform": "poshmark",
+        "price": 45.0,
+        "size": "M",
+        "style_tags": [
+          "90s",
+          "vintage",
+          "athletic",
+          "streetwear"
+        ],
+        "title": "90s Track Jacket — Navy/White Stripe"
+      },
+      "wardrobe": {
+        "items": [
+          {
+            "category": "bottoms",
+            "colors": [
+              "dark blue",
+              "indigo"
+            ],
+            "id": "w_001",
+            "name": "Baggy straight-leg jeans, dark wash",
+            "notes": "High-waisted, sits above the hip",
+            "style_tags": [
+              "denim",
+              "streetwear",
+              "baggy"
+            ]
+          },
+          {
+            "category": "bottoms",
+            "colors": [
+              "khaki",
+              "tan"
+            ],
+            "id": "w_002",
+            "name": "Wide-leg khaki trousers",
+            "notes": null,
+            "style_tags": [
+              "earth tones",
+              "minimal",
+              "wide-leg"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "white"
+            ],
+            "id": "w_003",
+            "name": "White ribbed tank top",
+            "notes": "Goes with everything",
+            "style_tags": [
+              "basics",
+              "minimal",
+              "fitted"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "grey",
+              "charcoal"
+            ],
+            "id": "w_004",
+            "name": "Oversized grey crewneck sweatshirt",
+            "notes": "Really oversized — drops below the hip",
+            "style_tags": [
+              "oversized",
+              "basics",
+              "cozy"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "black"
+            ],
+            "id": "w_005",
+            "name": "Black cropped zip hoodie",
+            "notes": null,
+            "style_tags": [
+              "athletic",
+              "streetwear",
+              "cropped"
+            ]
+          },
+          {
+            "category": "outerwear",
+            "colors": [
+              "black"
+            ],
+            "id": "w_006",
+            "name": "Vintage black denim jacket",
+            "notes": "Slightly cropped",
+            "style_tags": [
+              "denim",
+              "vintage",
+              "classic"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "white"
+            ],
+            "id": "w_007",
+            "name": "Chunky white sneakers",
+            "notes": null,
+            "style_tags": [
+              "sneakers",
+              "chunky",
+              "streetwear"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "black"
+            ],
+            "id": "w_008",
+            "name": "Black combat boots",
+            "notes": "Lace-up, mid-ankle height",
+            "style_tags": [
+              "boots",
+              "grunge",
+              "classic"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "brown"
+            ],
+            "id": "w_009",
+            "name": "Brown leather belt",
+            "notes": null,
+            "style_tags": [
+              "classic",
+              "earth tones",
+              "accessories"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "black"
+            ],
+            "id": "w_010",
+            "name": "Black crossbody bag",
+            "notes": null,
+            "style_tags": [
+              "minimal",
+              "accessories",
+              "everyday"
+            ]
+          }
+        ]
+      },
+      "warnings": [
+        "No listings in size XS, so the size filter was dropped."
+      ]
+    }
+  },
+  {
+    "run": 1,
+    "trial": 3,
+    "seconds": 19.008930700132623,
+    "body": {
+      "attempts": [
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": "XS"
+          },
+          "found": 0
+        },
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": null
+          },
+          "found": 10
+        }
+      ],
+      "error": null,
+      "error_detail": null,
+      "fit_card": "Just scored this navy and white 90s track jacket for $45 on Poshmark and I’m obsessed with how easy it is to throw on over baggy denim for that effortless off-duty streetwear look. It has the ultimate retro athletic vibe without trying too hard. Go grab it in my closet before I change my mind!",
+      "item_ids": {
+        "create_fit_card": "lst_004",
+        "searched": "lst_004",
+        "selected": "lst_004",
+        "suggest_outfit": "lst_004"
+      },
+      "outfit_suggestion": "**Outfit 1: The Off-Duty Streetwear Look**\n*   **Top:** White ribbed tank top (worn as the base layer)\n*   **Outerwear:** 90s Track Jacket (left unzipped to show the tank)\n*   **Bottoms:** Baggy straight-leg jeans, dark wash\n*   **Shoes:** Chunky white sneakers\n*   **Accessories:** Black crossbody bag\n\n**Outfit 2: High-Low Contrast Sporty-Prep**\n*   **Top:** Oversized grey crewneck sweatshirt (worn layered *under* the track jacket for extra warmth and collar pop)\n*   **Outerwear:** 90s Track Jacket \n*   **Bottoms:** Wide-leg khaki trousers\n*   **Shoes:** Black combat boots\n*   **Accessories:** Brown leather belt",
+      "parsed": {
+        "description": "90s track jacket",
+        "max_price": null,
+        "size": "XS"
+      },
+      "query": "90s track jacket in size XS",
+      "search_results": [
+        {
+          "brand": "Champion",
+          "category": "outerwear",
+          "colors": [
+            "navy",
+            "white"
+          ],
+          "condition": "excellent",
+          "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+          "id": "lst_004",
+          "platform": "poshmark",
+          "price": 45.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "streetwear"
+          ],
+          "title": "90s Track Jacket — Navy/White Stripe"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Genuine leather bomber jacket. Classic 90s silhouette, slightly boxy. Ribbed collar, cuffs, and hem. Some creasing from age — adds character.",
+          "id": "lst_022",
+          "platform": "depop",
+          "price": 75.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "leather",
+            "classic",
+            "grunge"
+          ],
+          "title": "90s Leather Bomber — Black"
+        },
+        {
+          "brand": "Wrangler",
+          "category": "outerwear",
+          "colors": [
+            "light blue"
+          ],
+          "condition": "excellent",
+          "description": "Cropped denim jacket in a light wash. Great structured shoulders. Blank canvas — no patches or pins but would be perfect to customize.",
+          "id": "lst_007",
+          "platform": "poshmark",
+          "price": 42.0,
+          "size": "S",
+          "style_tags": [
+            "denim",
+            "vintage",
+            "classic",
+            "streetwear"
+          ],
+          "title": "Denim Jacket — Light Wash, Cropped"
+        },
+        {
+          "brand": "Demonia",
+          "category": "shoes",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Patent leather platform Mary Janes. 1.5 inch platform. Some light scuffing on the toe box but nothing major. UK size 5.",
+          "id": "lst_009",
+          "platform": "depop",
+          "price": 55.0,
+          "size": "US 7",
+          "style_tags": [
+            "y2k",
+            "goth",
+            "platform",
+            "90s"
+          ],
+          "title": "Platform Mary Janes — Black Patent"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "purple",
+            "teal",
+            "black"
+          ],
+          "condition": "good",
+          "description": "Color block windbreaker from the early 90s. Packable, lightweight. The kind your dad definitely owned. Full zip with elastic cuffs.",
+          "id": "lst_010",
+          "platform": "thredUp",
+          "price": 40.0,
+          "size": "L",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "color block",
+            "streetwear"
+          ],
+          "title": "Vintage Windbreaker — Color Block Purple/Teal"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "ivory",
+            "dusty pink",
+            "green"
+          ],
+          "condition": "good",
+          "description": "Delicate 90s slip dress in a muted floral print. Midi length, adjustable straps. Light snag on the side seam — not visible when worn.",
+          "id": "lst_013",
+          "platform": "depop",
+          "price": 30.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "feminine",
+            "floral",
+            "cottagecore"
+          ],
+          "title": "90s Silk Slip Dress — Floral, Midi Length"
+        },
+        {
+          "brand": null,
+          "category": "shoes",
+          "colors": [
+            "white"
+          ],
+          "condition": "good",
+          "description": "White chunky platform sneakers. Very late 90s / early 2000s energy. Velcro straps. True to size. Some sole yellowing.",
+          "id": "lst_019",
+          "platform": "poshmark",
+          "price": 48.0,
+          "size": "US 8",
+          "style_tags": [
+            "y2k",
+            "platform",
+            "90s",
+            "streetwear"
+          ],
+          "title": "Platform Sneakers — White Chunky Sole"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "dark blue",
+            "indigo"
+          ],
+          "condition": "good",
+          "description": "Baggy carpenter jeans with hammer loop on the side. Dark wash. Sits at the waist. Major 90s workwear vibes.",
+          "id": "lst_031",
+          "platform": "depop",
+          "price": 36.0,
+          "size": "W32",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "streetwear",
+            "baggy",
+            "workwear"
+          ],
+          "title": "Baggy Carpenter Jeans — Dark Wash"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "olive",
+            "green"
+          ],
+          "condition": "excellent",
+          "description": "Olive canvas shacket — thicker than a shirt, lighter than a jacket. Chest pockets, button-front. Great transitional layer.",
+          "id": "lst_032",
+          "platform": "poshmark",
+          "price": 33.0,
+          "size": "M/L",
+          "style_tags": [
+            "earth tones",
+            "classic",
+            "layering",
+            "minimal"
+          ],
+          "title": "Shacket — Olive Canvas"
+        },
+        {
+          "brand": null,
+          "category": "accessories",
+          "colors": [
+            "brown",
+            "tan",
+            "plaid"
+          ],
+          "condition": "excellent",
+          "description": "Reversible bucket hat — plaid on one side, solid tan on the other. Unstructured brim. One size fits most.",
+          "id": "lst_034",
+          "platform": "thredUp",
+          "price": 14.0,
+          "size": "One Size",
+          "style_tags": [
+            "90s",
+            "streetwear",
+            "vintage",
+            "accessories"
+          ],
+          "title": "Bucket Hat — Reversible, Brown Plaid"
+        }
+      ],
+      "selected_item": {
+        "brand": "Champion",
+        "category": "outerwear",
+        "colors": [
+          "navy",
+          "white"
+        ],
+        "condition": "excellent",
+        "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+        "id": "lst_004",
+        "platform": "poshmark",
+        "price": 45.0,
+        "size": "M",
+        "style_tags": [
+          "90s",
+          "vintage",
+          "athletic",
+          "streetwear"
+        ],
+        "title": "90s Track Jacket — Navy/White Stripe"
+      },
+      "wardrobe": {
+        "items": [
+          {
+            "category": "bottoms",
+            "colors": [
+              "dark blue",
+              "indigo"
+            ],
+            "id": "w_001",
+            "name": "Baggy straight-leg jeans, dark wash",
+            "notes": "High-waisted, sits above the hip",
+            "style_tags": [
+              "denim",
+              "streetwear",
+              "baggy"
+            ]
+          },
+          {
+            "category": "bottoms",
+            "colors": [
+              "khaki",
+              "tan"
+            ],
+            "id": "w_002",
+            "name": "Wide-leg khaki trousers",
+            "notes": null,
+            "style_tags": [
+              "earth tones",
+              "minimal",
+              "wide-leg"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "white"
+            ],
+            "id": "w_003",
+            "name": "White ribbed tank top",
+            "notes": "Goes with everything",
+            "style_tags": [
+              "basics",
+              "minimal",
+              "fitted"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "grey",
+              "charcoal"
+            ],
+            "id": "w_004",
+            "name": "Oversized grey crewneck sweatshirt",
+            "notes": "Really oversized — drops below the hip",
+            "style_tags": [
+              "oversized",
+              "basics",
+              "cozy"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "black"
+            ],
+            "id": "w_005",
+            "name": "Black cropped zip hoodie",
+            "notes": null,
+            "style_tags": [
+              "athletic",
+              "streetwear",
+              "cropped"
+            ]
+          },
+          {
+            "category": "outerwear",
+            "colors": [
+              "black"
+            ],
+            "id": "w_006",
+            "name": "Vintage black denim jacket",
+            "notes": "Slightly cropped",
+            "style_tags": [
+              "denim",
+              "vintage",
+              "classic"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "white"
+            ],
+            "id": "w_007",
+            "name": "Chunky white sneakers",
+            "notes": null,
+            "style_tags": [
+              "sneakers",
+              "chunky",
+              "streetwear"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "black"
+            ],
+            "id": "w_008",
+            "name": "Black combat boots",
+            "notes": "Lace-up, mid-ankle height",
+            "style_tags": [
+              "boots",
+              "grunge",
+              "classic"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "brown"
+            ],
+            "id": "w_009",
+            "name": "Brown leather belt",
+            "notes": null,
+            "style_tags": [
+              "classic",
+              "earth tones",
+              "accessories"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "black"
+            ],
+            "id": "w_010",
+            "name": "Black crossbody bag",
+            "notes": null,
+            "style_tags": [
+              "minimal",
+              "accessories",
+              "everyday"
+            ]
+          }
+        ]
+      },
+      "warnings": [
+        "No listings in size XS, so the size filter was dropped."
+      ]
+    }
+  },
+  {
+    "run": 2,
+    "trial": 1,
+    "seconds": 19.16376299993135,
+    "body": {
+      "attempts": [
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": "XS"
+          },
+          "found": 0
+        },
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": null
+          },
+          "found": 10
+        }
+      ],
+      "error": null,
+      "error_detail": null,
+      "fit_card": "Found this dream 90s navy and white track jacket and honestly haven’t taken it off since. It’s giving total vintage sportswear off-duty model vibes, especially thrown over a ribbed tank and baggy denim. Grabbed it on Poshmark for just $45 and it’s about to be my entire personality this season.",
+      "item_ids": {
+        "create_fit_card": "lst_004",
+        "searched": "lst_004",
+        "selected": "lst_004",
+        "suggest_outfit": "lst_004"
+      },
+      "outfit_suggestion": "**Outfit 1: Casual Streetwear**\n*   **Top:** White ribbed tank top\n*   **Bottoms:** Baggy straight-leg jeans (dark wash)\n*   **Shoes:** Chunky white sneakers\n*   **Accessory:** Black crossbody bag\n*   **How to wear:** Layer the 90s track jacket unzipped over the white ribbed tank top to contrast the bright white with the navy. Pair with the baggy dark wash jeans and chunky white sneakers, and wear the black crossbody bag across the chest to lean into the athletic 90s streetwear look.\n\n**Outfit 2: High-Low Contrast**\n*   **Top:** Oversized grey crewneck sweatshirt (worn underneath)\n*   **Bottoms:** Wide-leg khaki trousers\n*   **Shoes:** Black combat boots\n*   **Accessory:** Brown leather belt\n*   **How to wear:** Tuck the wide-leg khaki trousers in with the brown leather belt, layer the oversized grey crewneck underneath for extra bulk, and wear the navy and white track jacket zipped up on top. Ground the slouchy proportions of the jacket and trousers by finishing the look with the black combat boots.",
+      "parsed": {
+        "description": "90s track jacket",
+        "max_price": null,
+        "size": "XS"
+      },
+      "query": "90s track jacket in size XS",
+      "search_results": [
+        {
+          "brand": "Champion",
+          "category": "outerwear",
+          "colors": [
+            "navy",
+            "white"
+          ],
+          "condition": "excellent",
+          "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+          "id": "lst_004",
+          "platform": "poshmark",
+          "price": 45.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "streetwear"
+          ],
+          "title": "90s Track Jacket — Navy/White Stripe"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Genuine leather bomber jacket. Classic 90s silhouette, slightly boxy. Ribbed collar, cuffs, and hem. Some creasing from age — adds character.",
+          "id": "lst_022",
+          "platform": "depop",
+          "price": 75.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "leather",
+            "classic",
+            "grunge"
+          ],
+          "title": "90s Leather Bomber — Black"
+        },
+        {
+          "brand": "Wrangler",
+          "category": "outerwear",
+          "colors": [
+            "light blue"
+          ],
+          "condition": "excellent",
+          "description": "Cropped denim jacket in a light wash. Great structured shoulders. Blank canvas — no patches or pins but would be perfect to customize.",
+          "id": "lst_007",
+          "platform": "poshmark",
+          "price": 42.0,
+          "size": "S",
+          "style_tags": [
+            "denim",
+            "vintage",
+            "classic",
+            "streetwear"
+          ],
+          "title": "Denim Jacket — Light Wash, Cropped"
+        },
+        {
+          "brand": "Demonia",
+          "category": "shoes",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Patent leather platform Mary Janes. 1.5 inch platform. Some light scuffing on the toe box but nothing major. UK size 5.",
+          "id": "lst_009",
+          "platform": "depop",
+          "price": 55.0,
+          "size": "US 7",
+          "style_tags": [
+            "y2k",
+            "goth",
+            "platform",
+            "90s"
+          ],
+          "title": "Platform Mary Janes — Black Patent"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "purple",
+            "teal",
+            "black"
+          ],
+          "condition": "good",
+          "description": "Color block windbreaker from the early 90s. Packable, lightweight. The kind your dad definitely owned. Full zip with elastic cuffs.",
+          "id": "lst_010",
+          "platform": "thredUp",
+          "price": 40.0,
+          "size": "L",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "color block",
+            "streetwear"
+          ],
+          "title": "Vintage Windbreaker — Color Block Purple/Teal"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "ivory",
+            "dusty pink",
+            "green"
+          ],
+          "condition": "good",
+          "description": "Delicate 90s slip dress in a muted floral print. Midi length, adjustable straps. Light snag on the side seam — not visible when worn.",
+          "id": "lst_013",
+          "platform": "depop",
+          "price": 30.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "feminine",
+            "floral",
+            "cottagecore"
+          ],
+          "title": "90s Silk Slip Dress — Floral, Midi Length"
+        },
+        {
+          "brand": null,
+          "category": "shoes",
+          "colors": [
+            "white"
+          ],
+          "condition": "good",
+          "description": "White chunky platform sneakers. Very late 90s / early 2000s energy. Velcro straps. True to size. Some sole yellowing.",
+          "id": "lst_019",
+          "platform": "poshmark",
+          "price": 48.0,
+          "size": "US 8",
+          "style_tags": [
+            "y2k",
+            "platform",
+            "90s",
+            "streetwear"
+          ],
+          "title": "Platform Sneakers — White Chunky Sole"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "dark blue",
+            "indigo"
+          ],
+          "condition": "good",
+          "description": "Baggy carpenter jeans with hammer loop on the side. Dark wash. Sits at the waist. Major 90s workwear vibes.",
+          "id": "lst_031",
+          "platform": "depop",
+          "price": 36.0,
+          "size": "W32",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "streetwear",
+            "baggy",
+            "workwear"
+          ],
+          "title": "Baggy Carpenter Jeans — Dark Wash"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "olive",
+            "green"
+          ],
+          "condition": "excellent",
+          "description": "Olive canvas shacket — thicker than a shirt, lighter than a jacket. Chest pockets, button-front. Great transitional layer.",
+          "id": "lst_032",
+          "platform": "poshmark",
+          "price": 33.0,
+          "size": "M/L",
+          "style_tags": [
+            "earth tones",
+            "classic",
+            "layering",
+            "minimal"
+          ],
+          "title": "Shacket — Olive Canvas"
+        },
+        {
+          "brand": null,
+          "category": "accessories",
+          "colors": [
+            "brown",
+            "tan",
+            "plaid"
+          ],
+          "condition": "excellent",
+          "description": "Reversible bucket hat — plaid on one side, solid tan on the other. Unstructured brim. One size fits most.",
+          "id": "lst_034",
+          "platform": "thredUp",
+          "price": 14.0,
+          "size": "One Size",
+          "style_tags": [
+            "90s",
+            "streetwear",
+            "vintage",
+            "accessories"
+          ],
+          "title": "Bucket Hat — Reversible, Brown Plaid"
+        }
+      ],
+      "selected_item": {
+        "brand": "Champion",
+        "category": "outerwear",
+        "colors": [
+          "navy",
+          "white"
+        ],
+        "condition": "excellent",
+        "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+        "id": "lst_004",
+        "platform": "poshmark",
+        "price": 45.0,
+        "size": "M",
+        "style_tags": [
+          "90s",
+          "vintage",
+          "athletic",
+          "streetwear"
+        ],
+        "title": "90s Track Jacket — Navy/White Stripe"
+      },
+      "wardrobe": {
+        "items": [
+          {
+            "category": "bottoms",
+            "colors": [
+              "dark blue",
+              "indigo"
+            ],
+            "id": "w_001",
+            "name": "Baggy straight-leg jeans, dark wash",
+            "notes": "High-waisted, sits above the hip",
+            "style_tags": [
+              "denim",
+              "streetwear",
+              "baggy"
+            ]
+          },
+          {
+            "category": "bottoms",
+            "colors": [
+              "khaki",
+              "tan"
+            ],
+            "id": "w_002",
+            "name": "Wide-leg khaki trousers",
+            "notes": null,
+            "style_tags": [
+              "earth tones",
+              "minimal",
+              "wide-leg"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "white"
+            ],
+            "id": "w_003",
+            "name": "White ribbed tank top",
+            "notes": "Goes with everything",
+            "style_tags": [
+              "basics",
+              "minimal",
+              "fitted"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "grey",
+              "charcoal"
+            ],
+            "id": "w_004",
+            "name": "Oversized grey crewneck sweatshirt",
+            "notes": "Really oversized — drops below the hip",
+            "style_tags": [
+              "oversized",
+              "basics",
+              "cozy"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "black"
+            ],
+            "id": "w_005",
+            "name": "Black cropped zip hoodie",
+            "notes": null,
+            "style_tags": [
+              "athletic",
+              "streetwear",
+              "cropped"
+            ]
+          },
+          {
+            "category": "outerwear",
+            "colors": [
+              "black"
+            ],
+            "id": "w_006",
+            "name": "Vintage black denim jacket",
+            "notes": "Slightly cropped",
+            "style_tags": [
+              "denim",
+              "vintage",
+              "classic"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "white"
+            ],
+            "id": "w_007",
+            "name": "Chunky white sneakers",
+            "notes": null,
+            "style_tags": [
+              "sneakers",
+              "chunky",
+              "streetwear"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "black"
+            ],
+            "id": "w_008",
+            "name": "Black combat boots",
+            "notes": "Lace-up, mid-ankle height",
+            "style_tags": [
+              "boots",
+              "grunge",
+              "classic"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "brown"
+            ],
+            "id": "w_009",
+            "name": "Brown leather belt",
+            "notes": null,
+            "style_tags": [
+              "classic",
+              "earth tones",
+              "accessories"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "black"
+            ],
+            "id": "w_010",
+            "name": "Black crossbody bag",
+            "notes": null,
+            "style_tags": [
+              "minimal",
+              "accessories",
+              "everyday"
+            ]
+          }
+        ]
+      },
+      "warnings": [
+        "No listings in size XS, so the size filter was dropped."
+      ]
+    }
+  },
+  {
+    "run": 2,
+    "trial": 2,
+    "seconds": 18.909370999783278,
+    "body": {
+      "attempts": [
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": "XS"
+          },
+          "found": 0
+        },
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": null
+          },
+          "found": 10
+        }
+      ],
+      "error": null,
+      "error_detail": null,
+      "fit_card": "found this absolute holy grail 90s navy and white track jacket and honestly I’m never taking it off. grabbed it for just $45 over on Poshmark and it’s giving major off-duty model running errands vibes. throw it on with baggy denim and chunky sneakers or dress it up with wide-leg trousers—obsessed is an understatement.",
+      "item_ids": {
+        "create_fit_card": "lst_004",
+        "searched": "lst_004",
+        "selected": "lst_004",
+        "suggest_outfit": "lst_004"
+      },
+      "outfit_suggestion": "**Outfit 1: The Off-Duty Streetwear Look**\n*   **Top:** White ribbed tank top (worn as the base layer)\n*   **Outerwear:** 90s Track Jacket (left unzipped over the tank)\n*   **Bottoms:** Baggy straight-leg jeans, dark wash\n*   **Shoes:** Chunky white sneakers\n*   **Accessory:** Black crossbody bag\n*   *Why it works:* The white ribbed tank mirrors the white stripes of the track jacket, while the chunky white sneakers tie the whole athletic, 90s streetwear aesthetic together against the dark wash denim.\n\n**Outfit 2: High-Low Smart Casual**\n*   **Top:** White ribbed tank top (tucked in)\n*   **Outerwear:** 90s Track Jacket (zipped all the way up for a sharp, sporty collar)\n*   **Bottoms:** Wide-leg khaki trousers\n*   **Accessory:** Brown leather belt (cinched at the waist through the trousers)\n*   **Shoes:** Black combat boots\n*   *Why it works:* Pairing the athletic navy track jacket with structured wide-leg khaki trousers creates a deliberate high-low mix. The black combat boots ground the softer tan and navy tones with a tough edge.",
+      "parsed": {
+        "description": "90s track jacket",
+        "max_price": null,
+        "size": "XS"
+      },
+      "query": "90s track jacket in size XS",
+      "search_results": [
+        {
+          "brand": "Champion",
+          "category": "outerwear",
+          "colors": [
+            "navy",
+            "white"
+          ],
+          "condition": "excellent",
+          "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+          "id": "lst_004",
+          "platform": "poshmark",
+          "price": 45.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "streetwear"
+          ],
+          "title": "90s Track Jacket — Navy/White Stripe"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Genuine leather bomber jacket. Classic 90s silhouette, slightly boxy. Ribbed collar, cuffs, and hem. Some creasing from age — adds character.",
+          "id": "lst_022",
+          "platform": "depop",
+          "price": 75.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "leather",
+            "classic",
+            "grunge"
+          ],
+          "title": "90s Leather Bomber — Black"
+        },
+        {
+          "brand": "Wrangler",
+          "category": "outerwear",
+          "colors": [
+            "light blue"
+          ],
+          "condition": "excellent",
+          "description": "Cropped denim jacket in a light wash. Great structured shoulders. Blank canvas — no patches or pins but would be perfect to customize.",
+          "id": "lst_007",
+          "platform": "poshmark",
+          "price": 42.0,
+          "size": "S",
+          "style_tags": [
+            "denim",
+            "vintage",
+            "classic",
+            "streetwear"
+          ],
+          "title": "Denim Jacket — Light Wash, Cropped"
+        },
+        {
+          "brand": "Demonia",
+          "category": "shoes",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Patent leather platform Mary Janes. 1.5 inch platform. Some light scuffing on the toe box but nothing major. UK size 5.",
+          "id": "lst_009",
+          "platform": "depop",
+          "price": 55.0,
+          "size": "US 7",
+          "style_tags": [
+            "y2k",
+            "goth",
+            "platform",
+            "90s"
+          ],
+          "title": "Platform Mary Janes — Black Patent"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "purple",
+            "teal",
+            "black"
+          ],
+          "condition": "good",
+          "description": "Color block windbreaker from the early 90s. Packable, lightweight. The kind your dad definitely owned. Full zip with elastic cuffs.",
+          "id": "lst_010",
+          "platform": "thredUp",
+          "price": 40.0,
+          "size": "L",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "color block",
+            "streetwear"
+          ],
+          "title": "Vintage Windbreaker — Color Block Purple/Teal"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "ivory",
+            "dusty pink",
+            "green"
+          ],
+          "condition": "good",
+          "description": "Delicate 90s slip dress in a muted floral print. Midi length, adjustable straps. Light snag on the side seam — not visible when worn.",
+          "id": "lst_013",
+          "platform": "depop",
+          "price": 30.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "feminine",
+            "floral",
+            "cottagecore"
+          ],
+          "title": "90s Silk Slip Dress — Floral, Midi Length"
+        },
+        {
+          "brand": null,
+          "category": "shoes",
+          "colors": [
+            "white"
+          ],
+          "condition": "good",
+          "description": "White chunky platform sneakers. Very late 90s / early 2000s energy. Velcro straps. True to size. Some sole yellowing.",
+          "id": "lst_019",
+          "platform": "poshmark",
+          "price": 48.0,
+          "size": "US 8",
+          "style_tags": [
+            "y2k",
+            "platform",
+            "90s",
+            "streetwear"
+          ],
+          "title": "Platform Sneakers — White Chunky Sole"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "dark blue",
+            "indigo"
+          ],
+          "condition": "good",
+          "description": "Baggy carpenter jeans with hammer loop on the side. Dark wash. Sits at the waist. Major 90s workwear vibes.",
+          "id": "lst_031",
+          "platform": "depop",
+          "price": 36.0,
+          "size": "W32",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "streetwear",
+            "baggy",
+            "workwear"
+          ],
+          "title": "Baggy Carpenter Jeans — Dark Wash"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "olive",
+            "green"
+          ],
+          "condition": "excellent",
+          "description": "Olive canvas shacket — thicker than a shirt, lighter than a jacket. Chest pockets, button-front. Great transitional layer.",
+          "id": "lst_032",
+          "platform": "poshmark",
+          "price": 33.0,
+          "size": "M/L",
+          "style_tags": [
+            "earth tones",
+            "classic",
+            "layering",
+            "minimal"
+          ],
+          "title": "Shacket — Olive Canvas"
+        },
+        {
+          "brand": null,
+          "category": "accessories",
+          "colors": [
+            "brown",
+            "tan",
+            "plaid"
+          ],
+          "condition": "excellent",
+          "description": "Reversible bucket hat — plaid on one side, solid tan on the other. Unstructured brim. One size fits most.",
+          "id": "lst_034",
+          "platform": "thredUp",
+          "price": 14.0,
+          "size": "One Size",
+          "style_tags": [
+            "90s",
+            "streetwear",
+            "vintage",
+            "accessories"
+          ],
+          "title": "Bucket Hat — Reversible, Brown Plaid"
+        }
+      ],
+      "selected_item": {
+        "brand": "Champion",
+        "category": "outerwear",
+        "colors": [
+          "navy",
+          "white"
+        ],
+        "condition": "excellent",
+        "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+        "id": "lst_004",
+        "platform": "poshmark",
+        "price": 45.0,
+        "size": "M",
+        "style_tags": [
+          "90s",
+          "vintage",
+          "athletic",
+          "streetwear"
+        ],
+        "title": "90s Track Jacket — Navy/White Stripe"
+      },
+      "wardrobe": {
+        "items": [
+          {
+            "category": "bottoms",
+            "colors": [
+              "dark blue",
+              "indigo"
+            ],
+            "id": "w_001",
+            "name": "Baggy straight-leg jeans, dark wash",
+            "notes": "High-waisted, sits above the hip",
+            "style_tags": [
+              "denim",
+              "streetwear",
+              "baggy"
+            ]
+          },
+          {
+            "category": "bottoms",
+            "colors": [
+              "khaki",
+              "tan"
+            ],
+            "id": "w_002",
+            "name": "Wide-leg khaki trousers",
+            "notes": null,
+            "style_tags": [
+              "earth tones",
+              "minimal",
+              "wide-leg"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "white"
+            ],
+            "id": "w_003",
+            "name": "White ribbed tank top",
+            "notes": "Goes with everything",
+            "style_tags": [
+              "basics",
+              "minimal",
+              "fitted"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "grey",
+              "charcoal"
+            ],
+            "id": "w_004",
+            "name": "Oversized grey crewneck sweatshirt",
+            "notes": "Really oversized — drops below the hip",
+            "style_tags": [
+              "oversized",
+              "basics",
+              "cozy"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "black"
+            ],
+            "id": "w_005",
+            "name": "Black cropped zip hoodie",
+            "notes": null,
+            "style_tags": [
+              "athletic",
+              "streetwear",
+              "cropped"
+            ]
+          },
+          {
+            "category": "outerwear",
+            "colors": [
+              "black"
+            ],
+            "id": "w_006",
+            "name": "Vintage black denim jacket",
+            "notes": "Slightly cropped",
+            "style_tags": [
+              "denim",
+              "vintage",
+              "classic"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "white"
+            ],
+            "id": "w_007",
+            "name": "Chunky white sneakers",
+            "notes": null,
+            "style_tags": [
+              "sneakers",
+              "chunky",
+              "streetwear"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "black"
+            ],
+            "id": "w_008",
+            "name": "Black combat boots",
+            "notes": "Lace-up, mid-ankle height",
+            "style_tags": [
+              "boots",
+              "grunge",
+              "classic"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "brown"
+            ],
+            "id": "w_009",
+            "name": "Brown leather belt",
+            "notes": null,
+            "style_tags": [
+              "classic",
+              "earth tones",
+              "accessories"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "black"
+            ],
+            "id": "w_010",
+            "name": "Black crossbody bag",
+            "notes": null,
+            "style_tags": [
+              "minimal",
+              "accessories",
+              "everyday"
+            ]
+          }
+        ]
+      },
+      "warnings": [
+        "No listings in size XS, so the size filter was dropped."
+      ]
+    }
+  },
+  {
+    "run": 2,
+    "trial": 3,
+    "seconds": 19.685448999982327,
+    "body": {
+      "attempts": [
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": "XS"
+          },
+          "found": 0
+        },
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": null
+          },
+          "found": 10
+        }
+      ],
+      "error": null,
+      "error_detail": null,
+      "fit_card": "Found this dreamy 90s navy and white stripe track jacket for just $45 on Poshmark and I’m literally never taking it off. It gives major off-duty retro athlete vibes whether you throw it on with baggy denim or layer it over a chunky crewneck. Snagged it before anyone else could, sorry bout it!",
+      "item_ids": {
+        "create_fit_card": "lst_004",
+        "searched": "lst_004",
+        "selected": "lst_004",
+        "suggest_outfit": "lst_004"
+      },
+      "outfit_suggestion": "**Outfit 1: Casual Streetwear**\n*   **Top:** White ribbed tank top (worn underneath)\n*   **Outerwear:** 90s Track Jacket (left unzipped)\n*   **Bottoms:** Baggy straight-leg jeans\n*   **Shoes:** Chunky white sneakers\n*   **Accessories:** Black crossbody bag\n\n*Why it works:* The stark white of the tank top and the white stripes of the jacket tie directly into the chunky white sneakers for a balanced, athletic-leaning look. \n\n**Outfit 2: Layered Vintage Prep**\n*   **Top:** Oversized grey crewneck sweatshirt (layered underneath)\n*   **Outerwear:** 90s Track Jacket (zipped over the crewneck collar)\n*   **Bottoms:** Wide-leg khaki trousers\n*   **Shoes:** Black combat boots\n*   **Accessories:** Brown leather belt\n\n*Why it works:* Layering the thick grey crewneck under the high collar of the track jacket adds necessary warmth and texture, while the khaki trousers and black combat boots ground the sporty navy jacket with a vintage workwear edge.",
+      "parsed": {
+        "description": "90s track jacket",
+        "max_price": null,
+        "size": "XS"
+      },
+      "query": "90s track jacket in size XS",
+      "search_results": [
+        {
+          "brand": "Champion",
+          "category": "outerwear",
+          "colors": [
+            "navy",
+            "white"
+          ],
+          "condition": "excellent",
+          "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+          "id": "lst_004",
+          "platform": "poshmark",
+          "price": 45.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "streetwear"
+          ],
+          "title": "90s Track Jacket — Navy/White Stripe"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Genuine leather bomber jacket. Classic 90s silhouette, slightly boxy. Ribbed collar, cuffs, and hem. Some creasing from age — adds character.",
+          "id": "lst_022",
+          "platform": "depop",
+          "price": 75.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "leather",
+            "classic",
+            "grunge"
+          ],
+          "title": "90s Leather Bomber — Black"
+        },
+        {
+          "brand": "Wrangler",
+          "category": "outerwear",
+          "colors": [
+            "light blue"
+          ],
+          "condition": "excellent",
+          "description": "Cropped denim jacket in a light wash. Great structured shoulders. Blank canvas — no patches or pins but would be perfect to customize.",
+          "id": "lst_007",
+          "platform": "poshmark",
+          "price": 42.0,
+          "size": "S",
+          "style_tags": [
+            "denim",
+            "vintage",
+            "classic",
+            "streetwear"
+          ],
+          "title": "Denim Jacket — Light Wash, Cropped"
+        },
+        {
+          "brand": "Demonia",
+          "category": "shoes",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Patent leather platform Mary Janes. 1.5 inch platform. Some light scuffing on the toe box but nothing major. UK size 5.",
+          "id": "lst_009",
+          "platform": "depop",
+          "price": 55.0,
+          "size": "US 7",
+          "style_tags": [
+            "y2k",
+            "goth",
+            "platform",
+            "90s"
+          ],
+          "title": "Platform Mary Janes — Black Patent"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "purple",
+            "teal",
+            "black"
+          ],
+          "condition": "good",
+          "description": "Color block windbreaker from the early 90s. Packable, lightweight. The kind your dad definitely owned. Full zip with elastic cuffs.",
+          "id": "lst_010",
+          "platform": "thredUp",
+          "price": 40.0,
+          "size": "L",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "color block",
+            "streetwear"
+          ],
+          "title": "Vintage Windbreaker — Color Block Purple/Teal"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "ivory",
+            "dusty pink",
+            "green"
+          ],
+          "condition": "good",
+          "description": "Delicate 90s slip dress in a muted floral print. Midi length, adjustable straps. Light snag on the side seam — not visible when worn.",
+          "id": "lst_013",
+          "platform": "depop",
+          "price": 30.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "feminine",
+            "floral",
+            "cottagecore"
+          ],
+          "title": "90s Silk Slip Dress — Floral, Midi Length"
+        },
+        {
+          "brand": null,
+          "category": "shoes",
+          "colors": [
+            "white"
+          ],
+          "condition": "good",
+          "description": "White chunky platform sneakers. Very late 90s / early 2000s energy. Velcro straps. True to size. Some sole yellowing.",
+          "id": "lst_019",
+          "platform": "poshmark",
+          "price": 48.0,
+          "size": "US 8",
+          "style_tags": [
+            "y2k",
+            "platform",
+            "90s",
+            "streetwear"
+          ],
+          "title": "Platform Sneakers — White Chunky Sole"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "dark blue",
+            "indigo"
+          ],
+          "condition": "good",
+          "description": "Baggy carpenter jeans with hammer loop on the side. Dark wash. Sits at the waist. Major 90s workwear vibes.",
+          "id": "lst_031",
+          "platform": "depop",
+          "price": 36.0,
+          "size": "W32",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "streetwear",
+            "baggy",
+            "workwear"
+          ],
+          "title": "Baggy Carpenter Jeans — Dark Wash"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "olive",
+            "green"
+          ],
+          "condition": "excellent",
+          "description": "Olive canvas shacket — thicker than a shirt, lighter than a jacket. Chest pockets, button-front. Great transitional layer.",
+          "id": "lst_032",
+          "platform": "poshmark",
+          "price": 33.0,
+          "size": "M/L",
+          "style_tags": [
+            "earth tones",
+            "classic",
+            "layering",
+            "minimal"
+          ],
+          "title": "Shacket — Olive Canvas"
+        },
+        {
+          "brand": null,
+          "category": "accessories",
+          "colors": [
+            "brown",
+            "tan",
+            "plaid"
+          ],
+          "condition": "excellent",
+          "description": "Reversible bucket hat — plaid on one side, solid tan on the other. Unstructured brim. One size fits most.",
+          "id": "lst_034",
+          "platform": "thredUp",
+          "price": 14.0,
+          "size": "One Size",
+          "style_tags": [
+            "90s",
+            "streetwear",
+            "vintage",
+            "accessories"
+          ],
+          "title": "Bucket Hat — Reversible, Brown Plaid"
+        }
+      ],
+      "selected_item": {
+        "brand": "Champion",
+        "category": "outerwear",
+        "colors": [
+          "navy",
+          "white"
+        ],
+        "condition": "excellent",
+        "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+        "id": "lst_004",
+        "platform": "poshmark",
+        "price": 45.0,
+        "size": "M",
+        "style_tags": [
+          "90s",
+          "vintage",
+          "athletic",
+          "streetwear"
+        ],
+        "title": "90s Track Jacket — Navy/White Stripe"
+      },
+      "wardrobe": {
+        "items": [
+          {
+            "category": "bottoms",
+            "colors": [
+              "dark blue",
+              "indigo"
+            ],
+            "id": "w_001",
+            "name": "Baggy straight-leg jeans, dark wash",
+            "notes": "High-waisted, sits above the hip",
+            "style_tags": [
+              "denim",
+              "streetwear",
+              "baggy"
+            ]
+          },
+          {
+            "category": "bottoms",
+            "colors": [
+              "khaki",
+              "tan"
+            ],
+            "id": "w_002",
+            "name": "Wide-leg khaki trousers",
+            "notes": null,
+            "style_tags": [
+              "earth tones",
+              "minimal",
+              "wide-leg"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "white"
+            ],
+            "id": "w_003",
+            "name": "White ribbed tank top",
+            "notes": "Goes with everything",
+            "style_tags": [
+              "basics",
+              "minimal",
+              "fitted"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "grey",
+              "charcoal"
+            ],
+            "id": "w_004",
+            "name": "Oversized grey crewneck sweatshirt",
+            "notes": "Really oversized — drops below the hip",
+            "style_tags": [
+              "oversized",
+              "basics",
+              "cozy"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "black"
+            ],
+            "id": "w_005",
+            "name": "Black cropped zip hoodie",
+            "notes": null,
+            "style_tags": [
+              "athletic",
+              "streetwear",
+              "cropped"
+            ]
+          },
+          {
+            "category": "outerwear",
+            "colors": [
+              "black"
+            ],
+            "id": "w_006",
+            "name": "Vintage black denim jacket",
+            "notes": "Slightly cropped",
+            "style_tags": [
+              "denim",
+              "vintage",
+              "classic"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "white"
+            ],
+            "id": "w_007",
+            "name": "Chunky white sneakers",
+            "notes": null,
+            "style_tags": [
+              "sneakers",
+              "chunky",
+              "streetwear"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "black"
+            ],
+            "id": "w_008",
+            "name": "Black combat boots",
+            "notes": "Lace-up, mid-ankle height",
+            "style_tags": [
+              "boots",
+              "grunge",
+              "classic"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "brown"
+            ],
+            "id": "w_009",
+            "name": "Brown leather belt",
+            "notes": null,
+            "style_tags": [
+              "classic",
+              "earth tones",
+              "accessories"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "black"
+            ],
+            "id": "w_010",
+            "name": "Black crossbody bag",
+            "notes": null,
+            "style_tags": [
+              "minimal",
+              "accessories",
+              "everyday"
+            ]
+          }
+        ]
+      },
+      "warnings": [
+        "No listings in size XS, so the size filter was dropped."
+      ]
+    }
+  },
+  {
+    "run": 3,
+    "trial": 1,
+    "seconds": 20.834990800125524,
+    "body": {
+      "attempts": [
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": "XS"
+          },
+          "found": 0
+        },
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": null
+          },
+          "found": 10
+        }
+      ],
+      "error": null,
+      "error_detail": null,
+      "fit_card": "Channeling major off-duty model energy with this navy and white stripe 90s track jacket. I tossed it over some baggy denim and chunky sneakers, but it honestly looks so good layered over an oversized crewneck too. Snagged this vintage baby on Poshmark for just $45 and I'm never taking it off.",
+      "item_ids": {
+        "create_fit_card": "lst_004",
+        "searched": "lst_004",
+        "selected": "lst_004",
+        "suggest_outfit": "lst_004"
+      },
+      "outfit_suggestion": "**Outfit 1: Casual Streetwear**\n*   **Top:** White ribbed tank top\n*   **Bottoms:** Baggy straight-leg jeans (dark wash)\n*   **Outerwear:** 90s Track Jacket (Navy/White Stripe) worn open over the tank\n*   **Shoes:** Chunky white sneakers\n*   **Accessories:** Black crossbody bag\n\n**Outfit 2: High-Low Contrast**\n*   **Top:** Oversized grey crewneck sweatshirt (layer the track jacket *over* the grey crewneck for warmth and a bulky 90s silhouette)\n*   **Bottoms:** Wide-leg khaki trousers\n*   **Shoes:** Black combat boots\n*   **Accessories:** Brown leather belt (loop this through the khaki trousers to break up the tan and grey)",
+      "parsed": {
+        "description": "90s track jacket",
+        "max_price": null,
+        "size": "XS"
+      },
+      "query": "90s track jacket in size XS",
+      "search_results": [
+        {
+          "brand": "Champion",
+          "category": "outerwear",
+          "colors": [
+            "navy",
+            "white"
+          ],
+          "condition": "excellent",
+          "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+          "id": "lst_004",
+          "platform": "poshmark",
+          "price": 45.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "streetwear"
+          ],
+          "title": "90s Track Jacket — Navy/White Stripe"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Genuine leather bomber jacket. Classic 90s silhouette, slightly boxy. Ribbed collar, cuffs, and hem. Some creasing from age — adds character.",
+          "id": "lst_022",
+          "platform": "depop",
+          "price": 75.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "leather",
+            "classic",
+            "grunge"
+          ],
+          "title": "90s Leather Bomber — Black"
+        },
+        {
+          "brand": "Wrangler",
+          "category": "outerwear",
+          "colors": [
+            "light blue"
+          ],
+          "condition": "excellent",
+          "description": "Cropped denim jacket in a light wash. Great structured shoulders. Blank canvas — no patches or pins but would be perfect to customize.",
+          "id": "lst_007",
+          "platform": "poshmark",
+          "price": 42.0,
+          "size": "S",
+          "style_tags": [
+            "denim",
+            "vintage",
+            "classic",
+            "streetwear"
+          ],
+          "title": "Denim Jacket — Light Wash, Cropped"
+        },
+        {
+          "brand": "Demonia",
+          "category": "shoes",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Patent leather platform Mary Janes. 1.5 inch platform. Some light scuffing on the toe box but nothing major. UK size 5.",
+          "id": "lst_009",
+          "platform": "depop",
+          "price": 55.0,
+          "size": "US 7",
+          "style_tags": [
+            "y2k",
+            "goth",
+            "platform",
+            "90s"
+          ],
+          "title": "Platform Mary Janes — Black Patent"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "purple",
+            "teal",
+            "black"
+          ],
+          "condition": "good",
+          "description": "Color block windbreaker from the early 90s. Packable, lightweight. The kind your dad definitely owned. Full zip with elastic cuffs.",
+          "id": "lst_010",
+          "platform": "thredUp",
+          "price": 40.0,
+          "size": "L",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "color block",
+            "streetwear"
+          ],
+          "title": "Vintage Windbreaker — Color Block Purple/Teal"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "ivory",
+            "dusty pink",
+            "green"
+          ],
+          "condition": "good",
+          "description": "Delicate 90s slip dress in a muted floral print. Midi length, adjustable straps. Light snag on the side seam — not visible when worn.",
+          "id": "lst_013",
+          "platform": "depop",
+          "price": 30.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "feminine",
+            "floral",
+            "cottagecore"
+          ],
+          "title": "90s Silk Slip Dress — Floral, Midi Length"
+        },
+        {
+          "brand": null,
+          "category": "shoes",
+          "colors": [
+            "white"
+          ],
+          "condition": "good",
+          "description": "White chunky platform sneakers. Very late 90s / early 2000s energy. Velcro straps. True to size. Some sole yellowing.",
+          "id": "lst_019",
+          "platform": "poshmark",
+          "price": 48.0,
+          "size": "US 8",
+          "style_tags": [
+            "y2k",
+            "platform",
+            "90s",
+            "streetwear"
+          ],
+          "title": "Platform Sneakers — White Chunky Sole"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "dark blue",
+            "indigo"
+          ],
+          "condition": "good",
+          "description": "Baggy carpenter jeans with hammer loop on the side. Dark wash. Sits at the waist. Major 90s workwear vibes.",
+          "id": "lst_031",
+          "platform": "depop",
+          "price": 36.0,
+          "size": "W32",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "streetwear",
+            "baggy",
+            "workwear"
+          ],
+          "title": "Baggy Carpenter Jeans — Dark Wash"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "olive",
+            "green"
+          ],
+          "condition": "excellent",
+          "description": "Olive canvas shacket — thicker than a shirt, lighter than a jacket. Chest pockets, button-front. Great transitional layer.",
+          "id": "lst_032",
+          "platform": "poshmark",
+          "price": 33.0,
+          "size": "M/L",
+          "style_tags": [
+            "earth tones",
+            "classic",
+            "layering",
+            "minimal"
+          ],
+          "title": "Shacket — Olive Canvas"
+        },
+        {
+          "brand": null,
+          "category": "accessories",
+          "colors": [
+            "brown",
+            "tan",
+            "plaid"
+          ],
+          "condition": "excellent",
+          "description": "Reversible bucket hat — plaid on one side, solid tan on the other. Unstructured brim. One size fits most.",
+          "id": "lst_034",
+          "platform": "thredUp",
+          "price": 14.0,
+          "size": "One Size",
+          "style_tags": [
+            "90s",
+            "streetwear",
+            "vintage",
+            "accessories"
+          ],
+          "title": "Bucket Hat — Reversible, Brown Plaid"
+        }
+      ],
+      "selected_item": {
+        "brand": "Champion",
+        "category": "outerwear",
+        "colors": [
+          "navy",
+          "white"
+        ],
+        "condition": "excellent",
+        "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+        "id": "lst_004",
+        "platform": "poshmark",
+        "price": 45.0,
+        "size": "M",
+        "style_tags": [
+          "90s",
+          "vintage",
+          "athletic",
+          "streetwear"
+        ],
+        "title": "90s Track Jacket — Navy/White Stripe"
+      },
+      "wardrobe": {
+        "items": [
+          {
+            "category": "bottoms",
+            "colors": [
+              "dark blue",
+              "indigo"
+            ],
+            "id": "w_001",
+            "name": "Baggy straight-leg jeans, dark wash",
+            "notes": "High-waisted, sits above the hip",
+            "style_tags": [
+              "denim",
+              "streetwear",
+              "baggy"
+            ]
+          },
+          {
+            "category": "bottoms",
+            "colors": [
+              "khaki",
+              "tan"
+            ],
+            "id": "w_002",
+            "name": "Wide-leg khaki trousers",
+            "notes": null,
+            "style_tags": [
+              "earth tones",
+              "minimal",
+              "wide-leg"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "white"
+            ],
+            "id": "w_003",
+            "name": "White ribbed tank top",
+            "notes": "Goes with everything",
+            "style_tags": [
+              "basics",
+              "minimal",
+              "fitted"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "grey",
+              "charcoal"
+            ],
+            "id": "w_004",
+            "name": "Oversized grey crewneck sweatshirt",
+            "notes": "Really oversized — drops below the hip",
+            "style_tags": [
+              "oversized",
+              "basics",
+              "cozy"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "black"
+            ],
+            "id": "w_005",
+            "name": "Black cropped zip hoodie",
+            "notes": null,
+            "style_tags": [
+              "athletic",
+              "streetwear",
+              "cropped"
+            ]
+          },
+          {
+            "category": "outerwear",
+            "colors": [
+              "black"
+            ],
+            "id": "w_006",
+            "name": "Vintage black denim jacket",
+            "notes": "Slightly cropped",
+            "style_tags": [
+              "denim",
+              "vintage",
+              "classic"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "white"
+            ],
+            "id": "w_007",
+            "name": "Chunky white sneakers",
+            "notes": null,
+            "style_tags": [
+              "sneakers",
+              "chunky",
+              "streetwear"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "black"
+            ],
+            "id": "w_008",
+            "name": "Black combat boots",
+            "notes": "Lace-up, mid-ankle height",
+            "style_tags": [
+              "boots",
+              "grunge",
+              "classic"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "brown"
+            ],
+            "id": "w_009",
+            "name": "Brown leather belt",
+            "notes": null,
+            "style_tags": [
+              "classic",
+              "earth tones",
+              "accessories"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "black"
+            ],
+            "id": "w_010",
+            "name": "Black crossbody bag",
+            "notes": null,
+            "style_tags": [
+              "minimal",
+              "accessories",
+              "everyday"
+            ]
+          }
+        ]
+      },
+      "warnings": [
+        "No listings in size XS, so the size filter was dropped."
+      ]
+    }
+  },
+  {
+    "run": 3,
+    "trial": 2,
+    "seconds": 19.781619400018826,
+    "body": {
+      "attempts": [
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": "XS"
+          },
+          "found": 0
+        },
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": null
+          },
+          "found": 10
+        }
+      ],
+      "error": null,
+      "error_detail": null,
+      "fit_card": "Honestly losing my mind over this navy and white 90s track jacket. Tossed it on over baggy jeans and a ribbed tank for the ultimate lazy-day streetwear vibe, but it also looks so good thrown over khakis. Snagged this beauty for just $45 over on Poshmark and I am never taking it off.",
+      "item_ids": {
+        "create_fit_card": "lst_004",
+        "searched": "lst_004",
+        "selected": "lst_004",
+        "suggest_outfit": "lst_004"
+      },
+      "outfit_suggestion": "**Outfit 1: The Off-Duty Streetwear Look**\n*   **Top:** White ribbed tank top (worn underneath)\n*   **Outerwear:** 90s Track Jacket in navy/white stripe\n*   **Bottoms:** Baggy straight-leg jeans in dark wash\n*   **Shoes:** Chunky white sneakers\n*   **Accessories:** Black crossbody bag\n*   *Why it works:* Leaving the track jacket unzipped over the white ribbed tank ties in the white stripes with the chunky white sneakers, while the dark wash baggy jeans ground the sporty top half with a classic 90s streetwear silhouette.\n\n**Outfit 2: High-Low Athletic Prep**\n*   **Top:** Oversized grey crewneck sweatshirt (worn layered *under* the jacket for extra cold days, or draped over the shoulders)\n*   **Outerwear:** 90s Track Jacket in navy/white stripe\n*   **Bottoms:** Wide-leg khaki trousers\n*   **Shoes:** Black combat boots\n*   **Accessories:** Brown leather belt\n*   *Why it works:* Pairing the sporty navy track jacket with tailored khaki trousers creates a deliberate high-low contrast. Tucking in the grey crewneck (with the brown leather belt peeking out if cropped) and finishing with black combat boots gives the collegiate trousers a tougher, thrifted edge.",
+      "parsed": {
+        "description": "90s track jacket",
+        "max_price": null,
+        "size": "XS"
+      },
+      "query": "90s track jacket in size XS",
+      "search_results": [
+        {
+          "brand": "Champion",
+          "category": "outerwear",
+          "colors": [
+            "navy",
+            "white"
+          ],
+          "condition": "excellent",
+          "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+          "id": "lst_004",
+          "platform": "poshmark",
+          "price": 45.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "streetwear"
+          ],
+          "title": "90s Track Jacket — Navy/White Stripe"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Genuine leather bomber jacket. Classic 90s silhouette, slightly boxy. Ribbed collar, cuffs, and hem. Some creasing from age — adds character.",
+          "id": "lst_022",
+          "platform": "depop",
+          "price": 75.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "leather",
+            "classic",
+            "grunge"
+          ],
+          "title": "90s Leather Bomber — Black"
+        },
+        {
+          "brand": "Wrangler",
+          "category": "outerwear",
+          "colors": [
+            "light blue"
+          ],
+          "condition": "excellent",
+          "description": "Cropped denim jacket in a light wash. Great structured shoulders. Blank canvas — no patches or pins but would be perfect to customize.",
+          "id": "lst_007",
+          "platform": "poshmark",
+          "price": 42.0,
+          "size": "S",
+          "style_tags": [
+            "denim",
+            "vintage",
+            "classic",
+            "streetwear"
+          ],
+          "title": "Denim Jacket — Light Wash, Cropped"
+        },
+        {
+          "brand": "Demonia",
+          "category": "shoes",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Patent leather platform Mary Janes. 1.5 inch platform. Some light scuffing on the toe box but nothing major. UK size 5.",
+          "id": "lst_009",
+          "platform": "depop",
+          "price": 55.0,
+          "size": "US 7",
+          "style_tags": [
+            "y2k",
+            "goth",
+            "platform",
+            "90s"
+          ],
+          "title": "Platform Mary Janes — Black Patent"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "purple",
+            "teal",
+            "black"
+          ],
+          "condition": "good",
+          "description": "Color block windbreaker from the early 90s. Packable, lightweight. The kind your dad definitely owned. Full zip with elastic cuffs.",
+          "id": "lst_010",
+          "platform": "thredUp",
+          "price": 40.0,
+          "size": "L",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "color block",
+            "streetwear"
+          ],
+          "title": "Vintage Windbreaker — Color Block Purple/Teal"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "ivory",
+            "dusty pink",
+            "green"
+          ],
+          "condition": "good",
+          "description": "Delicate 90s slip dress in a muted floral print. Midi length, adjustable straps. Light snag on the side seam — not visible when worn.",
+          "id": "lst_013",
+          "platform": "depop",
+          "price": 30.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "feminine",
+            "floral",
+            "cottagecore"
+          ],
+          "title": "90s Silk Slip Dress — Floral, Midi Length"
+        },
+        {
+          "brand": null,
+          "category": "shoes",
+          "colors": [
+            "white"
+          ],
+          "condition": "good",
+          "description": "White chunky platform sneakers. Very late 90s / early 2000s energy. Velcro straps. True to size. Some sole yellowing.",
+          "id": "lst_019",
+          "platform": "poshmark",
+          "price": 48.0,
+          "size": "US 8",
+          "style_tags": [
+            "y2k",
+            "platform",
+            "90s",
+            "streetwear"
+          ],
+          "title": "Platform Sneakers — White Chunky Sole"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "dark blue",
+            "indigo"
+          ],
+          "condition": "good",
+          "description": "Baggy carpenter jeans with hammer loop on the side. Dark wash. Sits at the waist. Major 90s workwear vibes.",
+          "id": "lst_031",
+          "platform": "depop",
+          "price": 36.0,
+          "size": "W32",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "streetwear",
+            "baggy",
+            "workwear"
+          ],
+          "title": "Baggy Carpenter Jeans — Dark Wash"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "olive",
+            "green"
+          ],
+          "condition": "excellent",
+          "description": "Olive canvas shacket — thicker than a shirt, lighter than a jacket. Chest pockets, button-front. Great transitional layer.",
+          "id": "lst_032",
+          "platform": "poshmark",
+          "price": 33.0,
+          "size": "M/L",
+          "style_tags": [
+            "earth tones",
+            "classic",
+            "layering",
+            "minimal"
+          ],
+          "title": "Shacket — Olive Canvas"
+        },
+        {
+          "brand": null,
+          "category": "accessories",
+          "colors": [
+            "brown",
+            "tan",
+            "plaid"
+          ],
+          "condition": "excellent",
+          "description": "Reversible bucket hat — plaid on one side, solid tan on the other. Unstructured brim. One size fits most.",
+          "id": "lst_034",
+          "platform": "thredUp",
+          "price": 14.0,
+          "size": "One Size",
+          "style_tags": [
+            "90s",
+            "streetwear",
+            "vintage",
+            "accessories"
+          ],
+          "title": "Bucket Hat — Reversible, Brown Plaid"
+        }
+      ],
+      "selected_item": {
+        "brand": "Champion",
+        "category": "outerwear",
+        "colors": [
+          "navy",
+          "white"
+        ],
+        "condition": "excellent",
+        "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+        "id": "lst_004",
+        "platform": "poshmark",
+        "price": 45.0,
+        "size": "M",
+        "style_tags": [
+          "90s",
+          "vintage",
+          "athletic",
+          "streetwear"
+        ],
+        "title": "90s Track Jacket — Navy/White Stripe"
+      },
+      "wardrobe": {
+        "items": [
+          {
+            "category": "bottoms",
+            "colors": [
+              "dark blue",
+              "indigo"
+            ],
+            "id": "w_001",
+            "name": "Baggy straight-leg jeans, dark wash",
+            "notes": "High-waisted, sits above the hip",
+            "style_tags": [
+              "denim",
+              "streetwear",
+              "baggy"
+            ]
+          },
+          {
+            "category": "bottoms",
+            "colors": [
+              "khaki",
+              "tan"
+            ],
+            "id": "w_002",
+            "name": "Wide-leg khaki trousers",
+            "notes": null,
+            "style_tags": [
+              "earth tones",
+              "minimal",
+              "wide-leg"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "white"
+            ],
+            "id": "w_003",
+            "name": "White ribbed tank top",
+            "notes": "Goes with everything",
+            "style_tags": [
+              "basics",
+              "minimal",
+              "fitted"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "grey",
+              "charcoal"
+            ],
+            "id": "w_004",
+            "name": "Oversized grey crewneck sweatshirt",
+            "notes": "Really oversized — drops below the hip",
+            "style_tags": [
+              "oversized",
+              "basics",
+              "cozy"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "black"
+            ],
+            "id": "w_005",
+            "name": "Black cropped zip hoodie",
+            "notes": null,
+            "style_tags": [
+              "athletic",
+              "streetwear",
+              "cropped"
+            ]
+          },
+          {
+            "category": "outerwear",
+            "colors": [
+              "black"
+            ],
+            "id": "w_006",
+            "name": "Vintage black denim jacket",
+            "notes": "Slightly cropped",
+            "style_tags": [
+              "denim",
+              "vintage",
+              "classic"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "white"
+            ],
+            "id": "w_007",
+            "name": "Chunky white sneakers",
+            "notes": null,
+            "style_tags": [
+              "sneakers",
+              "chunky",
+              "streetwear"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "black"
+            ],
+            "id": "w_008",
+            "name": "Black combat boots",
+            "notes": "Lace-up, mid-ankle height",
+            "style_tags": [
+              "boots",
+              "grunge",
+              "classic"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "brown"
+            ],
+            "id": "w_009",
+            "name": "Brown leather belt",
+            "notes": null,
+            "style_tags": [
+              "classic",
+              "earth tones",
+              "accessories"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "black"
+            ],
+            "id": "w_010",
+            "name": "Black crossbody bag",
+            "notes": null,
+            "style_tags": [
+              "minimal",
+              "accessories",
+              "everyday"
+            ]
+          }
+        ]
+      },
+      "warnings": [
+        "No listings in size XS, so the size filter was dropped."
+      ]
+    }
+  },
+  {
+    "run": 3,
+    "trial": 3,
+    "seconds": 19.612297400133684,
+    "body": {
+      "attempts": [
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": "XS"
+          },
+          "found": 0
+        },
+        {
+          "args": {
+            "description": "90s track jacket",
+            "max_price": null,
+            "size": null
+          },
+          "found": 10
+        }
+      ],
+      "error": null,
+      "error_detail": null,
+      "fit_card": "Honestly obsessed with this navy 90s track jacket I just scored on Poshmark for $45. It’s giving major off-duty supermodel vibes when you throw it over a ribbed tank and baggy denim. Can't wait to layer it with some chunky sneakers for that effortless athletic aesthetic.",
+      "item_ids": {
+        "create_fit_card": "lst_004",
+        "searched": "lst_004",
+        "selected": "lst_004",
+        "suggest_outfit": "lst_004"
+      },
+      "outfit_suggestion": "**Outfit 1: Off-Duty Streetwear**\n*   **Top:** White ribbed tank top (worn underneath)\n*   **Outerwear:** 90s Track Jacket (zipped halfway down)\n*   **Bottoms:** Baggy straight-leg jeans in dark wash\n*   **Shoes:** Chunky white sneakers\n*   **Accessory:** Black crossbody bag\n*   *Why it works:* The white ribbed tank ties in the white stripes of the jacket and the chunky white sneakers, while the dark wash baggy jeans ground the athletic vibe with a classic 90s streetwear silhouette.\n\n**Outfit 2: High-Low Contrast**\n*   **Outerwear (Layered):** Oversized grey crewneck sweatshirt worn under the 90s Track Jacket, with the grey collar peeking out the top.\n*   **Bottoms:** Wide-leg khaki trousers\n*   **Shoes:** Black combat boots\n*   *Why it works:* Layering the bulky grey crewneck under the navy track jacket creates a textured, color-blocked top half. Pairing it with the wide-leg khaki trousers and black combat boots brings a utilitarian edge to the sporty piece.",
+      "parsed": {
+        "description": "90s track jacket",
+        "max_price": null,
+        "size": "XS"
+      },
+      "query": "90s track jacket in size XS",
+      "search_results": [
+        {
+          "brand": "Champion",
+          "category": "outerwear",
+          "colors": [
+            "navy",
+            "white"
+          ],
+          "condition": "excellent",
+          "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+          "id": "lst_004",
+          "platform": "poshmark",
+          "price": 45.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "streetwear"
+          ],
+          "title": "90s Track Jacket — Navy/White Stripe"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Genuine leather bomber jacket. Classic 90s silhouette, slightly boxy. Ribbed collar, cuffs, and hem. Some creasing from age — adds character.",
+          "id": "lst_022",
+          "platform": "depop",
+          "price": 75.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "leather",
+            "classic",
+            "grunge"
+          ],
+          "title": "90s Leather Bomber — Black"
+        },
+        {
+          "brand": "Wrangler",
+          "category": "outerwear",
+          "colors": [
+            "light blue"
+          ],
+          "condition": "excellent",
+          "description": "Cropped denim jacket in a light wash. Great structured shoulders. Blank canvas — no patches or pins but would be perfect to customize.",
+          "id": "lst_007",
+          "platform": "poshmark",
+          "price": 42.0,
+          "size": "S",
+          "style_tags": [
+            "denim",
+            "vintage",
+            "classic",
+            "streetwear"
+          ],
+          "title": "Denim Jacket — Light Wash, Cropped"
+        },
+        {
+          "brand": "Demonia",
+          "category": "shoes",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Patent leather platform Mary Janes. 1.5 inch platform. Some light scuffing on the toe box but nothing major. UK size 5.",
+          "id": "lst_009",
+          "platform": "depop",
+          "price": 55.0,
+          "size": "US 7",
+          "style_tags": [
+            "y2k",
+            "goth",
+            "platform",
+            "90s"
+          ],
+          "title": "Platform Mary Janes — Black Patent"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "purple",
+            "teal",
+            "black"
+          ],
+          "condition": "good",
+          "description": "Color block windbreaker from the early 90s. Packable, lightweight. The kind your dad definitely owned. Full zip with elastic cuffs.",
+          "id": "lst_010",
+          "platform": "thredUp",
+          "price": 40.0,
+          "size": "L",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "athletic",
+            "color block",
+            "streetwear"
+          ],
+          "title": "Vintage Windbreaker — Color Block Purple/Teal"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "ivory",
+            "dusty pink",
+            "green"
+          ],
+          "condition": "good",
+          "description": "Delicate 90s slip dress in a muted floral print. Midi length, adjustable straps. Light snag on the side seam — not visible when worn.",
+          "id": "lst_013",
+          "platform": "depop",
+          "price": 30.0,
+          "size": "M",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "feminine",
+            "floral",
+            "cottagecore"
+          ],
+          "title": "90s Silk Slip Dress — Floral, Midi Length"
+        },
+        {
+          "brand": null,
+          "category": "shoes",
+          "colors": [
+            "white"
+          ],
+          "condition": "good",
+          "description": "White chunky platform sneakers. Very late 90s / early 2000s energy. Velcro straps. True to size. Some sole yellowing.",
+          "id": "lst_019",
+          "platform": "poshmark",
+          "price": 48.0,
+          "size": "US 8",
+          "style_tags": [
+            "y2k",
+            "platform",
+            "90s",
+            "streetwear"
+          ],
+          "title": "Platform Sneakers — White Chunky Sole"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "dark blue",
+            "indigo"
+          ],
+          "condition": "good",
+          "description": "Baggy carpenter jeans with hammer loop on the side. Dark wash. Sits at the waist. Major 90s workwear vibes.",
+          "id": "lst_031",
+          "platform": "depop",
+          "price": 36.0,
+          "size": "W32",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "streetwear",
+            "baggy",
+            "workwear"
+          ],
+          "title": "Baggy Carpenter Jeans — Dark Wash"
+        },
+        {
+          "brand": null,
+          "category": "outerwear",
+          "colors": [
+            "olive",
+            "green"
+          ],
+          "condition": "excellent",
+          "description": "Olive canvas shacket — thicker than a shirt, lighter than a jacket. Chest pockets, button-front. Great transitional layer.",
+          "id": "lst_032",
+          "platform": "poshmark",
+          "price": 33.0,
+          "size": "M/L",
+          "style_tags": [
+            "earth tones",
+            "classic",
+            "layering",
+            "minimal"
+          ],
+          "title": "Shacket — Olive Canvas"
+        },
+        {
+          "brand": null,
+          "category": "accessories",
+          "colors": [
+            "brown",
+            "tan",
+            "plaid"
+          ],
+          "condition": "excellent",
+          "description": "Reversible bucket hat — plaid on one side, solid tan on the other. Unstructured brim. One size fits most.",
+          "id": "lst_034",
+          "platform": "thredUp",
+          "price": 14.0,
+          "size": "One Size",
+          "style_tags": [
+            "90s",
+            "streetwear",
+            "vintage",
+            "accessories"
+          ],
+          "title": "Bucket Hat — Reversible, Brown Plaid"
+        }
+      ],
+      "selected_item": {
+        "brand": "Champion",
+        "category": "outerwear",
+        "colors": [
+          "navy",
+          "white"
+        ],
+        "condition": "excellent",
+        "description": "Authentic 90s track jacket with stripe detail down the sleeves. Full zip. Lightweight — great for layering.",
+        "id": "lst_004",
+        "platform": "poshmark",
+        "price": 45.0,
+        "size": "M",
+        "style_tags": [
+          "90s",
+          "vintage",
+          "athletic",
+          "streetwear"
+        ],
+        "title": "90s Track Jacket — Navy/White Stripe"
+      },
+      "wardrobe": {
+        "items": [
+          {
+            "category": "bottoms",
+            "colors": [
+              "dark blue",
+              "indigo"
+            ],
+            "id": "w_001",
+            "name": "Baggy straight-leg jeans, dark wash",
+            "notes": "High-waisted, sits above the hip",
+            "style_tags": [
+              "denim",
+              "streetwear",
+              "baggy"
+            ]
+          },
+          {
+            "category": "bottoms",
+            "colors": [
+              "khaki",
+              "tan"
+            ],
+            "id": "w_002",
+            "name": "Wide-leg khaki trousers",
+            "notes": null,
+            "style_tags": [
+              "earth tones",
+              "minimal",
+              "wide-leg"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "white"
+            ],
+            "id": "w_003",
+            "name": "White ribbed tank top",
+            "notes": "Goes with everything",
+            "style_tags": [
+              "basics",
+              "minimal",
+              "fitted"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "grey",
+              "charcoal"
+            ],
+            "id": "w_004",
+            "name": "Oversized grey crewneck sweatshirt",
+            "notes": "Really oversized — drops below the hip",
+            "style_tags": [
+              "oversized",
+              "basics",
+              "cozy"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "black"
+            ],
+            "id": "w_005",
+            "name": "Black cropped zip hoodie",
+            "notes": null,
+            "style_tags": [
+              "athletic",
+              "streetwear",
+              "cropped"
+            ]
+          },
+          {
+            "category": "outerwear",
+            "colors": [
+              "black"
+            ],
+            "id": "w_006",
+            "name": "Vintage black denim jacket",
+            "notes": "Slightly cropped",
+            "style_tags": [
+              "denim",
+              "vintage",
+              "classic"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "white"
+            ],
+            "id": "w_007",
+            "name": "Chunky white sneakers",
+            "notes": null,
+            "style_tags": [
+              "sneakers",
+              "chunky",
+              "streetwear"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "black"
+            ],
+            "id": "w_008",
+            "name": "Black combat boots",
+            "notes": "Lace-up, mid-ankle height",
+            "style_tags": [
+              "boots",
+              "grunge",
+              "classic"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "brown"
+            ],
+            "id": "w_009",
+            "name": "Brown leather belt",
+            "notes": null,
+            "style_tags": [
+              "classic",
+              "earth tones",
+              "accessories"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "black"
+            ],
+            "id": "w_010",
+            "name": "Black crossbody bag",
+            "notes": null,
+            "style_tags": [
+              "minimal",
+              "accessories",
+              "everyday"
+            ]
+          }
+        ]
+      },
+      "warnings": [
+        "No listings in size XS, so the size filter was dropped."
+      ]
+    }
+  }
+]

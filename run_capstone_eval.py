@@ -293,8 +293,10 @@ def write_report(results, evidence, cold, live_bodies, args):
         "- Loop: `agent.py::run_agent` · HTTP: `serve.py::ask` · log: `runlog.py::write`",
         f"- {args.runs} runs, {args.trials} trials per criterion",
         "- Caching OFF in this process and in the MCP server it starts (criteria 1-4)",
-        "- The DEPLOYED service (criterion 5) has its own cache, which this process"
-        " cannot turn off — it is a different machine and never sees AI201_CACHE",
+        "- The DEPLOYED service (criterion 5) has its OWN cache setting, which this"
+        " process cannot change — it is a different machine and never sees the"
+        " AI201_CACHE set here. Check the deployed value before trusting a timing:"
+        " identical fit cards across trials mean it was serving from cache.",
         f"- Temperature: {config.TEMPERATURE}",
         f"- Deployed service: {LIVE_URL}",
         "",

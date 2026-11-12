@@ -651,6 +651,35 @@ and the PowerShell activation line (commit `a48a5ac`). After that, the fresh
 clone installed all dependencies, ran `app.py ask`, and wrote a record to its
 own `results/runlog.jsonl`.
 
+**Regression check.** The re-plan changes what the loop does when a search comes
+back empty, which is a path every earlier scenario could touch, so I re-ran the
+whole Unit 3 and Unit 4 suite against the changed code: all 18 scenarios, five
+tries each, cache off. 83 model calls, 15,110 prompt + 14,569 output tokens.
+Source: `results/run_2026-11-11_1943_regression-after-replan.md` (commit
+`246fe91`), compared scenario by scenario against the two committed baselines,
+`run_2026-10-07_1938_after.md` and `run_2026-10-07_2001_after-price-fix.md`.
+
+- **All 9 scenarios from the Unit 3 "after" log: unchanged.** Same selected
+  item in every try, same number of early stops. That includes the three the
+  re-plan could plausibly have disturbed — the impossible query, the synonym
+  query, and the plural diagnostic.
+- **8 of the 9 hardened scenarios: unchanged.**
+- **One moved, and it moved the right way.** "unpriced listing: no price field"
+  went from 2 early stops out of 5 to 0 out of 5. Those two stops were the
+  provider's 503 outage written up under the second improvement, not a defect in
+  the code; the rerun at the time already scored 5/5. This run agrees with the
+  rerun. I am not claiming the re-plan fixed anything here — the outage cleared.
+- **The re-plan is firing inside the eval, not just in my own tests.** The
+  regression log contains 15 `re-plan: search_listings` trace steps: 10 from the
+  impossible query (two relaxations × five tries) and 5 from the unpriced
+  ceiling diagnostic (one relaxation × five tries). Both scenarios still end at
+  the `branch` step with no outfit and no fit card, so the extra searches did
+  not turn a stop into a false completion.
+
+The eval does not write to `results/runlog.jsonl`, because `run_eval.py` calls
+`run_agent()` directly rather than going through `app.py`. That file still holds
+the 21 records described below.
+
 **Instrumentation**
 
 Every run writes one JSON record to `results/runlog.jsonl` with sixteen named

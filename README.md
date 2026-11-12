@@ -880,6 +880,32 @@ took **29.3s** (`results/live/rescue_first_request_29s.json`). Nothing in these
 nine trials came close. I could not reproduce it and I do not know the cause,
 so it stays recorded rather than explained away.
 
-**Still open.** The improvement has not been made or measured yet. The cost
-number is a lower bound, for the reason given above. Criterion 5's timing needs
-re-measuring with the deployed cache off before it means what it says.
+**The Improvement** — declared here before I make it.
+
+**What I am going to change:** one line in `render.yaml`, adding
+`AI201_CACHE=0` to the deployed service's environment, then redeploy. Nothing
+else. No code changes.
+
+**Which failure it is meant to fix:** the one the run log above exposed. The
+deployed service answered all nine criterion 5 trials from its disk cache and
+returned a byte-identical fit card every time. That is two defects in one. The
+measurement defect is that criterion 5's warm timing is cache-warm timing, so
+the number does not mean what the criterion says it means. The product defect
+is that two people asking FitFindr the same thing get the same caption word for
+word — which is the thing `TEMPERATURE = 0.9` exists to prevent, and which my
+own Unit 3 write-up calls a template rather than a caption.
+
+**What I predict, written before the run.** Captions become distinct across the
+nine trials, 9 distinct out of 9. Warm requests get slower, because each one now
+makes two real model calls instead of reading two files. The before-run's warm
+band was 11.40–12.28s and about 5.3s of a local run is model time, so I expect
+roughly 15–20s warm, which puts criterion 5 **near or over its own 20-second
+bound**. If it goes over, criterion 5 becomes MISSED and I will report it as a
+miss. I am not adjusting the bound to accommodate a change I chose to make.
+
+**How it gets measured:** the same `run_capstone_eval.py`, three runs of three
+trials against the same URL and the same query, with the before and after side
+by side. The before is `results/capstone_run_2026-11-11_1958.md`.
+
+**Still open.** The improvement above has been declared but not yet made or
+measured. The cost number is a lower bound, for the reason given above.

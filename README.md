@@ -687,11 +687,14 @@ fields: `ts`, `request_id`, `query`, `wardrobe`, `http_status`, `outcome`,
 `error`, `selected_id`, `selected_title`, `searches`, `warnings`,
 `model_calls`, `prompt_tokens`, `output_tokens`, `wait_ms`, and `duration_ms`.
 The `outcome` is one of `completed`, `rescued`, `stopped`, `bad_request`, or
-`crashed`. The committed log holds 21 records, none missing a field. (An
-earlier draft of this section said 22. That count came from the fresh clone's
-own `results/runlog.jsonl` during the clean-clone test, which had the 21
-committed records plus the one run I made inside it. The clone's copy is not
-in this repo, so 21 is the number here.) Below are the
+`crashed`. The committed log holds **51 records, none missing a field**. The
+first 21 are the instrumentation runs described in this section. The other 30
+were written afterwards by criterion 4, which sends ten HTTP requests per run
+for three runs; they are part of the capstone run log further down, and they
+are what criterion 4's verdict is counted from. (An earlier draft said 22. That
+came from the fresh clone's own `results/runlog.jsonl` during the clean-clone
+test — the committed records plus the one run I made inside the clone. The
+clone's copy is not in this repo.) Below are the
 first ten runs, then the failed run.
 
 Ten varied runs, cache off, through `python app.py ask`. Runs 6, 7 and 8 are the
@@ -774,7 +777,109 @@ the gap in the MCP boundary does, and fixing it means the server reports its
 own usage, which changes the `create_fit_card` return value. I have not made
 that change.
 
-**Still open.** The three trials per criterion, the verdicts, and the
-improvement have not run yet, and the criteria in `criteria.md` under
-`## Capstone` are committed and waiting for them. The Render service has not
-been deployed. The cost number is a lower bound, as described above.
+**Run Log**
+
+Five criteria, three runs each, nothing changed between runs. Produced by
+`run_capstone_eval.py::main`. Source:
+`results/capstone_run_2026-11-11_1958.md` (commit `1623383`), with the raw live
+responses in `results/live/capstone_live_2026-11-11_1958.json`.
+
+A run contains the criterion's whole set of trials, so a cell reads as trials
+passed out of trials attempted: three for criteria 1, 2, 3 and 5, and ten
+requests for criterion 4.
+
+| Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
+|---|---|---|---|---|---|
+| 1. A size-only miss is rescued, and says what it gave up | 3 of 3 | 3/3 | 3/3 | 3/3 | **MET** |
+| 2. A ceiling miss is rescued at 1.5x, and names the new ceiling | 3 of 3 | 3/3 | 3/3 | 3/3 | **MET** |
+| 3. An impossible query stops after exactly 3 searches, before any model call | 3 of 3 | 3/3 | 3/3 | 3/3 | **MET** |
+| 4. Every /ask request writes a complete log record | 10 of 10 | 10/10 | 10/10 | 10/10 | **MET** |
+| 5. The rescue works on the deployed service, warm under 20s | 3 of 3 | 3/3 | 3/3 | 3/3 | **MET** (evidence weakened — see diagnosis) |
+
+What each criterion was run against, and why that: criterion 1 needs a query
+that matches on keywords but has no listing in the asked-for size, so the first
+search is forced empty; criterion 2 needs the same for a price ceiling;
+criterion 3 needs a query that is still empty after both relaxations, and is
+scored by counting searches and model calls rather than by reading a message;
+criterion 4 needs real HTTP traffic including a request that should be
+rejected, so it sends ten through the Flask handler, four completing, three
+rescued, two stopping and one malformed; criterion 5 needs the deployed
+service, so it POSTs to the Render URL.
+
+**Cold start, measured once and deliberately kept out of the table: 32.51s.**
+Criterion 5 is about warm requests. A cold wake happens at Render's edge before
+the app process exists, so it cannot be measured from inside the app at all —
+putting it in the same column as the warm numbers would report something the
+criterion does not mean.
+
+Real output for each criterion is pasted in
+`results/capstone_run_2026-11-11_1958.md` under "Real output, per criterion",
+each block naming the file and function that produced it. Two extracts:
+
+Criterion 3, the bad path, from `agent.py::run_agent` via
+`run_capstone_eval.py::criterion_3`. Three searches, then the stop, with no
+model call:
+
+```
+run 1 trial 1: PASS — error='No listings matched. Try raising the price ceiling, dropping the size filter, or using different keywords in the description.' | warnings=[] | attempts=[('XXS', 5.0, 0), (None, 5.0, 0), (None, 7.5, 0)] | selected=None | fit_card=no | model_calls=0
+```
+
+Criterion 4, from `serve.py::ask` writing through `runlog.py::write`, via
+`run_capstone_eval.py::criterion_4`. The malformed body is rejected with 400
+and still leaves a record:
+
+```
+requests=10 records_written=10 records_complete=10
+    malformed (no query)         HTTP 400
+    completes                    HTTP 200
+    rescued (size)               HTTP 200
+    stops                        HTTP 200
+```
+
+**Verdicts and Diagnoses**
+
+All five are MET against the targets I committed before running anything. There
+are no misses to diagnose, so what follows is a diagnosis of the evidence
+instead, because two things about this table are worth more than the verdicts.
+
+**Criterion 5's number measures the wrong thing, and I only found out by
+checking.** The unit says to check you are really re-running if a model
+criterion comes out identical. It did: all nine live trials returned a
+**byte-identical fit card**. The place is the deployed environment, not the
+code. The mechanism: `config.CACHE_ENABLED` reads `AI201_CACHE` and defaults to
+on; `run_capstone_eval.py` sets `AI201_CACHE=0`, but only in its own process
+and the MCP server it starts locally. Render is a different machine and never
+saw it, so the deployed service answered every trial from its own disk cache.
+The rescue itself is still genuinely demonstrated — search and the re-plan are
+not model calls and cannot be cached — but the **11.4–12.3s warm timings are
+cache-warm timings and understate a real uncached request.** I am leaving the
+verdict at MET because every clause of the criterion as written was satisfied,
+and recording that the evidence behind the timing clause is weak.
+
+By contrast criteria 1–4 were genuinely re-run: the same query repeated across
+the three runs produced different output token counts every time (for example
+`vintage graphic tee under $30` at 282, 273 and 242 output tokens), which a
+cache hit cannot do.
+
+**The 20-second bound is loose, and I said in the criterion that I would say
+so.** Nine warm trials landed in a 0.9-second band, 11.40s to 12.28s, against a
+20s target. Writing it again I would set it from a measurement rather than a
+guess. I am not changing it now — a target is not worth anything if it moves
+after the results arrive.
+
+**Five out of five is itself a finding.** My own Unit 4 write-up says a
+criterion that cannot fail costs you, and I have now done it again: every
+criterion passed every trial. Criteria 1, 2 and 3 are deterministic, so each
+was always going to be 3/3 or 0/3 — three trials of a deterministic path tell
+me the path works, not that it is reliable. The one genuinely uncertain
+criterion was 5, and the cache took the uncertainty out of it without my
+noticing until afterwards.
+
+**One unexplained observation.** An earlier warm live request, before this run,
+took **29.3s** (`results/live/rescue_first_request_29s.json`). Nothing in these
+nine trials came close. I could not reproduce it and I do not know the cause,
+so it stays recorded rather than explained away.
+
+**Still open.** The improvement has not been made or measured yet. The cost
+number is a lower bound, for the reason given above. Criterion 5's timing needs
+re-measuring with the deployed cache off before it means what it says.

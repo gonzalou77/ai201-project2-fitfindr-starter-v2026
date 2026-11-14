@@ -623,14 +623,25 @@ No criterion is missed in the after run, but that isn't the same as nothing bein
 
 ## Capstone
 
-**Which system and which shape.** The system is FitFindr, the one above. This
-is shape **C**: one new capability, with the deploy and logging around it. The
-capability is an **empty-search re-plan**. When `search_listings` comes back
+**What This Extends**
+
+The system is **FitFindr**, the agentic thrift-shopping app from Units 3 and 4
+— the one documented above, in this same README and this same repository. Of
+the systems built in this course it is the one with a real tool-using loop and
+an MCP process boundary, which is what made a re-plan worth adding rather than
+bolting on.
+
+What is new is an **empty-search re-plan**. When `search_listings` comes back
 empty, `agent.py::run_agent` drops the size filter and searches again, then
 raises the price ceiling by 1.5 and searches again, and only then stops. Each
 rescue leaves a warning saying what it gave up. The loop is still bounded by
-`MAX_ITERATIONS`. The logging layer (`runlog.py`) and the cost script
-(`cost.py`) are the instrumentation around it.
+`MAX_ITERATIONS`. Also new around it: the logging layer (`runlog.py`), the cost
+script (`cost.py`), and the Render deploy config.
+
+**The Shape**
+
+Shape **C** — one new capability, carrying the deploy and instrumentation of
+shape A along with it.
 
 **Out of scope.** I considered a second retriever, a change to keyword matching
 or ranking, and a model call to rewrite the query. I left all three out. The
@@ -638,10 +649,24 @@ re-plan never changes the keywords, so the thing the user asked for stays fixed,
 and only the filters loosen. I also did not touch `suggest_outfit` or
 `create_fit_card`, and I did not add a UI.
 
-**Run path.** Local, with logs: `python app.py ask '...'`. The full steps are in
-[RUNNING.md](RUNNING.md), under "Capstone run path." The hosted Render config
-(`render.yaml`, `gunicorn.conf.py`, `.python-version`) is in the repo, but no
-Render service has been deployed yet.
+**Running It**
+
+Two paths. Both are written out in [RUNNING.md](RUNNING.md) under "Capstone run
+path."
+
+- **Hosted**, with nothing to install:
+  **https://ai201-project2-fitfindr-starter-v2026-tewx.onrender.com** — `GET /`
+  for a description of the service, `GET /health` for a status check, and
+  `POST /ask` with `{"query": "..."}` to run the agent. It is a free instance,
+  so it sleeps when idle and the first request after a pause takes about 30
+  seconds while it wakes. Every criterion 5 trial in this write-up ran against
+  this URL.
+- **Local**, which writes a log record for every run:
+  `python app.py ask 'vintage graphic tee under $30'`.
+
+RUNNING.md also has the clone-to-first-query steps for macOS, Linux and
+Windows, how to turn the response cache off, and how the Render service was
+configured and deployed.
 
 **Clean-clone test.** I cloned the repo into a new folder, created a venv, and
 followed RUNNING.md, using only the Windows commands. It failed at one step:
@@ -804,7 +829,7 @@ within the same few minutes would queue rather than fail. Converting the
 which is a number I would look up at the time rather than estimate here, and
 which this unit is explicit about not counting as a measurement.
 
-**Run Log**
+**Run Log and Verdicts**
 
 Five criteria, three runs each, nothing changed between runs. Produced by
 `run_capstone_eval.py::main`. Source:
@@ -1093,7 +1118,7 @@ before verdict was measuring a cache.
   so one shared word is enough to be the top result; and a transient 503 from
   the provider is not retried.
 
-**What I would do next**
+**The one thing I would do first.**
 
 If this were real and I had another unit, the first thing I would do is hold a
 single MCP connection open for the life of the process instead of starting a

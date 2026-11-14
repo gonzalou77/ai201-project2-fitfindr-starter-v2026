@@ -249,12 +249,56 @@ units.
 
 ---
 
-## Capstone run path: local, with logs
+## Capstone run path
 
-This is the path for the capstone extension. It runs from the command line on
-your own machine, and every run writes a record to `results/runlog.jsonl`.
-(The hosted version is `serve.py` on Render, see `render.yaml`, and it writes
-the same records to stdout.)
+Two ways to run the capstone extension: the hosted service, which needs nothing
+installed, and the local command line, which writes a log record for every run.
+
+### The hosted service
+
+**https://ai201-project2-fitfindr-starter-v2026-tewx.onrender.com**
+
+- `GET /` — a one-page description of the service.
+- `GET /health` — returns `{"ok": true}`.
+- `POST /ask` — runs the agent.
+
+```bash
+curl -s -X POST https://ai201-project2-fitfindr-starter-v2026-tewx.onrender.com/ask   -H 'Content-Type: application/json'   -d '{"query": "vintage graphic tee under $30"}'
+```
+
+It runs on Render's free plan, so it sleeps after about 15 minutes idle. The
+first request after a pause takes roughly **30 seconds** while the instance
+wakes; a warm request takes about **20 seconds**. Neither is an error. Wait
+rather than retrying — a retry during a wake just starts the clock again.
+
+**How it got there.** A Render Blueprint built from `render.yaml` in this repo,
+with the GitHub repository connected so that a push to `main` triggers a build.
+Four files carry the configuration:
+
+- **`render.yaml`** — `runtime: python`, `plan: free`, build command
+  `pip install -r requirements.txt`, start command
+  `gunicorn -c gunicorn.conf.py serve:app`, health check path `/health`.
+- **`.python-version`** — pins **3.11**. Render's default is 3.14, which
+  several packages in `requirements.txt` do not support. Without this pin the
+  build fails.
+- **`gunicorn.conf.py`** — binds `0.0.0.0:$PORT` (Render assigns the port at
+  runtime), one sync worker, and `timeout = 180`. Gunicorn's 30-second default
+  would kill a request that was working correctly, since an agent run takes
+  5–20 seconds plus any rate-limit pause.
+- **`GEMINI_API_KEY`** — set in the Render dashboard, never in the repo.
+  `render.yaml` declares it with `sync: false`, so no value is ever committed.
+
+One thing `render.yaml` will **not** do for you: adding an environment variable
+to the Blueprint does not apply it to a service that already exists. Render
+syncs `envVars` when the service is first created. On an existing service, set
+the variable in the dashboard (or via the API) and then trigger a deploy — a
+push on its own rebuilds the code and leaves the variable behind. This cost a
+whole set of measurements; see "The Improvement" in the README.
+
+### Running it locally, with logs
+
+This path runs from the command line on your own machine, and every run writes
+a record to `results/runlog.jsonl`.
 
 **What you need**
 
